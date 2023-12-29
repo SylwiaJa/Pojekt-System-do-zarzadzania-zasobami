@@ -9,7 +9,7 @@ public class Manager extends Leader{
     public void addTaskCategory(String category){
 
     }
-    public void addNewTask(String name, String priority, String description, Integer norm, Component component ){
+    public void addNewTask(String name, String priority, String description, int norm, Component component ){
 
     }
     public void addTaskPriority(Task task, String priority){
