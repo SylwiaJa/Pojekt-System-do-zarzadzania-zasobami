@@ -30,9 +30,7 @@ public abstract class Employee {
         this.password = password;
         this.task = task;
     }
-    public List<Task> getListOfTasks(){
-
-    }
+    public abstract List<Task> getListOfTasks();
     public void getTask(Task task){
 
     }
