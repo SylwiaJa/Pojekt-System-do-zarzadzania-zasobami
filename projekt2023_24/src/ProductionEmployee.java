@@ -10,9 +10,9 @@ public class ProductionEmployee extends Employee{
     }
     @Override
     public List<Task> getListOfTasks(){
-
+return null;
     }
     public Task getMyTask(){
-
+return null;
     }
 }
