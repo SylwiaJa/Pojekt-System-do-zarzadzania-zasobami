@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 30, 2023 at 02:26 PM
+-- Generation Time: Dec 30, 2023 at 03:26 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -156,6 +156,7 @@ CREATE TABLE `order` (
 
 CREATE TABLE `product` (
   `productID` int(10) NOT NULL,
+  `name` varchar(20) NOT NULL,
   `taskID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
