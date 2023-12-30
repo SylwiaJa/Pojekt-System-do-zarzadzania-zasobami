@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 28, 2023 at 02:15 PM
+-- Generation Time: Dec 30, 2023 at 02:26 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -46,8 +46,21 @@ CREATE TABLE `employee` (
   `roleID` int(10) DEFAULT NULL,
   `zoneID` int(10) DEFAULT NULL,
   `login` varchar(10) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL
+  `password` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`employeeID`, `name`, `lastName`, `roleID`, `zoneID`, `login`, `password`) VALUES
+(1, 'John', 'Smith', 1, 1, 'johnSmith', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
+(2, 'Alice', 'Johnson', 1, 2, 'aliJohn', 'b79b7a3ea501673ba27b00e8521749f12ef6a2e16d3bca1c5112bae8e9970a7e'),
+(3, 'Michael', 'Davis', 1, 1, 'michDav', '92a0286daa0f1180b8e4db1755d6c7df7e72f07f03dbb21bf5c19e300ab2f4e9'),
+(4, 'Emily', 'Clark', 3, 1, 'emilClar', '83b9947b198f8ed8ef8f53aa50f9f4494f8751ac2b36ecbe5f1e86686d7cbdc6'),
+(5, 'Robert', 'Turner', 3, 2, 'robTurn', '897316d8d02c209d3a150ccbc141105c2adde12b1a86b15b39ed305de2f9b1e2'),
+(6, 'Samantha', 'Miller', 4, 10, 'samantMil', 'f250e4e5b4b070d755a8e8a0ecf1e1b870538b5a1b7b1151305c6d6ec7846d0a'),
+(7, 'Daniel', 'White', 2, 10, 'danWhit', '95e3c2d32fe55b102f640f6a3e64075f3b346785a46e5a12f7e62305e00a0d47');
 
 -- --------------------------------------------------------
 
@@ -169,6 +182,16 @@ CREATE TABLE `role` (
   `roleName` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`roleID`, `roleName`) VALUES
+(1, 'Production Employee'),
+(2, 'Admin'),
+(3, 'Leader'),
+(4, 'Manager');
+
 -- --------------------------------------------------------
 
 --
@@ -275,9 +298,24 @@ CREATE TABLE `taskStatus` (
 
 CREATE TABLE `zone` (
   `zoneID` int(10) NOT NULL,
-  `name` varchar(20) DEFAULT NULL,
-  `employeeID` int(10) DEFAULT NULL
+  `name` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `zone`
+--
+
+INSERT INTO `zone` (`zoneID`, `name`) VALUES
+(1, 'SMT Assembly'),
+(2, 'Wave Soldering'),
+(3, 'Manual Assembly'),
+(4, 'Electrical Testing'),
+(5, 'Final Assembly'),
+(6, 'Quality Control'),
+(7, 'Packing'),
+(8, 'Warehouse'),
+(9, 'Service and Repairs'),
+(10, 'Office');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -441,7 +479,7 @@ ALTER TABLE `component`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employeeID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `employeeID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `equipment`
@@ -489,7 +527,7 @@ ALTER TABLE `result`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `roleID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `roleID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `task`
@@ -513,7 +551,7 @@ ALTER TABLE `taskStatus`
 -- AUTO_INCREMENT for table `zone`
 --
 ALTER TABLE `zone`
-  MODIFY `zoneID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `zoneID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
