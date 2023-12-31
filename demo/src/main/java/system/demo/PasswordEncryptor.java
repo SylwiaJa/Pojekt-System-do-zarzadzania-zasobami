@@ -1,3 +1,5 @@
+package system.demo;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -31,10 +33,4 @@ public class PasswordEncryptor {
         }
     }
 
-    public static void main(String[] args) {
-        // Przykładowe użycie metody
-        String plainPassword = "mojeHaslo";
-        String encryptedPassword = encryptPassword(plainPassword);
-        System.out.println("Zaszyfrowane hasło: " + encryptedPassword);
-    }
 }

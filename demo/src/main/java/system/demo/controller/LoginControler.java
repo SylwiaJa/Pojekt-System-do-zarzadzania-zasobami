@@ -21,14 +21,14 @@ public class LoginControler {
     @FXML
     private void loginButtonAction(){
         String username = nameField.getText();
-      //  String password = PasswordEncryptor.encryptPassword(passField.getText());
+        String password = PasswordEncryptor.encryptPassword(passField.getText());
 
         try{
             Socket socket = new Socket("localhost",12345);
             Scanner in = new Scanner(socket.getInputStream());
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
             out.println(username);
-          //  out.println(password);
+           out.println(password);
             socket.close();
         }catch (IOException e){
             e.printStackTrace();

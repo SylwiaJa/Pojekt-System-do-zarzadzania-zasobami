@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<?import javafx.geometry.Insets?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="system.demo.controller.ManagerController"
+          alignment="center"
+          hgap="5"
+          vgap="5">
 
-</AnchorPane>
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <Label text="Scena menedżera" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Button text="Operacje menedżera" onAction="#managerButtonAction" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+</GridPane>
