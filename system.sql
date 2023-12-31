@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 30, 2023 at 03:26 PM
+-- Generation Time: Dec 31, 2023 at 07:26 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -156,8 +156,7 @@ CREATE TABLE `order` (
 
 CREATE TABLE `product` (
   `productID` int(10) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `taskID` int(10) NOT NULL
+  `name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -206,7 +205,10 @@ CREATE TABLE `task` (
   `description` varchar(100) NOT NULL,
   `taskCategory` int(10) NOT NULL,
   `norm` int(10) NOT NULL,
-  `resultID` int(10) NOT NULL
+  `resultID` int(10) NOT NULL,
+  `productID` int(10) NOT NULL,
+  `quantity` int(10) NOT NULL,
+  `orderID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -388,8 +390,7 @@ ALTER TABLE `order`
 -- Indeksy dla tabeli `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`productID`),
-  ADD KEY `taskID` (`taskID`);
+  ADD PRIMARY KEY (`productID`);
 
 --
 -- Indeksy dla tabeli `result`
@@ -409,7 +410,9 @@ ALTER TABLE `role`
 ALTER TABLE `task`
   ADD PRIMARY KEY (`taskID`),
   ADD KEY `taskCategory` (`taskCategory`),
-  ADD KEY `resultID` (`resultID`);
+  ADD KEY `resultID` (`resultID`),
+  ADD KEY `productID` (`productID`),
+  ADD KEY `orderID` (`orderID`);
 
 --
 -- Indeksy dla tabeli `taskCategory`
@@ -600,17 +603,13 @@ ALTER TABLE `order`
   ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`);
 
 --
--- Constraints for table `product`
---
-ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`taskID`) REFERENCES `task` (`taskID`);
-
---
 -- Constraints for table `task`
 --
 ALTER TABLE `task`
   ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`taskCategory`) REFERENCES `taskCategory` (`taskCategoryID`),
-  ADD CONSTRAINT `task_ibfk_2` FOREIGN KEY (`resultID`) REFERENCES `result` (`resultID`);
+  ADD CONSTRAINT `task_ibfk_2` FOREIGN KEY (`resultID`) REFERENCES `result` (`resultID`),
+  ADD CONSTRAINT `task_ibfk_3` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`),
+  ADD CONSTRAINT `task_ibfk_4` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
 
 --
 -- Constraints for table `taskCategoryComponent`
