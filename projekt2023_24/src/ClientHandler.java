@@ -15,19 +15,20 @@ public class ClientHandler implements Runnable {
         try {
             Scanner in = new Scanner(clientSocket.getInputStream());
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            // Pytanie o login
-            out.println("Podaj login:");
             String login = in.nextLine();
-
-            // Pytanie o hasło
-            out.println("Podaj hasło:");
             String password = in.nextLine();
-
             System.out.println("Login: " + login);
             System.out.println("Hasło: " + password);
-
-            // Tutaj możesz dodać logikę weryfikacji loginu i hasła
+            if(login.equals("admin"))
+                out.println("admin");
+            else if (login.equals("manager")) {
+                out.println("manager");
+            } else if (login.equals("leader")) {
+                out.println("leader");
+            }else if(login.equals("employee")) {
+                out.println("employee");
+            }else
+                out.println("error");
 
             clientSocket.close();
         } catch (IOException e) {

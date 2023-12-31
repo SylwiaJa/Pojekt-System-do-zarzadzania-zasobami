@@ -12,7 +12,7 @@ public class ServerTCP {
             System.out.println("Serwer nasłuchuje na porcie 12345");
     while (true){
         Socket clientSocket = serverSocket.accept();
-        System.out.println("Połączono z "+clientSocket.getInetAddress().getHostAddress());
+        System.out.println("Połączono z "+clientSocket.getInetAddress().getHostAddress()+" "+clientSocket.getInetAddress().getHostName());
         ClientHandler clientHandler = new ClientHandler(clientSocket);
         executorService.execute(clientHandler);
     }
