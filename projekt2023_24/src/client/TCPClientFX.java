@@ -46,22 +46,22 @@ public void setLoginData(String username, String password) {
         out.println(password);
         ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
         Employee employee = (Employee) objectInputStream.readObject();
-
+        if (employee!=null){
         switch (employee.getRole()){
             case "Production Employee":
-                sceneManager.showEmployeeScene(this);
+                sceneManager.showEmployeeScene(this, employee);
                 break;
             case "Admin":
-                sceneManager.showAdminScene(this);
+                sceneManager.showAdminScene(this,employee);
                 break;
             case "Leader":
-                sceneManager.showLeaderScene(this);
+                sceneManager.showLeaderScene(this,employee);
                 break;
             case "Manager":
-                sceneManager.showManagerScene(this);
+                sceneManager.showManagerScene(this,employee);
                 break;
-            default:
-                sceneManager.showErrorScene(this);
+        }}else {
+            sceneManager.showErrorScene(this);
         }
 
         socket.close();

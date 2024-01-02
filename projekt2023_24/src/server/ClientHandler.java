@@ -22,12 +22,14 @@ public class ClientHandler implements Runnable {
 
             String login = in.nextLine();
             String password = in.nextLine();
-            System.out.println("server.Login: " + login);
-            System.out.println("Hasło: " + password);
-            MySQLDatabaseConnector  connector = new MySQLDatabaseConnector();
-            Employee employee = connector.getUserInfo(login,password);
-            System.out.println(employee.getName()+"  "+employee.getLastName());
-            objectOutputStream.writeObject(employee);
+            Login log = new Login();
+            MySQLDatabaseConnector connector = new MySQLDatabaseConnector();
+            if (log.check(login,password)) {
+                Employee employee = connector.getUserInfo(login, password);
+                objectOutputStream.writeObject(employee);
+            }else {
+                objectOutputStream.writeObject(null);
+            }
 
             clientSocket.close();
             connector.closeConnection();

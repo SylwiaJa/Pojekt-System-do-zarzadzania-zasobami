@@ -44,6 +44,10 @@ public class Employee implements Serializable {
         return role;
     }
 
+    public String getZone() {
+        return zone;
+    }
+
     public String getName() {
         return name;
     }
