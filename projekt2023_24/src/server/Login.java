@@ -7,15 +7,17 @@ public class Login {
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private Connection connection;
-
+public Login(){
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+        System.out.println("Pomyślnie połączono z bazą danych");
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+    }
+}
     public boolean check(String login, String password){
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-            System.out.println("Pomyślnie połączono z bazą danych");
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+
         String sqlQuery = "SELECT * FROM employee WHERE login = ? AND password = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
@@ -33,7 +35,15 @@ public class Login {
         return true;
     }
     public void  startLogin(Employee employee){
-
+    int id = employee.getId();
+        String sqlQuery = "insert into loginHistory (employeeID,startTime) values (?,CURRENT_TIMESTAMP)";
+        try {
+            PreparedStatement statement =connection.prepareStatement(sqlQuery);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     public void endLogin(Employee employee){
 

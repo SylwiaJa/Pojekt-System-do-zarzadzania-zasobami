@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
             MySQLDatabaseConnector connector = new MySQLDatabaseConnector();
             if (log.check(login,password)) {
                 Employee employee = connector.getUserInfo(login, password);
+                log.startLogin(employee);
                 objectOutputStream.writeObject(employee);
             }else {
                 objectOutputStream.writeObject(null);

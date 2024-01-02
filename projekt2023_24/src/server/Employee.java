@@ -40,6 +40,10 @@ public class Employee implements Serializable {
 
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getRole() {
         return role;
     }
