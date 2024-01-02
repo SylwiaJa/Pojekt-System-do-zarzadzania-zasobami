@@ -6,11 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import system.demo.controller.LoginController;
-
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
+
 
 public class TCPClientFX extends Application {
 private String username;
@@ -41,20 +43,25 @@ public void setLoginData(String username, String password) {
         PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
         out.println(username);
         out.println(password);
-        String role = in.nextLine();
-        System.out.println(role);
-        if(role.equals("admin"))
-        sceneManager.showAdminScene(this);
-        else if (role.equals("manager"))
-            sceneManager.showManagerScene(this);
-        else if (role.equals("leader"))
-            sceneManager.showLeaderScene(this);
-        else if (role.equals("employee"))
-            sceneManager.showEmployeeScene(this);
-        else
-            sceneManager.showErrorScene(this);
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+         Object employee = objectInputStream.readObject();
+//            switch (employee.getRole()){
+//                case "Production Employee":
+//                    sceneManager.showEmployeeScene(this);
+//                    break;
+//                case "Admin":
+//                    sceneManager.showAdminScene(this);
+//                    break;
+//                case "Leader":
+//                    sceneManager.showLeaderScene(this);
+//                    break;
+//                case "Manager":
+//                    sceneManager.showManagerScene(this);
+//                    break;
+//            }
+
         socket.close();
-    }catch (IOException e){
+    }catch (IOException | ClassNotFoundException  e){
         e.printStackTrace();
     }
 }
