@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          maxHeight="600.0" maxWidth="600.0" minHeight="400.0" minWidth="400.0"
-          alignment="center"
-          hgap="5"
-          vgap="5">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="5" maxHeight="600.0" maxWidth="600.0" minHeight="400.0" minWidth="400.0" vgap="5" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
@@ -18,10 +18,30 @@
     <Button onAction="#managerButtonAction" text="Wyloguj" GridPane.columnIndex="4" />
 
     <!-- Dodane Label'e -->
-    <Label fx:id="name"/>
+    <Label fx:id="name" />
     <Label fx:id="lastName" GridPane.columnIndex="1" />
     <Label fx:id="role" GridPane.columnIndex="2" />
     <Label fx:id="zone" GridPane.columnIndex="3" />
+
+    <TabPane GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.rowIndex="1">
+        <tabs>
+            <Tab text="Orders">
+                <!-- Tutaj dodaj zawartość dla pierwszej zakładki -->
+            </Tab>
+            <Tab text="Zakładka 2">
+                <!-- Tutaj dodaj zawartość dla drugiej zakładki -->
+            </Tab>
+            <Tab text="Zakładka 3">
+                <!-- Tutaj dodaj zawartość dla trzeciej zakładki -->
+            </Tab>
+            <Tab text="Zakładka 4">
+                <!-- Tutaj dodaj zawartość dla czwartej zakładki -->
+            </Tab>
+            <Tab text="Zakładka 5">
+                <!-- Tutaj dodaj zawartość dla piątej zakładki -->
+            </Tab>
+        </tabs>
+    </TabPane>
 
     <columnConstraints>
         <ColumnConstraints maxWidth="108.5" minWidth="13.5" prefWidth="78.5" />
