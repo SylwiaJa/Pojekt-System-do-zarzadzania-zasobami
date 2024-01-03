@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 31, 2023 at 07:26 PM
+-- Generation Time: Sty 03, 2024 at 08:50 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -54,13 +54,13 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employeeID`, `name`, `lastName`, `roleID`, `zoneID`, `login`, `password`) VALUES
-(1, 'John', 'Smith', 1, 1, 'johnSmith', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
-(2, 'Alice', 'Johnson', 1, 2, 'aliJohn', 'b79b7a3ea501673ba27b00e8521749f12ef6a2e16d3bca1c5112bae8e9970a7e'),
-(3, 'Michael', 'Davis', 1, 1, 'michDav', '92a0286daa0f1180b8e4db1755d6c7df7e72f07f03dbb21bf5c19e300ab2f4e9'),
-(4, 'Emily', 'Clark', 3, 1, 'emilClar', '83b9947b198f8ed8ef8f53aa50f9f4494f8751ac2b36ecbe5f1e86686d7cbdc6'),
-(5, 'Robert', 'Turner', 3, 2, 'robTurn', '897316d8d02c209d3a150ccbc141105c2adde12b1a86b15b39ed305de2f9b1e2'),
-(6, 'Samantha', 'Miller', 4, 10, 'samantMil', 'f250e4e5b4b070d755a8e8a0ecf1e1b870538b5a1b7b1151305c6d6ec7846d0a'),
-(7, 'Daniel', 'White', 2, 10, 'danWhit', '95e3c2d32fe55b102f640f6a3e64075f3b346785a46e5a12f7e62305e00a0d47');
+(1, 'John', 'Smith', 1, 1, 'johnSmith', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e'),
+(2, 'Alice', 'Johnson', 1, 2, 'aliJohn', 'fbb4a8a163ffa958b4f02bf9cabb30cfefb40de803f2c4c346a9d39b3be1b544'),
+(3, 'Michael', 'Davis', 1, 1, 'michDav', '28c58559e2fe38904115fbce1e3a7095c6423d86d25c411c6f9e3ea62de3a4b8'),
+(4, 'Emily', 'Clark', 3, 1, 'emilClar', '527ad704c9463211ae9ec71a3d549ca0a3cadc5d808f3768aa87de0ee77ed129'),
+(5, 'Robert', 'Turner', 3, 2, 'robTurn', '43f8a2ad1882637f749ce419d33a02f74debb66991d7d65aade4eea9ded2a120'),
+(6, 'Samantha', 'Miller', 4, 10, 'samantMil', '557da7437051616d1067efbc8734494717b4f92ff17f2c73708a65c9c3b9e44d'),
+(7, 'Daniel', 'White', 2, 10, 'danWhit', '32525916c8a167495ed00d0fb7b0fd33215b2ef7dab70543562d52843becf7ab');
 
 -- --------------------------------------------------------
 
@@ -136,6 +136,15 @@ CREATE TABLE `loginHistory` (
   `endTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `loginHistory`
+--
+
+INSERT INTO `loginHistory` (`loginHistoryID`, `employeeID`, `startTime`, `endTime`) VALUES
+(20, 1, '2024-01-03 18:53:55', '0000-00-00 00:00:00'),
+(21, 4, '2024-01-03 18:54:38', '0000-00-00 00:00:00'),
+(22, 7, '2024-01-03 19:04:26', '0000-00-00 00:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -143,10 +152,45 @@ CREATE TABLE `loginHistory` (
 --
 
 CREATE TABLE `order` (
-  `orderID` int(10) NOT NULL,
-  `productID` int(10) NOT NULL,
-  `quantity` int(10) NOT NULL
+  `OrderID` int(10) NOT NULL,
+  `Status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`OrderID`, `Status`) VALUES
+(1, 'accepted'),
+(2, 'progress'),
+(3, 'suspended'),
+(4, 'completed');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `orderQuantity`
+--
+
+CREATE TABLE `orderQuantity` (
+  `orderQuantityID` int(10) NOT NULL,
+  `productID` int(10) NOT NULL,
+  `quantityOrdered` int(10) NOT NULL,
+  `orderID` int(10) NOT NULL,
+  `QuantityInProduction` int(10) DEFAULT NULL,
+  `OuantityFinished` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orderQuantity`
+--
+
+INSERT INTO `orderQuantity` (`orderQuantityID`, `productID`, `quantityOrdered`, `orderID`, `QuantityInProduction`, `OuantityFinished`) VALUES
+(1, 1, 100, 1, NULL, NULL),
+(2, 2, 100, 1, NULL, NULL),
+(3, 3, 100, 1, NULL, NULL),
+(4, 1, 30, 1, NULL, NULL),
+(5, 2, 40, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -158,6 +202,19 @@ CREATE TABLE `product` (
   `productID` int(10) NOT NULL,
   `name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`productID`, `name`) VALUES
+(1, 'Chair'),
+(2, 'Table'),
+(3, 'Armchair'),
+(4, 'Bed'),
+(5, 'Desk'),
+(6, 'Wardrobe'),
+(7, 'Chest of drawers');
 
 -- --------------------------------------------------------
 
@@ -205,7 +262,7 @@ CREATE TABLE `task` (
   `description` varchar(100) NOT NULL,
   `taskCategory` int(10) NOT NULL,
   `norm` int(10) NOT NULL,
-  `resultID` int(10) NOT NULL,
+  `resultID` int(10) DEFAULT NULL,
   `productID` int(10) NOT NULL,
   `quantity` int(10) NOT NULL,
   `orderID` int(10) NOT NULL
@@ -221,6 +278,19 @@ CREATE TABLE `taskCategory` (
   `taskCategoryID` int(10) NOT NULL,
   `name` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `taskCategory`
+--
+
+INSERT INTO `taskCategory` (`taskCategoryID`, `name`) VALUES
+(1, 'Chair'),
+(2, 'Table'),
+(3, 'Armchair'),
+(4, 'Bed'),
+(5, 'Desk'),
+(6, 'Wardrobe'),
+(7, 'Chest of drawers');
 
 -- --------------------------------------------------------
 
@@ -309,13 +379,13 @@ CREATE TABLE `zone` (
 --
 
 INSERT INTO `zone` (`zoneID`, `name`) VALUES
-(1, 'SMT Assembly'),
-(2, 'Wave Soldering'),
-(3, 'Manual Assembly'),
-(4, 'Electrical Testing'),
-(5, 'Final Assembly'),
-(6, 'Quality Control'),
-(7, 'Packing'),
+(1, 'Chair Area'),
+(2, 'Table Area'),
+(3, 'Armchair Area'),
+(4, 'Bed Area'),
+(5, 'Desk Area'),
+(6, 'Wardrobe Area'),
+(7, 'Chest Area'),
 (8, 'Warehouse'),
 (9, 'Service and Repairs'),
 (10, 'Office');
@@ -383,8 +453,15 @@ ALTER TABLE `loginHistory`
 -- Indeksy dla tabeli `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`orderID`),
-  ADD KEY `productID` (`productID`);
+  ADD PRIMARY KEY (`OrderID`);
+
+--
+-- Indeksy dla tabeli `orderQuantity`
+--
+ALTER TABLE `orderQuantity`
+  ADD PRIMARY KEY (`orderQuantityID`),
+  ADD KEY `productID` (`productID`),
+  ADD KEY `orderID` (`orderID`);
 
 --
 -- Indeksy dla tabeli `product`
@@ -507,19 +584,25 @@ ALTER TABLE `license`
 -- AUTO_INCREMENT for table `loginHistory`
 --
 ALTER TABLE `loginHistory`
-  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `orderID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `orderQuantity`
+--
+ALTER TABLE `orderQuantity`
+  MODIFY `orderQuantityID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `productID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `result`
@@ -543,7 +626,7 @@ ALTER TABLE `task`
 -- AUTO_INCREMENT for table `taskCategory`
 --
 ALTER TABLE `taskCategory`
-  MODIFY `taskCategoryID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `taskCategoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `taskStatus`
@@ -597,10 +680,11 @@ ALTER TABLE `loginHistory`
   ADD CONSTRAINT `loginhistory_ibfk_1` FOREIGN KEY (`employeeID`) REFERENCES `employee` (`employeeID`);
 
 --
--- Constraints for table `order`
+-- Constraints for table `orderQuantity`
 --
-ALTER TABLE `order`
-  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`);
+ALTER TABLE `orderQuantity`
+  ADD CONSTRAINT `orderquantity_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`),
+  ADD CONSTRAINT `orderquantity_ibfk_2` FOREIGN KEY (`orderID`) REFERENCES `order` (`OrderID`);
 
 --
 -- Constraints for table `task`
@@ -609,7 +693,7 @@ ALTER TABLE `task`
   ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`taskCategory`) REFERENCES `taskCategory` (`taskCategoryID`),
   ADD CONSTRAINT `task_ibfk_2` FOREIGN KEY (`resultID`) REFERENCES `result` (`resultID`),
   ADD CONSTRAINT `task_ibfk_3` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`),
-  ADD CONSTRAINT `task_ibfk_4` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
+  ADD CONSTRAINT `task_ibfk_4` FOREIGN KEY (`orderID`) REFERENCES `orderquantity` (`orderQuantityID`);
 
 --
 -- Constraints for table `taskCategoryComponent`
