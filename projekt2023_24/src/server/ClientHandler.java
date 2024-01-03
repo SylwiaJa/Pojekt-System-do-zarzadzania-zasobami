@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
+    private Employee employee;
 
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -25,13 +26,14 @@ public class ClientHandler implements Runnable {
             Login log = new Login();
             MySQLDatabaseConnector connector = new MySQLDatabaseConnector();
             if (log.check(login,password)) {
-                Employee employee = connector.getUserInfo(login, password);
+                employee = connector.getUserInfo(login, password);
                 log.startLogin(employee);
                 objectOutputStream.writeObject(employee);
+
             }else {
                 objectOutputStream.writeObject(null);
             }
-
+         //   log.endLogin(employee);
             clientSocket.close();
             connector.closeConnection();
         } catch (IOException e) {

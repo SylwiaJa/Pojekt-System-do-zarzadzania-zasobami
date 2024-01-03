@@ -19,24 +19,22 @@ public Login(){
     public boolean check(String login, String password){
 
         String sqlQuery = "SELECT * FROM employee WHERE login = ? AND password = ?";
-
+            boolean flag = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
-            try (ResultSet result = preparedStatement.executeQuery()) {
-                    if (result ==null)
-                        return false;
-                    else
-                        return true;
-            }
-        }catch (SQLException e){
+            ResultSet result = preparedStatement.executeQuery();
+           if( result.next())
+               flag=true;
+
+        }catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return  flag;
     }
     public void  startLogin(Employee employee){
     int id = employee.getId();
-        String sqlQuery = "insert into loginHistory (employeeID,startTime) values (?,CURRENT_TIMESTAMP)";
+        String sqlQuery = "insert into loginHistory (employeeID,startTime) values (?,CURRENT_TIME)";
         try {
             PreparedStatement statement =connection.prepareStatement(sqlQuery);
             statement.setInt(1,id);
@@ -46,6 +44,14 @@ public Login(){
         }
     }
     public void endLogin(Employee employee){
-
+        int id = employee.getId();
+        String sqlQuery = "update loginHistory SET endTime=CURRENT_TIME where employeeID=? and endTime='0000-00-00 00:00:00'";
+        try {
+            PreparedStatement statement =connection.prepareStatement(sqlQuery);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

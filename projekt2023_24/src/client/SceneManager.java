@@ -85,6 +85,9 @@ public class SceneManager {
             e.printStackTrace();
         }
     }
+    public void closeApp(){
+        primaryStage.close();
+    }
 }
 
 

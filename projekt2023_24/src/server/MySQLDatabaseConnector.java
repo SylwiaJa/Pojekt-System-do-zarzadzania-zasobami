@@ -50,7 +50,17 @@ public class MySQLDatabaseConnector {
                                     try (ResultSet zoneResult = zoneStatement.executeQuery()) {
                                         if (zoneResult.next()) {
                                             String zoneName = zoneResult.getString("name");
-                                            return new Employee(id, name, lastName,roleName,zoneName,user,password );
+                                            if(roleName.equals("Production Employee"))
+                                            return new ProductionEmployee(id, name, lastName,roleName,zoneName,user,password );
+                                            else if (roleName.equals("Admin"))
+                                                return new Admin(id, name, lastName,roleName,zoneName,user,password);
+                                            else if (roleName.equals("Leader"))
+                                                return new Leader(id, name, lastName,roleName,zoneName,user,password);
+                                            else if (roleName.equals("Manager")) {
+                                                return new Manager(id, name, lastName,roleName,zoneName,user,password);
+                                            }else
+                                                return new ProductionEmployee(id, name, lastName,roleName,zoneName,user,password);
+
                                         }
                                     }
                                 }
