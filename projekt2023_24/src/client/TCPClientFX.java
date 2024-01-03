@@ -7,11 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import client.controller.LoginController;
 import server.Employee;
+import server.Order;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -57,9 +59,10 @@ public void setLoginData(String username, String password) {
             case "Leader":
                 sceneManager.showLeaderScene(this,employee);
                 break;
-            case "Manager":
-                sceneManager.showManagerScene(this,employee);
-                break;
+            case "Manager":{
+                List<Order> orders = (List<Order>) objectInputStream.readObject();
+                sceneManager.showManagerScene(this,employee,orders);
+                break;}
         }}else {
             sceneManager.showErrorScene(this);
         }

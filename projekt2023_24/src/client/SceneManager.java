@@ -6,9 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.Employee;
+import server.Order;
 
 
 import java.io.IOException;
+import java.util.List;
 
 public class SceneManager {
     private Stage primaryStage;
@@ -63,10 +65,10 @@ public class SceneManager {
         }
     }
 
-    public void showManagerScene(TCPClientFX tcpClientFX, Employee employee) {
+    public void showManagerScene(TCPClientFX tcpClientFX, Employee employee, List<Order> orders) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ManagerScene.fxml"));
-            ManagerController managerController = new ManagerController(tcpClientFX,employee);
+            ManagerController managerController = new ManagerController(tcpClientFX,employee,orders);
             loader.setController(managerController);
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));

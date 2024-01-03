@@ -4,11 +4,15 @@ import client.TCPClientFX;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import server.Employee;
+import server.Order;
+
+import java.util.List;
 
 
 public class ManagerController {
 private TCPClientFX tcpClientFX;
 private Employee employee;
+private List<Order> orders;
     @FXML
     private Label name;
     @FXML
@@ -18,9 +22,11 @@ private Employee employee;
     @FXML
     private Label zone;
 
-    public ManagerController(TCPClientFX tcpClientFX, Employee employee) {
+
+    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders) {
         this.tcpClientFX = tcpClientFX;
         this.employee = employee;
+        this.orders = orders;
     }
 
     @FXML

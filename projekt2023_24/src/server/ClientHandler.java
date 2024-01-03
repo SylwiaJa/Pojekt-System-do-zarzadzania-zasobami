@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
@@ -29,7 +30,10 @@ public class ClientHandler implements Runnable {
                 employee = connector.getUserInfo(login, password);
                 log.startLogin(employee);
                 objectOutputStream.writeObject(employee);
-
+                if(employee instanceof Manager){
+                  List<Order> orders = ((Manager) employee).getListOfOrder();
+                  objectOutputStream.writeObject(orders);
+                }
             }else {
                 objectOutputStream.writeObject(null);
             }
