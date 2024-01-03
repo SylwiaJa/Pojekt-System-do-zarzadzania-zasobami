@@ -12,4 +12,16 @@ public class Order implements Serializable {
         this.status = status;
         this.product = product;
     }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }

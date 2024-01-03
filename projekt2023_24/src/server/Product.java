@@ -21,4 +21,28 @@ public class Product implements Serializable {
         this.quantityInProduction = quantityInProduction;
         this.quantityFinished = quantityFinished;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantityOrdered() {
+        return quantityOrdered;
+    }
+
+    public int getQuantityInProduction() {
+        return quantityInProduction;
+    }
+
+    public int getQuantityFinished() {
+        return quantityFinished;
+    }
+
+    @Override
+    public String toString() {
+        return  name  +
+                "\t" + quantityOrdered +
+                "\t" + quantityInProduction +
+                "\t" + quantityFinished ;
+    }
 }
