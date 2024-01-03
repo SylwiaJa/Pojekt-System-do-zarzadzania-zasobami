@@ -1,5 +1,7 @@
 package server;
 
+import java.util.List;
+
 public class Manager extends Leader{
     public Manager(int id, String name, String lastName, String role, String zone, String login, String password) {
         super(id, name, lastName, role, zone, login, password);
@@ -28,5 +30,8 @@ public class Manager extends Leader{
     }
     public void changeEquipmentStatus(Equipment equipment, String status){
 
+    }
+    public List<Order> getListOfOrder(){
+        return null;
     }
 }
