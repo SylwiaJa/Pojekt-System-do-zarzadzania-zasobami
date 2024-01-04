@@ -1,5 +1,6 @@
 package server;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -18,12 +19,12 @@ public class ClientHandler implements Callable<Employee> {
     @Override
     public Employee call() {
         try {
-            Scanner in = new Scanner(clientSocket.getInputStream());
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            //Scanner in = new Scanner(clientSocket.getInputStream());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream objectInputStream = new ObjectInputStream( clientSocket.getInputStream());
 
-            String login = in.nextLine();
-            String password = in.nextLine();
+            String login = (String) objectInputStream.readObject();
+            String password =(String) objectInputStream.readObject();
             Login log = new Login();
             MySQLDatabaseConnector connector = new MySQLDatabaseConnector();
             if (log.check(login, password)) {
@@ -39,7 +40,11 @@ public class ClientHandler implements Callable<Employee> {
                     objectOutputStream.writeObject(employees);
                     objectOutputStream.writeObject(connector.getRolesList());
                     objectOutputStream.writeObject(connector.getZonesList());
-
+               //    String answer  = (String) objectInputStream.readObject();
+                //  if(answer.equals("update")){
+                        Employee updateEmployee = (Employee) objectInputStream.readObject();
+                        ((Admin) employee).changeRole(updateEmployee);
+                //    }
 //                    List<Order> orders = employee.getListOfOrder();
 //                    objectOutputStream.writeObject(orders);
                 }
@@ -49,7 +54,7 @@ public class ClientHandler implements Callable<Employee> {
             //   log.endLogin(employee);
             clientSocket.close();
             connector.closeConnection();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 

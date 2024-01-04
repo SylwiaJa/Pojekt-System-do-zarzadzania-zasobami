@@ -120,4 +120,32 @@ public class MySQLDatabaseConnector {
             e.printStackTrace();
         }
     }
+
+    public void updateEmployee(int id, String role, String zone) {
+        String sqlQurey = "SELECT roleID FROM role WHERE roleName=?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQurey);
+            preparedStatement.setString(1,role);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                int idRole = resultSet.getInt("roleID");
+
+            sqlQurey = "SELECT zoneID from zone where name=?";
+            preparedStatement = connection.prepareStatement(sqlQurey);
+            preparedStatement.setString(1,zone);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int idZone = resultSet.getInt("zoneID");
+
+                sqlQurey = "UPDATE employee set roleID= ?, zoneID= ? where employeeID= ?";
+                preparedStatement = connection.prepareStatement(sqlQurey);
+                preparedStatement.setInt(1, idRole);
+                preparedStatement.setInt(2,idZone);
+                preparedStatement.setInt(3,id);
+                preparedStatement.executeUpdate();
+            }}
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

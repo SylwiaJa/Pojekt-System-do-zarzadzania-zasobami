@@ -14,8 +14,9 @@ public class Admin extends Employee{
     public void addRole(Employee employee, String role){
 
     }
-    public void changeRole(Employee employee, String newRole){
-
+    public void changeRole(Employee updateEmployee){
+        MySQLDatabaseConnector mySQLDatabaseConnector = new MySQLDatabaseConnector();
+        mySQLDatabaseConnector.updateEmployee(updateEmployee.getId(), updateEmployee.getRole(), updateEmployee.getZone());
     }
     @Override
     public List<Task> getListOfTasks() {

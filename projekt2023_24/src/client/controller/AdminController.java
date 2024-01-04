@@ -137,12 +137,10 @@ public class AdminController {
                             String newRole = roleComboBox.getValue();
                             String newZone = zoneComboBox.getValue();
 
-                            // Tutaj dodaj kod do aktualizacji danych pracownika na serwerze
-                            // ...
-
                             // Zaktualizuj dane pracownika w TableView
                             employee.setRole(newRole);
                             employee.setZone(newZone);
+                            tcpClientFX.updateEmployee(employee);
                             TableView<Employee> tableView = getTableView();
                             tableView.refresh();
 
