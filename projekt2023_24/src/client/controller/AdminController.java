@@ -102,7 +102,6 @@ public class AdminController {
                         Employee employee = getTableView().getItems().get(getIndex());
                         int employeeId = employee.getId();
 
-
                         // Tworzymy nowe okno
                         Stage editStage = new Stage();
                         editStage.setTitle("Edit Employee");
@@ -134,8 +133,21 @@ public class AdminController {
                         // Przycisk "Apply"
                         Button applyButton = new Button("Apply");
                         applyButton.setOnAction(applyEvent -> {
-                            // Tutaj dodaj logikę do zastosowania wprowadzonych zmian (wykorzystaj roleComboBox.getValue() i zoneComboBox.getValue())
-                            editStage.close(); // Zamknij okno po zastosowaniu zmian
+                            // Pobierz wybrane wartości z ComboBoxów
+                            String newRole = roleComboBox.getValue();
+                            String newZone = zoneComboBox.getValue();
+
+                            // Tutaj dodaj kod do aktualizacji danych pracownika na serwerze
+                            // ...
+
+                            // Zaktualizuj dane pracownika w TableView
+                            employee.setRole(newRole);
+                            employee.setZone(newZone);
+                            TableView<Employee> tableView = getTableView();
+                            tableView.refresh();
+
+                            // Zamknij okno po zastosowaniu zmian
+                            editStage.close();
                         });
 
                         // Przycisk "Cancel"

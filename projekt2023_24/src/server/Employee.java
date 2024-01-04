@@ -150,4 +150,12 @@ public class Employee implements Serializable {
         }
         return  employees;
     }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
 }
