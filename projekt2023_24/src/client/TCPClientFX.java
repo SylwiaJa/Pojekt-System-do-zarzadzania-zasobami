@@ -113,7 +113,6 @@ public class TCPClientFX extends Application {
     }
 
     public List<String> getRoles() {
-        out.println("getRolesAndZones");
         try {
             return  (List<String>) objectInputStream.readObject();
         }catch (IOException | ClassNotFoundException e){

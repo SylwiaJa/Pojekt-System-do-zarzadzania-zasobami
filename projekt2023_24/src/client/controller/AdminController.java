@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import server.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminController {
@@ -22,6 +23,8 @@ public class AdminController {
     private List<Order> orders;
     private List<Equipment> equipment;
     private List<Component> components;
+    List<String> roles = new ArrayList<>();
+    List<String> zones = new ArrayList<>();
 
     @FXML
     private Label name;
@@ -57,7 +60,8 @@ public class AdminController {
         lastName.setText("Last name: " + employee.getLastName());
         role.setText("Role: " + employee.getRole());
         zone.setText("Zone: " + employee.getZone());
-
+        roles = tcpClientFX.getRoles();
+         zones = tcpClientFX.getZones();
         // Dodajemy zakładki i ich zawartość
         addEmployeesTab();
        // addTasksTab();
@@ -97,14 +101,13 @@ public class AdminController {
                     editButton.setOnAction(event -> {
                         Employee employee = getTableView().getItems().get(getIndex());
                         int employeeId = employee.getId();
-                        List<String> roles = tcpClientFX.getRoles();
-                        List<String> zones = tcpClientFX.getZones();
+
 
                         // Tworzymy nowe okno
                         Stage editStage = new Stage();
                         editStage.setTitle("Edit Employee");
 
-                        // Tworzymy VBox, aby umieścić ComboBoxy i etykiety z danymi pracownika
+                        // Tworzymy VBox, aby umieścić ComboBoxy, etykiety z danymi pracownika oraz przyciski
                         VBox vbox = new VBox();
                         vbox.setSpacing(10);
 
@@ -127,6 +130,22 @@ public class AdminController {
                         // Etykieta i ComboBox dla strefy
                         HBox zoneBox = new HBox(new Label("Zone: "), zoneComboBox);
                         vbox.getChildren().add(zoneBox);
+
+                        // Przycisk "Apply"
+                        Button applyButton = new Button("Apply");
+                        applyButton.setOnAction(applyEvent -> {
+                            // Tutaj dodaj logikę do zastosowania wprowadzonych zmian (wykorzystaj roleComboBox.getValue() i zoneComboBox.getValue())
+                            editStage.close(); // Zamknij okno po zastosowaniu zmian
+                        });
+
+                        // Przycisk "Cancel"
+                        Button cancelButton = new Button("Cancel");
+                        cancelButton.setOnAction(cancelEvent -> {
+                            editStage.close(); // Zamknij okno bez zapisywania zmian
+                        });
+
+                        // Dodajemy przyciski do VBox
+                        vbox.getChildren().addAll(applyButton, cancelButton);
 
                         // Dodajemy VBox do sceny
                         Scene editScene = new Scene(vbox, 300, 200);

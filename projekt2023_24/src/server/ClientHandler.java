@@ -37,11 +37,9 @@ public class ClientHandler implements Callable<Employee> {
                 if (employee instanceof Admin) {
                     List<Employee> employees = ((Admin) employee).getListOfEmployees();
                     objectOutputStream.writeObject(employees);
-                    String answer = in.nextLine();
-                    if (answer.equals("getRolesAndZones")) {
-                        objectOutputStream.writeObject(connector.getRolesList());
-                        objectOutputStream.writeObject(connector.getZonesList());
-                    }
+                    objectOutputStream.writeObject(connector.getRolesList());
+                    objectOutputStream.writeObject(connector.getZonesList());
+
 //                    List<Order> orders = employee.getListOfOrder();
 //                    objectOutputStream.writeObject(orders);
                 }
