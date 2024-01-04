@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sty 03, 2024 at 08:50 PM
+-- Generation Time: Sty 04, 2024 at 10:40 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -57,7 +57,7 @@ INSERT INTO `employee` (`employeeID`, `name`, `lastName`, `roleID`, `zoneID`, `l
 (1, 'John', 'Smith', 1, 1, 'johnSmith', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e'),
 (2, 'Alice', 'Johnson', 1, 2, 'aliJohn', 'fbb4a8a163ffa958b4f02bf9cabb30cfefb40de803f2c4c346a9d39b3be1b544'),
 (3, 'Michael', 'Davis', 1, 1, 'michDav', '28c58559e2fe38904115fbce1e3a7095c6423d86d25c411c6f9e3ea62de3a4b8'),
-(4, 'Emily', 'Clark', 3, 1, 'emilClar', '527ad704c9463211ae9ec71a3d549ca0a3cadc5d808f3768aa87de0ee77ed129'),
+(4, 'Emily', 'Clark', 4, 10, 'emilClar', '527ad704c9463211ae9ec71a3d549ca0a3cadc5d808f3768aa87de0ee77ed129'),
 (5, 'Robert', 'Turner', 3, 2, 'robTurn', '43f8a2ad1882637f749ce419d33a02f74debb66991d7d65aade4eea9ded2a120'),
 (6, 'Samantha', 'Miller', 4, 10, 'samantMil', '557da7437051616d1067efbc8734494717b4f92ff17f2c73708a65c9c3b9e44d'),
 (7, 'Daniel', 'White', 2, 10, 'danWhit', '32525916c8a167495ed00d0fb7b0fd33215b2ef7dab70543562d52843becf7ab');
@@ -141,9 +141,15 @@ CREATE TABLE `loginHistory` (
 --
 
 INSERT INTO `loginHistory` (`loginHistoryID`, `employeeID`, `startTime`, `endTime`) VALUES
-(20, 1, '2024-01-03 18:53:55', '0000-00-00 00:00:00'),
-(21, 4, '2024-01-03 18:54:38', '0000-00-00 00:00:00'),
-(22, 7, '2024-01-03 19:04:26', '0000-00-00 00:00:00');
+(10, 7, '2024-01-04 20:17:36', '0000-00-00 00:00:00'),
+(11, 7, '2024-01-04 20:22:38', '0000-00-00 00:00:00'),
+(12, 7, '2024-01-04 20:27:53', '0000-00-00 00:00:00'),
+(13, 7, '2024-01-04 20:32:00', '0000-00-00 00:00:00'),
+(14, 7, '2024-01-04 20:39:02', '0000-00-00 00:00:00'),
+(15, 7, '2024-01-04 20:41:33', '0000-00-00 00:00:00'),
+(16, 7, '2024-01-04 21:31:50', '0000-00-00 00:00:00'),
+(17, 7, '2024-01-04 21:36:41', '0000-00-00 00:00:00'),
+(18, 7, '2024-01-04 21:38:38', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -186,11 +192,11 @@ CREATE TABLE `orderQuantity` (
 --
 
 INSERT INTO `orderQuantity` (`orderQuantityID`, `productID`, `quantityOrdered`, `orderID`, `QuantityInProduction`, `OuantityFinished`) VALUES
-(1, 1, 100, 1, NULL, NULL),
-(2, 2, 100, 1, NULL, NULL),
-(3, 3, 100, 1, NULL, NULL),
-(4, 1, 30, 1, NULL, NULL),
-(5, 2, 40, 1, NULL, NULL);
+(1, 1, 100, 1, 0, 0),
+(2, 2, 100, 1, 0, 0),
+(3, 3, 100, 3, 0, 0),
+(4, 1, 30, 1, 0, 0),
+(5, 2, 40, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -265,7 +271,8 @@ CREATE TABLE `task` (
   `resultID` int(10) DEFAULT NULL,
   `productID` int(10) NOT NULL,
   `quantity` int(10) NOT NULL,
-  `orderID` int(10) NOT NULL
+  `orderID` int(10) NOT NULL,
+  `zoneID` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -489,7 +496,8 @@ ALTER TABLE `task`
   ADD KEY `taskCategory` (`taskCategory`),
   ADD KEY `resultID` (`resultID`),
   ADD KEY `productID` (`productID`),
-  ADD KEY `orderID` (`orderID`);
+  ADD KEY `orderID` (`orderID`),
+  ADD KEY `zoneID` (`zoneID`);
 
 --
 -- Indeksy dla tabeli `taskCategory`
@@ -584,7 +592,7 @@ ALTER TABLE `license`
 -- AUTO_INCREMENT for table `loginHistory`
 --
 ALTER TABLE `loginHistory`
-  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `order`
@@ -693,7 +701,8 @@ ALTER TABLE `task`
   ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`taskCategory`) REFERENCES `taskCategory` (`taskCategoryID`),
   ADD CONSTRAINT `task_ibfk_2` FOREIGN KEY (`resultID`) REFERENCES `result` (`resultID`),
   ADD CONSTRAINT `task_ibfk_3` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`),
-  ADD CONSTRAINT `task_ibfk_4` FOREIGN KEY (`orderID`) REFERENCES `orderquantity` (`orderQuantityID`);
+  ADD CONSTRAINT `task_ibfk_4` FOREIGN KEY (`orderID`) REFERENCES `orderquantity` (`orderQuantityID`),
+  ADD CONSTRAINT `task_ibfk_5` FOREIGN KEY (`zoneID`) REFERENCES `zone` (`zoneID`);
 
 --
 -- Constraints for table `taskCategoryComponent`
