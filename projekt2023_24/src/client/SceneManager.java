@@ -29,10 +29,10 @@ public class SceneManager {
         }
     }
 
-    public void showAdminScene(TCPClientFX tcpClientFX, Employee employee) {
+    public void showAdminScene(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Employee> employees) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminScene.fxml"));
-            AdminController adminController = new AdminController(tcpClientFX,employee);
+            AdminController adminController = new AdminController(tcpClientFX,employee, employees, orders);
             loader.setController(adminController);
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));

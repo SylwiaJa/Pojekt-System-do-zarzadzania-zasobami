@@ -34,6 +34,12 @@ public class ClientHandler implements Runnable {
                   List<Order> orders = ((Manager) employee).getListOfOrder();
                   objectOutputStream.writeObject(orders);
                 }
+                if (employee instanceof Admin){
+                    List<Employee> employees = ((Admin) employee).getListOfEmployees();
+                    objectOutputStream.writeObject(employees);
+                    List<Order> orders = employee.getListOfOrder();
+                    objectOutputStream.writeObject(orders);
+                }
             }else {
                 objectOutputStream.writeObject(null);
             }

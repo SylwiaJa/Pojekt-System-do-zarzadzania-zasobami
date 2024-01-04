@@ -45,7 +45,7 @@ public class ManagerController {
     }
 
     private void addOrdersTab() {
-        Tab ordersTab = new Tab("Orders");
+        Tab ordersTab = new Tab("Orders accepted");
 
         // Tworzymy TableView dla zamówień
         TableView<Order> ordersTable = new TableView<>();

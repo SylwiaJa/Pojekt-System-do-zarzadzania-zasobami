@@ -53,9 +53,12 @@ public void setLoginData(String username, String password) {
             case "Production Employee":
                 sceneManager.showEmployeeScene(this, employee);
                 break;
-            case "Admin":
-                sceneManager.showAdminScene(this,employee);
+            case "Admin": {
+                List<Employee> employees = (List<Employee>) objectInputStream.readObject();
+                List<Order> orders = (List<Order>) objectInputStream.readObject();
+                sceneManager.showAdminScene(this, employee,orders,employees);
                 break;
+            }
             case "Leader":
                 sceneManager.showLeaderScene(this,employee);
                 break;

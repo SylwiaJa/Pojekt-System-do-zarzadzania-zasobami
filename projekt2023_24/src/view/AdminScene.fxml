@@ -22,17 +22,9 @@
     <Label fx:id="role" GridPane.columnIndex="2" />
     <Label fx:id="zone" GridPane.columnIndex="3" />
 
-    <TabPane GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="1">
+    <TabPane fx:id="tabPane" GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="1">
         <tabs>
-            <Tab text="List of tasks">
-                <!-- Tutaj dodaj zawartość dla pierwszej zakładki -->
-            </Tab>
-            <Tab text="Add role">
-                <!-- Tutaj dodaj zawartość dla drugiej zakładki -->
-            </Tab>
-            <Tab text="Change role">
-                <!-- Tutaj dodaj zawartość dla trzeciej zakładki -->
-            </Tab>
+
         </tabs>
     </TabPane>
 
