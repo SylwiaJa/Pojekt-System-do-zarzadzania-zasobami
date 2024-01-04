@@ -16,72 +16,121 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class TCPClientFX extends Application {
-private String username;
-private String password;
-    private  SceneManager sceneManager;
+    private String username;
+    private String password;
+    private SceneManager sceneManager;
+    private Socket socket;
+    private Scanner in;
+    private PrintWriter out;
+    private ObjectInputStream objectInputStream;
+
+
+
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
-       try {
+        try {
+            socket = new Socket("localhost", 12345);
+            in = new Scanner(socket.getInputStream());
+            out = new PrintWriter(socket.getOutputStream(), true);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginScene.fxml"));
-            LoginController loginControler = new LoginController(this);
-            loader.setController(loginControler);
+            LoginController loginController = new LoginController(this);
+            loader.setController(loginController);
+
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setTitle("Welcome");
             primaryStage.setScene(scene);
             primaryStage.show();
-        sceneManager = new SceneManager(primaryStage);
-        }catch (IOException e){
+
+            sceneManager = new SceneManager(primaryStage);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-public void setLoginData(String username, String password) {
-    this.username = username;
-    this.password = password;
-    try {
-        Socket socket = new Socket("localhost", 12345);
-        Scanner in = new Scanner(socket.getInputStream());
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        out.println(username);
-        out.println(password);
-        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-        Employee employee = (Employee) objectInputStream.readObject();
-        if (employee!=null){
-        switch (employee.getRole()){
-            case "Production Employee":
-                sceneManager.showEmployeeScene(this, employee);
-                break;
-            case "Admin": {
-                List<Employee> employees = (List<Employee>) objectInputStream.readObject();
-            //    List<Order> orders = (List<Order>) objectInputStream.readObject();
-                sceneManager.showAdminScene(this, employee,employees);
-                break;
+
+    public void setLoginData(String username, String password) {
+        this.username = username;
+        this.password = password;
+        try {
+            out.println(username);
+            out.println(password);
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
+            Employee employee = (Employee) objectInputStream.readObject();
+            if (employee != null) {
+                switch (employee.getRole()) {
+                    case "Production Employee":
+                        sceneManager.showEmployeeScene(this, employee);
+                        break;
+                    case "Admin": {
+                        List<Employee> employees = (List<Employee>) objectInputStream.readObject();
+                        sceneManager.showAdminScene(this, employee, employees);
+                        break;
+                    }
+                    case "Leader":
+                        sceneManager.showLeaderScene(this, employee);
+                        break;
+                    case "Manager": {
+                        List<Order> orders = (List<Order>) objectInputStream.readObject();
+                        sceneManager.showManagerScene(this, employee, orders);
+                        break;
+                    }
+                }
+            } else {
+                sceneManager.showErrorScene(this);
             }
-            case "Leader":
-                sceneManager.showLeaderScene(this,employee);
-                break;
-            case "Manager":{
-                List<Order> orders = (List<Order>) objectInputStream.readObject();
-                sceneManager.showManagerScene(this,employee,orders);
-                break;}
-        }}else {
-            sceneManager.showErrorScene(this);
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
-
-    } catch (IOException | ClassNotFoundException e) {
-        e.printStackTrace();
     }
 
-}
-public void logOut(){
+    public void logOut() {
+        out.println("Close");
+        try {
+            // Zamknij gniazdo i strumienie wejścia/wyjścia
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (objectInputStream != null) {
+                objectInputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         sceneManager.showLoginScene(this);
-}
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    public List<String> getRoles() {
+        out.println("getRolesAndZones");
+        try {
+            return  (List<String>) objectInputStream.readObject();
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public  void showLogin() {
+        sceneManager.showLoginScene(this);
+    }
+    public List<String> getZones() {
+        try {
+            return  (List<String>) objectInputStream.readObject();
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

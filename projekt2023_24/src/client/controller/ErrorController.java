@@ -1,4 +1,5 @@
 package client.controller;
+import client.SceneManager;
 import client.TCPClientFX;
 import javafx.fxml.FXML;
 
@@ -10,6 +11,6 @@ public class ErrorController {
     }
 @FXML
     private void errorButtonAction(){
-        tcpClientFX.logOut();
+  tcpClientFX.showLogin();
     }
 }

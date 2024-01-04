@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySQLDatabaseConnector {
 
@@ -74,7 +76,40 @@ public class MySQLDatabaseConnector {
         }
         return null;
     }
+    public List<String> getRolesList(){
+        List<String> roles = new ArrayList<>();
+        String sqlQuery = "SELECT roleName from role";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
 
+                String name = result.getString("roleName");
+
+                roles.add(name);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return roles;
+    }
+    public List<String> getZonesList(){
+        List<String> zones = new ArrayList<>();
+        String sqlQuery = "SELECT name from zone";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+
+                String name = result.getString("name");
+
+                zones.add(name);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return zones;
+    }
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {

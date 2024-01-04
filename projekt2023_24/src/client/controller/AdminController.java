@@ -3,8 +3,13 @@ package client.controller;
 import client.TCPClientFX;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import server.*;
 
 import java.util.List;
@@ -92,9 +97,52 @@ public class AdminController {
                     editButton.setOnAction(event -> {
                         Employee employee = getTableView().getItems().get(getIndex());
                         int employeeId = employee.getId();
-                        // Tutaj dodaj logikę do obsługi przycisku Edit dla danego pracownika (employeeId)
+                        List<String> roles = tcpClientFX.getRoles();
+                        List<String> zones = tcpClientFX.getZones();
+
+                        // Tworzymy nowe okno
+                        Stage editStage = new Stage();
+                        editStage.setTitle("Edit Employee");
+
+                        // Tworzymy VBox, aby umieścić ComboBoxy i etykiety z danymi pracownika
+                        VBox vbox = new VBox();
+                        vbox.setSpacing(10);
+
+                        // ComboBox dla roli
+                        ComboBox<String> roleComboBox = new ComboBox<>(FXCollections.observableArrayList(roles));
+                        roleComboBox.setValue(employee.getRole()); // Ustawiamy początkową wartość na rolę pracownika
+
+                        // ComboBox dla strefy
+                        ComboBox<String> zoneComboBox = new ComboBox<>(FXCollections.observableArrayList(zones));
+                        zoneComboBox.setValue(employee.getZone()); // Ustawiamy początkową wartość na strefę pracownika
+
+                        // Etykiety z danymi pracownika
+                        vbox.getChildren().add(new Label("Name: " + employee.getName()));
+                        vbox.getChildren().add(new Label("Last name: " + employee.getLastName()));
+
+                        // Etykieta i ComboBox dla roli
+                        HBox roleBox = new HBox(new Label("Role: "), roleComboBox);
+                        vbox.getChildren().add(roleBox);
+
+                        // Etykieta i ComboBox dla strefy
+                        HBox zoneBox = new HBox(new Label("Zone: "), zoneComboBox);
+                        vbox.getChildren().add(zoneBox);
+
+                        // Dodajemy VBox do sceny
+                        Scene editScene = new Scene(vbox, 300, 200);
+
+                        // Ustawiamy scenę w nowym oknie
+                        editStage.setScene(editScene);
+
+                        // Pokazujemy nowe okno
+                        editStage.show();
+
+                        roles.forEach(System.out::println);
+                        zones.forEach(System.out::println);
                         System.out.println("Edit button clicked for employee with ID: " + employeeId);
                     });
+
+
                 }
 
                 @Override
