@@ -55,8 +55,8 @@ public void setLoginData(String username, String password) {
                 break;
             case "Admin": {
                 List<Employee> employees = (List<Employee>) objectInputStream.readObject();
-                List<Order> orders = (List<Order>) objectInputStream.readObject();
-                sceneManager.showAdminScene(this, employee,orders,employees);
+            //    List<Order> orders = (List<Order>) objectInputStream.readObject();
+                sceneManager.showAdminScene(this, employee,employees);
                 break;
             }
             case "Leader":
@@ -70,7 +70,7 @@ public void setLoginData(String username, String password) {
             sceneManager.showErrorScene(this);
         }
 
-        socket.close();
+
     } catch (IOException | ClassNotFoundException e) {
         e.printStackTrace();
     }
@@ -83,4 +83,5 @@ public void logOut(){
     public static void main(String[] args) {
         launch(args);
     }
+
 }
