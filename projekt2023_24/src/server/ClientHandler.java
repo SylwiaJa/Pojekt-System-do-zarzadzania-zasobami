@@ -34,6 +34,11 @@ public class ClientHandler implements Callable<Employee> {
                 if (employee instanceof Manager) {
                     List<Order> orders = ((Manager) employee).getListOfOrder();
                     objectOutputStream.writeObject(orders);
+                    String answer;
+                    do {
+                        answer = (String) objectInputStream.readObject();
+
+                    }while (!answer.equals("Close"));
                 }
                 if (employee instanceof Admin) {
                     List<Employee> employees = ((Admin) employee).getListOfEmployees();

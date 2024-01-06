@@ -3,7 +3,7 @@ package server;
 import java.sql.Time;
 
 public class Task {
-    private String taskID;
+    private int taskID;
     private String name;
     private String priority;
     private String description;
@@ -13,17 +13,22 @@ public class Task {
     private String status;
     private Time timeInStep;
     private Employee employee;
+    private String zone;
+    private int quantity;
 
-    public Task(String taskID, String name, String priority, String description, int norm, Component component) {
+    public Task(int taskID, String name, String priority, String description, int norm, Component component, Equipment equipment, String zone, int quantity) {
         this.taskID = taskID;
         this.name = name;
         this.priority = priority;
         this.description = description;
         this.norm = norm;
         this.component = component;
+        this.equipment=equipment;
+        this.zone=zone;
+        this.quantity=quantity;
     }
 
-    public Task(String taskID, String name, String priority, String description, int norm, Component component, Equipment equipment, String status, Time timeInStep, Employee employee) {
+    public Task(int taskID, String name, String priority, String description, int norm, Component component, Equipment equipment, String status, Time timeInStep, Employee employee) {
         this.taskID = taskID;
         this.name = name;
         this.priority = priority;
@@ -36,7 +41,7 @@ public class Task {
         this.employee = employee;
     }
 
-    public String getTaskID() {
+    public int getTaskID() {
         return taskID;
     }
     public void viewTaskDetails(){

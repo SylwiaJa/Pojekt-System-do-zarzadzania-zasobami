@@ -58,9 +58,7 @@ public class Manager extends Leader{
                 "JOIN \n" +
                 "    product p ON oq.productID = p.productID\n" +
                 "JOIN \n" +
-                "    `order` o ON oq.orderID = o.OrderID\n" +
-                "WHERE\n" +
-                "    o.Status = 'accepted';\n";
+                "    `order` o ON oq.orderID = o.OrderID\n";
         try {
             PreparedStatement preparedStatement= connection.prepareStatement(query);
             ResultSet result = preparedStatement.executeQuery();
