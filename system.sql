@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sty 04, 2024 at 10:40 PM
+-- Generation Time: Sty 06, 2024 at 09:34 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -54,7 +54,7 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employeeID`, `name`, `lastName`, `roleID`, `zoneID`, `login`, `password`) VALUES
-(1, 'John', 'Smith', 1, 1, 'johnSmith', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e'),
+(1, 'John', 'Smith', 3, 6, 'johnSmith', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e'),
 (2, 'Alice', 'Johnson', 1, 2, 'aliJohn', 'fbb4a8a163ffa958b4f02bf9cabb30cfefb40de803f2c4c346a9d39b3be1b544'),
 (3, 'Michael', 'Davis', 1, 1, 'michDav', '28c58559e2fe38904115fbce1e3a7095c6423d86d25c411c6f9e3ea62de3a4b8'),
 (4, 'Emily', 'Clark', 4, 10, 'emilClar', '527ad704c9463211ae9ec71a3d549ca0a3cadc5d808f3768aa87de0ee77ed129'),
@@ -135,21 +135,6 @@ CREATE TABLE `loginHistory` (
   `startTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `loginHistory`
---
-
-INSERT INTO `loginHistory` (`loginHistoryID`, `employeeID`, `startTime`, `endTime`) VALUES
-(10, 7, '2024-01-04 20:17:36', '0000-00-00 00:00:00'),
-(11, 7, '2024-01-04 20:22:38', '0000-00-00 00:00:00'),
-(12, 7, '2024-01-04 20:27:53', '0000-00-00 00:00:00'),
-(13, 7, '2024-01-04 20:32:00', '0000-00-00 00:00:00'),
-(14, 7, '2024-01-04 20:39:02', '0000-00-00 00:00:00'),
-(15, 7, '2024-01-04 20:41:33', '0000-00-00 00:00:00'),
-(16, 7, '2024-01-04 21:31:50', '0000-00-00 00:00:00'),
-(17, 7, '2024-01-04 21:36:41', '0000-00-00 00:00:00'),
-(18, 7, '2024-01-04 21:38:38', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -592,7 +577,7 @@ ALTER TABLE `license`
 -- AUTO_INCREMENT for table `loginHistory`
 --
 ALTER TABLE `loginHistory`
-  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order`
