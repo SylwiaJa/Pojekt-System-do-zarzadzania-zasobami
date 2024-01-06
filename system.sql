@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sty 06, 2024 at 09:34 PM
+-- Generation Time: Sty 04, 2024 at 10:40 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -33,6 +33,16 @@ CREATE TABLE `component` (
   `quantity` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+--
+-- Dumping data for table `component`
+--
+
+INSERT INTO component (name, quantity) VALUES
+('comp1', 10),
+('comp2', 40),
+('comp3', 100);
+
 -- --------------------------------------------------------
 
 --
@@ -54,7 +64,7 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employeeID`, `name`, `lastName`, `roleID`, `zoneID`, `login`, `password`) VALUES
-(1, 'John', 'Smith', 3, 6, 'johnSmith', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e'),
+(1, 'John', 'Smith', 1, 1, 'johnSmith', '0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e'),
 (2, 'Alice', 'Johnson', 1, 2, 'aliJohn', 'fbb4a8a163ffa958b4f02bf9cabb30cfefb40de803f2c4c346a9d39b3be1b544'),
 (3, 'Michael', 'Davis', 1, 1, 'michDav', '28c58559e2fe38904115fbce1e3a7095c6423d86d25c411c6f9e3ea62de3a4b8'),
 (4, 'Emily', 'Clark', 4, 10, 'emilClar', '527ad704c9463211ae9ec71a3d549ca0a3cadc5d808f3768aa87de0ee77ed129'),
@@ -89,6 +99,16 @@ CREATE TABLE `equipment` (
   `zoneID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+--
+-- Dumping data for table `equipment`
+--
+
+INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
+('equip1', 1, 'work', 1),
+('equip2', 1, 'work', 1),
+('equip3', 1, 'work', 2),
+('equip4', 2, 'work', 3);
 -- --------------------------------------------------------
 
 --
@@ -99,6 +119,15 @@ CREATE TABLE `equipmentCategory` (
   `equipmentCategoryID` int(10) NOT NULL,
   `name` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `equipmentCategory`
+--
+
+INSERT INTO equipmentCategory (name) VALUES
+('equipCat1'),
+('equipCat2'),
+('equipCat3');
 
 -- --------------------------------------------------------
 
@@ -136,22 +165,37 @@ CREATE TABLE `loginHistory` (
   `endTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `loginHistory`
+--
+
+INSERT INTO `loginHistory` (`loginHistoryID`, `employeeID`, `startTime`, `endTime`) VALUES
+(10, 7, '2024-01-04 20:17:36', '0000-00-00 00:00:00'),
+(11, 7, '2024-01-04 20:22:38', '0000-00-00 00:00:00'),
+(12, 7, '2024-01-04 20:27:53', '0000-00-00 00:00:00'),
+(13, 7, '2024-01-04 20:32:00', '0000-00-00 00:00:00'),
+(14, 7, '2024-01-04 20:39:02', '0000-00-00 00:00:00'),
+(15, 7, '2024-01-04 20:41:33', '0000-00-00 00:00:00'),
+(16, 7, '2024-01-04 21:31:50', '0000-00-00 00:00:00'),
+(17, 7, '2024-01-04 21:36:41', '0000-00-00 00:00:00'),
+(18, 7, '2024-01-04 21:38:38', '0000-00-00 00:00:00');
+
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `order`
+-- Struktura tabeli dla tabeli `orders`
 --
 
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `OrderID` int(10) NOT NULL,
   `Status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `order`
+-- Dumping data for table `orders`
 --
 
-INSERT INTO `order` (`OrderID`, `Status`) VALUES
+INSERT INTO `orders` (`OrderID`, `Status`) VALUES
 (1, 'accepted'),
 (2, 'progress'),
 (3, 'suspended'),
@@ -260,6 +304,18 @@ CREATE TABLE `task` (
   `zoneID` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO task (name, priority, description, taskCategory, norm, productID, quantity, orderID, zoneID) VALUES
+('task1', 'normal', 'description1', 1, 10, 1, 10, 1, 1), 
+('task2', 'normal', 'description2', 2, 5, 2, 5, 1, 2), 
+('task3', 'high', 'description3', 4, 2, 4, 2, 1, 4), 
+('task4', 'low', 'description4', 6, 1, 6, 1, 1, 6);
+
+
 -- --------------------------------------------------------
 
 --
@@ -318,6 +374,20 @@ CREATE TABLE `taskComponent` (
   `quantity` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+--
+-- Dumping data for table `taskComponent`
+--
+
+INSERT INTO taskcomponent (taskID, componentID, quantity) VALUES
+(1,1,2),
+(1,2,5),
+(3,2,3),
+(4,3,4),
+(3,3,5),
+(4,1,2),
+(2,2,6);
+
 -- --------------------------------------------------------
 
 --
@@ -328,6 +398,20 @@ CREATE TABLE `taskEquipment` (
   `taskID` int(10) NOT NULL,
   `equipmentID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+--
+-- Dumping data for table `taskEquipment`
+--
+
+INSERT INTO taskequipment (taskID, equipmentID) VALUES
+(1,4),
+(1,5),
+(3,4),
+(4,6),
+(3,5),
+(4,4),
+(2,5);
 
 -- --------------------------------------------------------
 
@@ -354,6 +438,21 @@ CREATE TABLE `taskStatus` (
   `startStep` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endStep` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `taskStatus`
+--
+
+INSERT INTO taskstatus (taskID, employeeID, stepName, startStep, endStep) VALUES
+(1,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36');
+(4,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36');
+
+INSERT INTO taskstatus (taskID, employeeID, stepName, startStep) VALUES
+(1,2, 'in progress', '2024-01-04 12:17:36'),
+(2,1, 'available', '2024-01-04 12:18:36'),
+(4,3, 'in progress', '2024-01-04 12:17:36'),
+(3,1, 'available', '2024-01-04 10:19:36');
+
 
 -- --------------------------------------------------------
 
@@ -442,9 +541,9 @@ ALTER TABLE `loginHistory`
   ADD KEY `employeeID` (`employeeID`);
 
 --
--- Indeksy dla tabeli `order`
+-- Indeksy dla tabeli `orders`
 --
-ALTER TABLE `order`
+ALTER TABLE `orders`
   ADD PRIMARY KEY (`OrderID`);
 
 --
@@ -577,12 +676,12 @@ ALTER TABLE `license`
 -- AUTO_INCREMENT for table `loginHistory`
 --
 ALTER TABLE `loginHistory`
-  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `loginHistoryID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `order`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `order`
+ALTER TABLE `orders`
   MODIFY `OrderID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
@@ -677,7 +776,7 @@ ALTER TABLE `loginHistory`
 --
 ALTER TABLE `orderQuantity`
   ADD CONSTRAINT `orderquantity_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`),
-  ADD CONSTRAINT `orderquantity_ibfk_2` FOREIGN KEY (`orderID`) REFERENCES `order` (`OrderID`);
+  ADD CONSTRAINT `orderquantity_ibfk_2` FOREIGN KEY (`orderID`) REFERENCES `orders` (`OrderID`);
 
 --
 -- Constraints for table `task`
