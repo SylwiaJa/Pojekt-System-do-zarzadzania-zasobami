@@ -32,11 +32,8 @@ public class TCPClientFX extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         try {
-            socket = new Socket("localhost", 12345);
-            in = new Scanner(socket.getInputStream());
-            out = new PrintWriter(socket.getOutputStream(), true);
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectInputStream  =new ObjectInputStream(socket.getInputStream());
+
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginScene.fxml"));
             LoginController loginController = new LoginController(this);
             loader.setController(loginController);
@@ -54,13 +51,18 @@ public class TCPClientFX extends Application {
     }
 
     public void setLoginData(String username, String password) {
+
         this.username = username;
         this.password = password;
         try {
+            socket = new Socket("localhost", 12345);
+            in = new Scanner(socket.getInputStream());
+            out = new PrintWriter(socket.getOutputStream(), true);
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream  =new ObjectInputStream(socket.getInputStream());
             objectOutputStream.writeObject(username);
             objectOutputStream.writeObject(password);
-          //  out.println(username);
-          //  out.println(password);
+
 
             Employee employee = (Employee) objectInputStream.readObject();
             if (employee != null) {
@@ -92,24 +94,24 @@ public class TCPClientFX extends Application {
     }
 
     public void logOut() {
-//        out.println("Close");
-//        try {
-//            // Zamknij gniazdo i strumienie wejścia/wyjścia
-//            if (socket != null && !socket.isClosed()) {
-//                socket.close();
-//            }
-//            if (in != null) {
-//                in.close();
-//            }
-//            if (out != null) {
-//                out.close();
-//            }
-//            if (objectInputStream != null) {
-//                objectInputStream.close();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        out.println("Close");
+        try {
+            // Zamknij gniazdo i strumienie wejścia/wyjścia
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (objectInputStream != null) {
+                objectInputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         sceneManager.showLoginScene(this);
     }
 
@@ -128,7 +130,7 @@ public class TCPClientFX extends Application {
     public void updateEmployee(Employee employee) {
 
         try {
-          //  objectOutputStream.writeObject("update");
+            objectOutputStream.writeObject("update");
             objectOutputStream.writeObject(employee);
         }catch (IOException e){
             e.printStackTrace();

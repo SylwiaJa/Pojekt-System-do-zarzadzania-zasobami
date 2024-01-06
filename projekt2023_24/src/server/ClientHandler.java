@@ -40,11 +40,11 @@ public class ClientHandler implements Callable<Employee> {
                     objectOutputStream.writeObject(employees);
                     objectOutputStream.writeObject(connector.getRolesList());
                     objectOutputStream.writeObject(connector.getZonesList());
-               //    String answer  = (String) objectInputStream.readObject();
-                //  if(answer.equals("update")){
+                   String answer  = (String) objectInputStream.readObject();
+                  if(answer.equals("update")){
                         Employee updateEmployee = (Employee) objectInputStream.readObject();
                         ((Admin) employee).changeRole(updateEmployee);
-                //    }
+                    }
 //                    List<Order> orders = employee.getListOfOrder();
 //                    objectOutputStream.writeObject(orders);
                 }
@@ -58,7 +58,7 @@ public class ClientHandler implements Callable<Employee> {
             e.printStackTrace();
         }
 
-        // Tutaj możesz zwrócić dowolną wartość int
+        // Tutaj możesz zwrócić dowolną wartość
         return employee;
     }
 }
