@@ -1,6 +1,8 @@
 package server;
+import java.util.Date;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 public class Login {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/system";
@@ -34,10 +36,16 @@ public Login(){
     }
     public void  startLogin(Employee employee){
     int id = employee.getId();
-        String sqlQuery = "insert into loginHistory (employeeID,startTime) values (?,CURRENT_TIME)";
+        Date data = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dataFormat = format.format(data);
+        employee.setStartTime(dataFormat);
+
+        String sqlQuery = "insert into loginHistory (employeeID,startTime) values (?,?)";
         try {
             PreparedStatement statement =connection.prepareStatement(sqlQuery);
             statement.setInt(1,id);
+            statement.setString(2,dataFormat);
             statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -45,10 +53,17 @@ public Login(){
     }
     public void endLogin(Employee employee){
         int id = employee.getId();
-        String sqlQuery = "update loginHistory SET endTime=CURRENT_TIME where employeeID=? and endTime='0000-00-00 00:00:00'";
+        Date data = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dataFormat = format.format(data);
+        String startTime = employee.getStartTime();
+
+        String sqlQuery = "update loginHistory SET startTime=?,endTime=? where employeeID=?";
         try {
             PreparedStatement statement =connection.prepareStatement(sqlQuery);
-            statement.setInt(1,id);
+            statement.setString(1,startTime);
+            statement.setString(2,dataFormat);
+            statement.setInt(3,id);
             statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();

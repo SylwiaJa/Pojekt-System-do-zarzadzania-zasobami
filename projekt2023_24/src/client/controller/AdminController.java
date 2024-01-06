@@ -151,6 +151,7 @@ public class AdminController {
                         // Przycisk "Cancel"
                         Button cancelButton = new Button("Cancel");
                         cancelButton.setOnAction(cancelEvent -> {
+                            tcpClientFX.cancel();
                             editStage.close(); // Zamknij okno bez zapisywania zmian
                         });
 

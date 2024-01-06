@@ -94,8 +94,9 @@ public class TCPClientFX extends Application {
     }
 
     public void logOut() {
-        out.println("Close");
+
         try {
+            objectOutputStream.writeObject("Close");
             // Zamknij gniazdo i strumienie wejścia/wyjścia
             if (socket != null && !socket.isClosed()) {
                 socket.close();
@@ -130,7 +131,7 @@ public class TCPClientFX extends Application {
     public void updateEmployee(Employee employee) {
 
         try {
-            objectOutputStream.writeObject("update");
+            objectOutputStream.writeObject("Update");
             objectOutputStream.writeObject(employee);
         }catch (IOException e){
             e.printStackTrace();
@@ -148,4 +149,15 @@ public class TCPClientFX extends Application {
         }
         return null;
     }
+
+    public void cancel() {
+        try {
+
+
+            objectOutputStream.writeObject("Cancel");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        }
+
 }

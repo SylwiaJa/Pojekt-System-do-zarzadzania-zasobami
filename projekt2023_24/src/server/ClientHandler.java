@@ -40,18 +40,21 @@ public class ClientHandler implements Callable<Employee> {
                     objectOutputStream.writeObject(employees);
                     objectOutputStream.writeObject(connector.getRolesList());
                     objectOutputStream.writeObject(connector.getZonesList());
-                   String answer  = (String) objectInputStream.readObject();
-                  if(answer.equals("update")){
-                        Employee updateEmployee = (Employee) objectInputStream.readObject();
-                        ((Admin) employee).changeRole(updateEmployee);
-                    }
+                    String answer;
+                    do {
+                         answer = (String) objectInputStream.readObject();
+                        if (answer.equals("Update")) {
+                            Employee updateEmployee = (Employee) objectInputStream.readObject();
+                            ((Admin) employee).changeRole(updateEmployee);
+                        }
+                    }while (!answer.equals("Close"));
+
 //                    List<Order> orders = employee.getListOfOrder();
 //                    objectOutputStream.writeObject(orders);
                 }
             } else {
                 objectOutputStream.writeObject(null);
             }
-            //   log.endLogin(employee);
             clientSocket.close();
             connector.closeConnection();
         } catch (IOException | ClassNotFoundException e) {

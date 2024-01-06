@@ -25,8 +25,8 @@ public class ServerTCP {
 
                 try {
                     Employee result = task.get();
-//                    Login login = new Login();
-//                    login.endLogin(result);
+                    Login login = new Login();
+                    login.endLogin(result);
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }

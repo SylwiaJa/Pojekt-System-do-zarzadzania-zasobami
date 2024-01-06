@@ -18,6 +18,15 @@ public class Employee implements Serializable {
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private Connection connection;
+    private String startTime;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
     public Employee(int id, String name, String lastName, String role, String zone, String login, String password) {
         this.id = id;
