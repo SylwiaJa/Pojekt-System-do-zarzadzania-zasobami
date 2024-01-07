@@ -33,7 +33,7 @@ CREATE FUNCTION EquipmentUse(n INT)
     DECLARE s VARCHAR(20);
     IF n in (select distinct e.equipmentID
 				from equipment e left join taskequipment te on e.equipmentID=te.equipmentID
-				where taskID in(select taskID from taskStatus where stepName='in progress')) 
+				where taskID in(select taskID from taskStatus where stepName='in progress' and endStep ='0000-00-00 00:00:00')) 
     THEN SET s = 'in use';
     ELSE SET s = 'free';
     END IF;
@@ -44,3 +44,21 @@ DELIMITER ;
 select distinct eq.equipmentID, eq.name, eq.status, z.name 'zone', EquipmentUse(eq.equipmentID)	'availability'		
 from equipment eq left join zone z on eq.zoneID=z.zoneID
 				left join taskequipment te on te.equipmentID=eq.equipmentID;
+				
+				
+-- Lider ma możliwość generowania raportów dotyczących czasu wykorzystania danego sprzętu i maszyn
+select e.equipmentID, e.name, z.name 'zone', 
+	sum(if(ts.endStep='0000-00-00 00:00:00', TIMESTAMPDIFF(HOUR, ts.startStep, CURRENT_TIMESTAMP), TIMESTAMPDIFF(HOUR, ts.startStep, ts.endStep))) 'hoursInUse'
+from equipment e left join taskequipment te on e.equipmentID=te.equipmentID 
+	left join task t on t.taskID=te.taskID
+    left join taskstatus ts on ts.taskID=t.taskID
+    left join zone z on z.zoneID=e.zoneID
+where stepName='in progress'
+group by e.equipmentID;
+
+
+-- Lider ma możliwość generowania raportów dotyczących wydajności pracy z uwzględnieniem danego okresu czasu
+select *
+from task t join taskstatus ts on t.taskID=ts.taskID
+	join result r on t.resultID=r.resultID
+where stepName='in progress';   -- skończyć
