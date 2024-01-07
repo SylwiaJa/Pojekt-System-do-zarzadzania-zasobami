@@ -34,14 +34,7 @@ CREATE TABLE `component` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
---
--- Dumping data for table `component`
---
 
-INSERT INTO component (name, quantity) VALUES
-('comp1', 10),
-('comp2', 40),
-('comp3', 100);
 
 -- --------------------------------------------------------
 
@@ -100,15 +93,7 @@ CREATE TABLE `equipment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
---
--- Dumping data for table `equipment`
---
 
-INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
-('equip1', 1, 'work', 1),
-('equip2', 1, 'work', 1),
-('equip3', 1, 'work', 2),
-('equip4', 2, 'work', 3);
 -- --------------------------------------------------------
 
 --
@@ -120,14 +105,7 @@ CREATE TABLE `equipmentCategory` (
   `name` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `equipmentCategory`
---
 
-INSERT INTO equipmentCategory (name) VALUES
-('equipCat1'),
-('equipCat2'),
-('equipCat3');
 
 -- --------------------------------------------------------
 
@@ -263,6 +241,8 @@ CREATE TABLE `result` (
   `quantityNOK` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
 -- --------------------------------------------------------
 
 --
@@ -305,15 +285,6 @@ CREATE TABLE `task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
---
--- Dumping data for table `task`
---
-
-INSERT INTO task (name, priority, description, taskCategory, norm, productID, quantity, orderID, zoneID) VALUES
-('task1', 'normal', 'description1', 1, 10, 1, 10, 1, 1), 
-('task2', 'normal', 'description2', 2, 5, 2, 5, 1, 2), 
-('task3', 'high', 'description3', 4, 2, 4, 2, 1, 4), 
-('task4', 'low', 'description4', 6, 1, 6, 1, 1, 6);
 
 
 -- --------------------------------------------------------
@@ -375,18 +346,7 @@ CREATE TABLE `taskComponent` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
---
--- Dumping data for table `taskComponent`
---
 
-INSERT INTO taskcomponent (taskID, componentID, quantity) VALUES
-(1,1,2),
-(1,2,5),
-(3,2,3),
-(4,3,4),
-(3,3,5),
-(4,1,2),
-(2,2,6);
 
 -- --------------------------------------------------------
 
@@ -400,18 +360,7 @@ CREATE TABLE `taskEquipment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
---
--- Dumping data for table `taskEquipment`
---
 
-INSERT INTO taskequipment (taskID, equipmentID) VALUES
-(1,4),
-(1,5),
-(3,4),
-(4,6),
-(3,5),
-(4,4),
-(2,5);
 
 -- --------------------------------------------------------
 
@@ -439,19 +388,7 @@ CREATE TABLE `taskStatus` (
   `endStep` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `taskStatus`
---
 
-INSERT INTO taskstatus (taskID, employeeID, stepName, startStep, endStep) VALUES
-(1,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36');
-(4,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36');
-
-INSERT INTO taskstatus (taskID, employeeID, stepName, startStep) VALUES
-(1,2, 'in progress', '2024-01-04 12:17:36'),
-(2,1, 'available', '2024-01-04 12:18:36'),
-(4,3, 'in progress', '2024-01-04 12:17:36'),
-(3,1, 'available', '2024-01-04 10:19:36');
 
 
 -- --------------------------------------------------------
@@ -834,3 +771,92 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Dumping data for table `component`
+--
+
+INSERT INTO component (name, quantity) VALUES
+('comp1', 10),
+('comp2', 40),
+('comp3', 100);
+
+--
+-- Dumping data for table `equipment`
+--
+
+INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
+('equip1', 1, 'work', 1),
+('equip2', 1, 'work', 1),
+('equip3', 1, 'work', 2),
+('equip4', 2, 'work', 3);
+
+--
+-- Dumping data for table `equipmentCategory`
+--
+
+INSERT INTO equipmentCategory (name) VALUES
+('equipCat1'),
+('equipCat2'),
+('equipCat3');
+
+--
+-- Dumping data for table `result`
+--
+
+insert into result (quantityOK, quantityNOK) values 
+(9,1);
+
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO task (name, priority, description, taskCategory, norm, productID, quantity, orderID, zoneID) VALUES
+('task2', 'normal', 'description2', 2, 5, 2, 5, 1, 2), 
+('task3', 'high', 'description3', 4, 2, 4, 2, 1, 4), 
+('task4', 'low', 'description4', 6, 1, 6, 1, 1, 6);
+
+INSERT INTO task (name, priority, description, taskCategory, norm, resultID, productID, quantity, orderID, zoneID) VALUES
+('task1', 'normal', 'description1', 1, 10, 1, 1, 10, 1, 1);
+
+--
+-- Dumping data for table `taskComponent`
+--
+
+INSERT INTO taskcomponent (taskID, componentID, quantity) VALUES
+(1,1,2),
+(1,2,5),
+(3,2,3),
+(4,3,4),
+(3,3,5),
+(4,1,2),
+(2,2,6);
+
+--
+-- Dumping data for table `taskEquipment`
+--
+
+INSERT INTO taskequipment (taskID, equipmentID) VALUES
+(1,4),
+(1,5),
+(3,4),
+(4,6),
+(3,5),
+(4,4),
+(2,5);
+
+--
+-- Dumping data for table `taskStatus`
+--
+
+INSERT INTO taskstatus (taskID, employeeID, stepName, startStep, endStep) VALUES
+(1,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36'),
+(4,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36'),
+(1,2, 'in progress', '2024-01-04 12:17:36', '2024-01-04 16:17:36'),
+(1,2, 'finished', '2024-01-04 16:17:36', '0000-00-00 00:00:00');
+
+INSERT INTO taskstatus (taskID, employeeID, stepName, startStep) VALUES
+(2,1, 'available', '2024-01-04 12:18:36'),
+(4,3, 'in progress', '2024-01-04 12:17:36'),
+(3,1, 'available', '2024-01-04 10:19:36');
