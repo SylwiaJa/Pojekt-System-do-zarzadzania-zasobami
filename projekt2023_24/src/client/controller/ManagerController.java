@@ -50,43 +50,10 @@ public class ManagerController {
 
         // Dodajemy zakładki i ich zawartość
         addOrdersTab();
-        addViewOrdersTab();
+
     }
-    private void addViewOrdersTab() {
-        Tab viewOrdersTab = new Tab("View Orders");
-
-        // Tworzymy TableView dla wszystkich zamówień
-        TableView<Order> viewOrdersTable = new TableView<>();
-        viewOrdersTab.setContent(viewOrdersTable);
-
-        // Tworzymy kolumny tabeli
-        TableColumn<Order, Integer> idColumn = new TableColumn<>("ID");
-        TableColumn<Order, String> productColumn = new TableColumn<>("Product");
-        TableColumn<Order, Integer> quantityOrderedColumn = new TableColumn<>("Quantity Ordered");
-        TableColumn<Order, Integer> quantityInProductionColumn = new TableColumn<>("Quantity In Production");
-        TableColumn<Order, Integer> quantityFinishedColumn = new TableColumn<>("Quantity Finished");
-        TableColumn<Order, String> statusColumn = new TableColumn<>("Status");
-
-        // Ustawiamy, jakie wartości mają być wyświetlane w kolumnach
-        idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        productColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduct().getName()));
-        quantityOrderedColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getProduct().getQuantityOrdered()).asObject());
-        quantityInProductionColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getProduct().getQuantityInProduction()).asObject());
-        quantityFinishedColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getProduct().getQuantityFinished()).asObject());
-        statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
-
-        // Dodajemy kolumny do tabeli
-        viewOrdersTable.getColumns().addAll(idColumn, productColumn, quantityOrderedColumn, quantityInProductionColumn, quantityFinishedColumn, statusColumn);
-
-        // Dodajemy wszystkie zamówienia do tabeli
-        viewOrdersTable.getItems().addAll(orders);
-
-        // Dodajemy zakładkę do TabPane
-        tabPane.getTabs().add(viewOrdersTab);
-    }
-
     private void addOrdersTab() {
-        Tab ordersTab = new Tab("Orders accepted");
+        Tab ordersTab = new Tab("Orders");
 
         // Tworzymy TableView dla zamówień
         TableView<Order> ordersTable = new TableView<>();
@@ -129,26 +96,33 @@ public class ManagerController {
                 @Override
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    setGraphic(empty ? null : startButton);
+
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        Order order = (Order) getTableRow().getItem();
+                        String status = order.getStatus();
+
+                        // Wyświetl przycisk tylko dla zamówień z statusami "accepted" lub "inprogress"
+                        if ("accepted".equalsIgnoreCase(status) || "inprogress".equalsIgnoreCase(status)) {
+                            setGraphic(startButton);
+                        } else {
+                            setGraphic(null);
+                        }
+                    }
                 }
             };
             return cell;
         });
 
-        // Filtrujemy zamówienia o statusie "accepted"
-        List<Order> acceptedOrders = orders.stream()
-                .filter(order -> "accepted".equalsIgnoreCase(order.getStatus()))
-                .collect(Collectors.toList());
-
         // Dodajemy kolumny do tabeli
         ordersTable.getColumns().addAll(idColumn, productColumn, quantityOrderedColumn, quantityInProductionColumn, quantityFinishedColumn, statusColumn, startColumn);
 
-        // Dodajemy tylko zamówienia o statusie "accepted"
-        ordersTable.getItems().addAll(acceptedOrders);
+        // Dodajemy wszystkie zamówienia do tabeli
+        ordersTable.getItems().addAll(orders);
 
         // Dodajemy zakładkę do TabPane
         tabPane.getTabs().add(ordersTab);
-
     }
 
     private void openNewTaskWindow(Order selectedOrder) {
