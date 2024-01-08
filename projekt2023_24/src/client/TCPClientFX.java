@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import client.controller.LoginController;
 import server.Employee;
 import server.Order;
+import server.Task;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -80,7 +81,8 @@ public class TCPClientFX extends Application {
                         break;
                     case "Manager": {
                         List<Order> orders = (List<Order>) objectInputStream.readObject();
-                        sceneManager.showManagerScene(this, employee, orders);
+                        List<Task> tasks = (List<Task>) objectInputStream.readObject();
+                        sceneManager.showManagerScene(this, employee, orders, tasks);
                         break;
                     }
                 }

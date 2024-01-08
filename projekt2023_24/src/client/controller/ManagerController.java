@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import server.Employee;
 import server.Order;
+import server.Task;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class ManagerController {
     private TCPClientFX tcpClientFX;
     private Employee employee;
     private List<Order> orders;
+    private List<Task> tasks;
 
     @FXML
     private Label name;
@@ -35,10 +37,11 @@ public class ManagerController {
     @FXML
     private TabPane tabPane;
 
-    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders) {
+    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks) {
         this.tcpClientFX = tcpClientFX;
         this.employee = employee;
         this.orders = orders;
+        this.tasks = tasks;
     }
 
     @FXML
@@ -50,6 +53,7 @@ public class ManagerController {
 
         // Dodajemy zakładki i ich zawartość
         addOrdersTab();
+        addTasksTab(tasks);
 
     }
     private void addOrdersTab() {
@@ -90,6 +94,7 @@ public class ManagerController {
 
                         // Otwórz nowe okno "New Task"
                         openNewTaskWindow(order);
+
                     });
                 }
 
@@ -216,6 +221,73 @@ public class ManagerController {
         // Pokazujemy nowe okno
         newTaskStage.show();
     }
+    private void addTasksTab(List<Task> tasks) {
+        Tab tasksTab = new Tab("Tasks");
+
+        // Tworzymy TableView dla zadań
+        TableView<Task> tasksTable = new TableView<>();
+        tasksTab.setContent(tasksTable);
+
+        // Tworzymy kolumny tabeli
+        TableColumn<Task, Integer> idColumn = new TableColumn<>("ID");
+        TableColumn<Task, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<Task, String> priorityColumn = new TableColumn<>("Priority");
+        TableColumn<Task, String> descriptionColumn = new TableColumn<>("Description");
+        TableColumn<Task, Integer> normColumn = new TableColumn<>("Norm");
+        TableColumn<Task, String> zoneColumn = new TableColumn<>("Zone");
+        TableColumn<Task, Integer> quantityColumn = new TableColumn<>("Quantity");
+        TableColumn<Task, Void> viewColumn = new TableColumn<>("View");
+
+        // Ustawiamy, jakie wartości mają być wyświetlane w kolumnach
+        idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        priorityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPriority()));
+        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+        normColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNorm()).asObject());
+        zoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getZone()));
+        quantityColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getQuantity()).asObject());
+
+        // Ustawiamy przyciski w kolumnie "View"
+        viewColumn.setCellFactory(col -> {
+            TableCell<Task, Void> cell = new TableCell<>() {
+                private final Button viewButton = new Button("View");
+
+                {
+                    viewButton.setOnAction(event -> {
+                        Task task = getTableView().getItems().get(getIndex());
+                        int taskId = task.getId();
+                        // Tutaj dodaj logikę do obsługi przycisku View dla danego zadania (taskId)
+                        System.out.println("View button clicked for task with ID: " + taskId);
+
+                        // Otwórz nowe okno "View Task"
+                        //openViewTaskWindow(task);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(viewButton);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        // Dodajemy kolumny do tabeli
+        tasksTable.getColumns().addAll(idColumn, nameColumn, priorityColumn, descriptionColumn, normColumn, zoneColumn, quantityColumn, viewColumn);
+
+        // Dodajemy wszystkie zadania do tabeli
+        tasksTable.getItems().addAll(tasks);
+
+        // Dodajemy zakładkę do TabPane
+        tabPane.getTabs().add(tasksTab);
+    }
+
 
 
     private int calculateMaxQuantity(Order selectedOrder) {

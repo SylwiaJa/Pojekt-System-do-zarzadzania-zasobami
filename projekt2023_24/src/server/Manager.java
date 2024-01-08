@@ -37,8 +37,8 @@ public class Manager extends Leader{
     public void changeEquipmentStatus(Equipment equipment, String status){
 
     }
-    public List<Order> getListOfOrder(){
-        List<Order> orders = new ArrayList<>();
+    public List<Task> getListOfTask(){
+        List<Task> tasks = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
@@ -47,34 +47,34 @@ public class Manager extends Leader{
             e.printStackTrace();
         }
         String query = "SELECT \n" +
-                "    oq.orderQuantityID,\n" +
-                "    p.name AS productName,\n" +
-                "    o.Status AS orderStatus,\n" +
-                "    oq.quantityOrdered,\n" +
-                "    oq.QuantityInProduction,\n" +
-                "    oq.OuantityFinished\n" +
+                "    t.taskID AS taskID,\n" +
+                "    t.name AS name,\n" +
+                "    t.priority,\n" +
+                "    t.description,\n" +
+                "    t.norm,\n" +
+                "    z.name AS zone_name,\n" +
+                "    t.quantity\n" +
                 "FROM \n" +
-                "    orderQuantity oq\n" +
+                "    Task t\n" +
                 "JOIN \n" +
-                "    product p ON oq.productID = p.productID\n" +
-                "JOIN \n" +
-                "    `order` o ON oq.orderID = o.OrderID\n";
+                "    Zone z ON t.zoneID = z.zoneID;\n";
         try {
-            PreparedStatement preparedStatement= connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet result = preparedStatement.executeQuery();
-            while (result.next()){
-                int id = result.getInt("orderQuantityID");
-                String productName = result.getString("productName");
-                String orderStatus = result.getString("orderStatus");
-                int quantityOrdered = result.getInt("quantityOrdered");
-                int quantityInProduction = result.getInt("QuantityInProduction");
-                int quantityFinished = result.getInt("OuantityFinished");
-                orders.add(new Order(id, orderStatus,new Product(productName,quantityOrdered,quantityInProduction,quantityFinished)));
+            while (result.next()) {
+                int id = result.getInt("taskID");
+                String name = result.getString("name");
+                String priority = result.getString("priority");
+                String description = result.getString("description");
+                int norm = result.getInt("norm");
+                String zoneName = result.getString("zone_name");
+                int quantity = result.getInt("quantity");
+                tasks.add(new Task(id, name,priority,description,norm,zoneName,quantity));
             }
-
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return  orders;
+        return  tasks;
     }
+
 }
