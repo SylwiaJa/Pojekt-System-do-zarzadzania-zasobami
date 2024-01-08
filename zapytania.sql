@@ -57,8 +57,82 @@ where stepName='in progress'
 group by e.equipmentID;
 
 
--- Lider ma możliwość generowania raportów dotyczących wydajności pracy z uwzględnieniem danego okresu czasu
-select *
-from task t join taskstatus ts on t.taskID=ts.taskID
-	join result r on t.resultID=r.resultID
-where stepName='in progress';   -- skończyć
+-- Lider ma możliwość generowania raportów dotyczących wydajności pracy z uwzględnieniem danego okresu czasu i pracownika
+DELIMITER //
+CREATE OR REPLACE PROCEDURE employeeEfficiency(startDate timestamp, endDate timestamp )
+   BEGIN
+		select e.employeeID, concat(e.name,' ',e.lastName) 'employee', sum(r.quantityOK)/sum(t.norm)'efficiency'
+		from task t join taskstatus ts on t.taskID=ts.taskID
+			join result r on t.resultID=r.resultID
+			join employee e on ts.employeeID=e.employeeID
+		where stepName='in progress' and ts.endStep<>'0000-00-00 00:00:00' and startStep>=startDate and startStep<=endDate
+		group by e.employeeID;
+   END//
+
+DELIMITER ;
+-- call employeeEfficiency('2024-01-02 10:17:36', '2024-01-07 10:17:36');
+
+-- Lider ma możliwość generowania raportów dotyczących wydajności pracy z uwzględnieniem danego okresu czasu i obszaru
+DELIMITER //
+CREATE PROCEDURE zoneEfficiency(startDate timestamp, endDate timestamp )
+   BEGIN
+		select z.zoneID, z.name 'zone', sum(r.quantityOK)/sum(t.norm)'quantityOK/norm'
+		from task t join taskstatus ts on t.taskID=ts.taskID
+			join result r on t.resultID=r.resultID
+			join employee e on ts.employeeID=e.employeeID
+			join zone z on e.zoneID=z.zoneID
+		where stepName='in progress' and ts.endStep<>'0000-00-00 00:00:00' and startStep>=startDate and startStep<=endDate
+		group by z.zoneID;
+   END//
+
+DELIMITER ;
+--call zoneEfficiency('2024-01-02 10:17:36', '2024-01-07 10:17:36');
+
+-- Pracownik może przeglądać aktualne zlecenia dostępne dla niego, zgodne z jego uprawnieniami
+DELIMITER //
+CREATE PROCEDURE taskForEmployee(empID)
+   BEGIN
+		SELECT t.taskID, t.name, t.priority, t.description, p.name 'product', t.quantity, t.norm, 
+			ts.stepName 'status' ,
+    		GROUP_CONCAT(DISTINCT eq.name) 'equipment' , GROUP_CONCAT(DISTINCT c.name) 'component'
+		FROM task t join product p on p.productID=t.productID 
+			join taskstatus ts on ts.taskID=t.taskID 
+    		join taskequipment te  on te.taskID=t.taskID
+    		join equipment eq on eq.equipmentID=te.equipmentID
+    		join taskcomponent tc  on tc.taskID=t.taskID
+    		join component c on c.componentID=tc.componentID                    
+		where ts.endStep ='0000-00-00 00:00:00'  and ts.stepName='available'
+			and t.taskCategory in(select distinct taskcategoryid from taskcategorylicense  where licenseID in 
+			(select licenseId from employeelicense where employeeId=empID))
+		GROUP BY t.taskID;
+   END//
+
+DELIMITER ;
+--call taskForEmployee(2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
