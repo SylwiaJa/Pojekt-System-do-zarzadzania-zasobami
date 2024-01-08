@@ -24,6 +24,7 @@ public class ManagerController {
     private Employee employee;
     private List<Order> orders;
     private List<Task> tasks;
+    private List<Employee> employees;
 
     @FXML
     private Label name;
@@ -37,11 +38,12 @@ public class ManagerController {
     @FXML
     private TabPane tabPane;
 
-    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks) {
+    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks, List<Employee> employees) {
         this.tcpClientFX = tcpClientFX;
         this.employee = employee;
         this.orders = orders;
         this.tasks = tasks;
+        this.employees = employees;
     }
 
     @FXML
@@ -54,6 +56,7 @@ public class ManagerController {
         // Dodajemy zakładki i ich zawartość
         addOrdersTab();
         addTasksTab(tasks);
+        addEmployeesTab(employees);
 
     }
     private void addOrdersTab() {
@@ -301,7 +304,68 @@ public class ManagerController {
         return 0;
     }
 
+    private void addEmployeesTab(List<Employee> employees) {
+        Tab employeesTab = new Tab("Employees");
 
+        // Tworzymy TableView dla pracowników
+        TableView<Employee> employeesTable = new TableView<>();
+        employeesTab.setContent(employeesTable);
+
+        // Tworzymy kolumny tabeli
+        TableColumn<Employee, Integer> idColumn = new TableColumn<>("ID");
+        TableColumn<Employee, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<Employee, String> lastNameColumn = new TableColumn<>("Last Name");
+        TableColumn<Employee, String> roleColumn = new TableColumn<>("Role");
+        TableColumn<Employee, String> zoneColumn = new TableColumn<>("Zone");
+        TableColumn<Employee, Void> viewColumn = new TableColumn<>("View");
+
+        // Ustawiamy, jakie wartości mają być wyświetlane w kolumnach
+        idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        lastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
+        roleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole()));
+        zoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getZone()));
+
+        // Ustawiamy przyciski w kolumnie "View"
+        viewColumn.setCellFactory(col -> {
+            TableCell<Employee, Void> cell = new TableCell<>() {
+                private final Button viewButton = new Button("View");
+
+                {
+                    viewButton.setOnAction(event -> {
+                        Employee employee = getTableView().getItems().get(getIndex());
+                        int employeeId = employee.getId();
+                        // Tutaj dodaj logikę do obsługi przycisku View dla danego pracownika (employeeId)
+                        System.out.println("View button clicked for employee with ID: " + employeeId);
+
+                        // Otwórz nowe okno "View Employee"
+                      //  openViewEmployeeWindow(employee);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(viewButton);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        // Dodajemy kolumny do tabeli
+        employeesTable.getColumns().addAll(idColumn, nameColumn, lastNameColumn, roleColumn, zoneColumn, viewColumn);
+
+        // Dodajemy wszystkich pracowników do tabeli
+        employeesTable.getItems().addAll(employees);
+
+        // Dodajemy zakładkę do TabPane
+        tabPane.getTabs().add(employeesTab);
+    }
 
     @FXML
     private void managerButtonAction() {

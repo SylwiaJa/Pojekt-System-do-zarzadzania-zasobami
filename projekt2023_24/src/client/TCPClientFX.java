@@ -82,7 +82,8 @@ public class TCPClientFX extends Application {
                     case "Manager": {
                         List<Order> orders = (List<Order>) objectInputStream.readObject();
                         List<Task> tasks = (List<Task>) objectInputStream.readObject();
-                        sceneManager.showManagerScene(this, employee, orders, tasks);
+                        List<Employee> employees = (List<Employee>) objectInputStream.readObject();
+                        sceneManager.showManagerScene(this, employee, orders, tasks,employees);
                         break;
                     }
                 }
