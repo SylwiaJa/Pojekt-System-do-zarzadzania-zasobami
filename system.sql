@@ -782,15 +782,6 @@ INSERT INTO component (name, quantity) VALUES
 ('comp2', 40),
 ('comp3', 100);
 
---
--- Dumping data for table `equipment`
---
-
-INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
-('equip1', 1, 'work', 1),
-('equip2', 1, 'work', 1),
-('equip3', 1, 'work', 2),
-('equip4', 2, 'work', 3);
 
 --
 -- Dumping data for table `equipmentCategory`
@@ -802,23 +793,36 @@ INSERT INTO equipmentCategory (name) VALUES
 ('equipCat3');
 
 --
+-- Dumping data for table `equipment`
+--
+
+INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
+('equip1', 1, 'work', 1),
+('equip2', 1, 'work', 1),
+('equip3', 1, 'work', 2),
+('equip4', 2, 'work', 3);
+
+
+
+--
 -- Dumping data for table `result`
 --
 
 insert into result (quantityOK, quantityNOK) values 
-(9,1);
+(9,1),
+(4,1),
+(2,0),
+(1,0);
 
 --
 -- Dumping data for table `task`
 --
 
-INSERT INTO task (name, priority, description, taskCategory, norm, productID, quantity, orderID, zoneID) VALUES
-('task2', 'normal', 'description2', 2, 5, 2, 5, 1, 2), 
-('task3', 'high', 'description3', 4, 2, 4, 2, 1, 4), 
-('task4', 'low', 'description4', 6, 1, 6, 1, 1, 6);
-
 INSERT INTO task (name, priority, description, taskCategory, norm, resultID, productID, quantity, orderID, zoneID) VALUES
-('task1', 'normal', 'description1', 1, 10, 1, 1, 10, 1, 1);
+('task1', 'normal', 'description1', 1, 10, 1, 1, 10, 1, 1),
+('task2', 'normal', 'description2', 2, 5, 2, 2, 5, 1, 2), 
+('task3', 'high', 'description3', 4, 2, 3, 4, 2, 1, 4), 
+('task4', 'low', 'description4', 6, 1, 4, 6, 1, 1, 6);
 
 --
 -- Dumping data for table `taskComponent`
@@ -839,12 +843,12 @@ INSERT INTO taskcomponent (taskID, componentID, quantity) VALUES
 
 INSERT INTO taskequipment (taskID, equipmentID) VALUES
 (1,4),
-(1,5),
-(3,4),
-(4,6),
-(3,5),
-(4,4),
-(2,5);
+(1,2),
+(3,3),
+(4,1),
+(3,2),
+(4,2),
+(2,4);
 
 --
 -- Dumping data for table `taskStatus`
@@ -854,9 +858,44 @@ INSERT INTO taskstatus (taskID, employeeID, stepName, startStep, endStep) VALUES
 (1,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36'),
 (4,1, 'available', '2024-01-04 10:17:36', '2024-01-04 12:17:36'),
 (1,2, 'in progress', '2024-01-04 12:17:36', '2024-01-04 16:17:36'),
-(1,2, 'finished', '2024-01-04 16:17:36', '0000-00-00 00:00:00');
+(1,2, 'finished', '2024-01-04 16:17:36', '0000-00-00 00:00:00'),
+(2,1, 'available', '2024-01-04 12:18:36', '2024-01-04 12:20:36'),
+(2,4, 'in progress', '2024-01-04 12:20:36', '2024-01-04 20:18:36'),
+(2,4, 'finished', '2024-01-04 20:18:36', '0000-00-00 00:00:00');
 
 INSERT INTO taskstatus (taskID, employeeID, stepName, startStep) VALUES
-(2,1, 'available', '2024-01-04 12:18:36'),
 (4,3, 'in progress', '2024-01-04 12:17:36'),
 (3,1, 'available', '2024-01-04 10:19:36');
+
+
+--
+-- Dumping data for table `license`
+--
+insert into license(name, description) VALUES
+('license1', 'description1'),
+('license2', 'description2'),
+('license3', 'description3');
+
+--
+-- Dumping data for table `employeelicense`
+--
+insert into employeelicense VALUES
+(2,1,'2022-01-04', '2025-01-04'),
+(2,2,'2022-01-04', '2025-01-04'),
+(2,3,'2022-01-04', '2025-01-04'),
+(3,1,'2022-01-04', '2025-01-04'),
+(3,2,'2022-01-04', '2025-01-04'),
+(3,3,'2022-01-04', '2025-01-04');
+
+
+--
+-- Dumping data for table `taskcategorylicense`
+--
+insert into taskcategorylicense VALUES
+(1,1),
+(2,1),
+(3,1),
+(4,1),
+(4,2),
+(5,1),
+(7,3);
