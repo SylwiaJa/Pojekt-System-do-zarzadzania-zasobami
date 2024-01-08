@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import server.Employee;
+import server.Equipment;
 import server.Order;
 import server.Task;
 
@@ -25,7 +26,7 @@ public class ManagerController {
     private List<Order> orders;
     private List<Task> tasks;
     private List<Employee> employees;
-
+private List<Equipment> equipmentList;
     @FXML
     private Label name;
     @FXML
@@ -38,12 +39,13 @@ public class ManagerController {
     @FXML
     private TabPane tabPane;
 
-    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks, List<Employee> employees) {
+    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks, List<Employee> employees, List<Equipment> equipmentList) {
         this.tcpClientFX = tcpClientFX;
         this.employee = employee;
         this.orders = orders;
         this.tasks = tasks;
         this.employees = employees;
+        this.equipmentList=equipmentList;
     }
 
     @FXML
@@ -57,6 +59,7 @@ public class ManagerController {
         addOrdersTab();
         addTasksTab(tasks);
         addEmployeesTab(employees);
+        addEquipmentsTab(equipmentList);
 
     }
     private void addOrdersTab() {
@@ -365,6 +368,66 @@ public class ManagerController {
 
         // Dodajemy zakładkę do TabPane
         tabPane.getTabs().add(employeesTab);
+    }
+    private void addEquipmentsTab(List<Equipment> equipments) {
+        Tab equipmentsTab = new Tab("Equipments");
+
+        // Tworzymy TableView dla sprzętu
+        TableView<Equipment> equipmentsTable = new TableView<>();
+        equipmentsTab.setContent(equipmentsTable);
+
+        // Tworzymy kolumny tabeli
+        TableColumn<Equipment, Integer> idColumn = new TableColumn<>("ID");
+        TableColumn<Equipment, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<Equipment, String> statusColumn = new TableColumn<>("Status");
+        TableColumn<Equipment, String> zoneColumn = new TableColumn<>("Zone");
+        TableColumn<Equipment, Void> viewColumn = new TableColumn<>("View");
+
+        // Ustawiamy, jakie wartości mają być wyświetlane w kolumnach
+        idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        zoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getZone()));
+
+        // Ustawiamy przyciski w kolumnie "View"
+        viewColumn.setCellFactory(col -> {
+            TableCell<Equipment, Void> cell = new TableCell<>() {
+                private final Button viewButton = new Button("View");
+
+                {
+                    viewButton.setOnAction(event -> {
+                        Equipment equipment = getTableView().getItems().get(getIndex());
+                        int equipmentId = equipment.getId();
+                        // Tutaj dodaj logikę do obsługi przycisku View dla danego sprzętu (equipmentId)
+                        System.out.println("View button clicked for equipment with ID: " + equipmentId);
+
+                        // Otwórz nowe okno "View Equipment"
+                        // openViewEquipmentWindow(equipment);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(viewButton);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        // Dodajemy kolumny do tabeli
+        equipmentsTable.getColumns().addAll(idColumn, nameColumn, statusColumn, zoneColumn, viewColumn);
+
+        // Dodajemy wszystkie sprzęty do tabeli
+        equipmentsTable.getItems().addAll(equipments);
+
+        // Dodajemy zakładkę do TabPane
+        tabPane.getTabs().add(equipmentsTab);
     }
 
     @FXML

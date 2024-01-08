@@ -54,9 +54,6 @@ public class Employee implements Serializable {
         this.password = password;
         this.task = task;
     }
-    public  List<Task> getListOfTasks(){
-        return null;
-    };
     public void getTask(Task task){
 
     }
@@ -197,6 +194,42 @@ public class Employee implements Serializable {
             e.printStackTrace();
         }
         return  tasks;
+    }
+    public List<Equipment> getListOfEquipment(){
+        List<Equipment> equipments = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT \n" +
+                "    e.equipmentID AS equipmentID,\n" +
+                "    e.name AS equipmentName,\n" +
+                "    e.status,\n" +
+                "    z.name AS zoneName\n" +
+                "FROM \n" +
+                "    equipment e\n" +
+                "JOIN \n" +
+                "    zone z ON e.zoneID = z.zoneID;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("equipmentID");
+                String name = result.getString("equipmentName");
+                String status = result.getString("status");
+                String zoneName = result.getString("zoneName");
+                equipments.add(new Equipment(id, name,status,zoneName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return equipments;
     }
     public void setRole(String role) {
         this.role = role;

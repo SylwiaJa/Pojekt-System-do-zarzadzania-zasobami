@@ -35,9 +35,11 @@ public class ClientHandler implements Callable<Employee> {
                     List<Order> orders =  employee.getListOfOrder();
                     List<Task> tasks = employee.getListOfTask();
                     List<Employee> employees  =employee.getListOfEmployees();
+                    List<Equipment> equipments = employee.getListOfEquipment();
                     objectOutputStream.writeObject(orders);
                     objectOutputStream.writeObject(tasks);
                     objectOutputStream.writeObject(employees);
+                    objectOutputStream.writeObject(equipments);
                     String answer;
                     do {
                         answer = (String) objectInputStream.readObject();

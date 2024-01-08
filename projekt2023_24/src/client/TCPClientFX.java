@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import client.controller.LoginController;
 import server.Employee;
+import server.Equipment;
 import server.Order;
 import server.Task;
 
@@ -83,7 +84,8 @@ public class TCPClientFX extends Application {
                         List<Order> orders = (List<Order>) objectInputStream.readObject();
                         List<Task> tasks = (List<Task>) objectInputStream.readObject();
                         List<Employee> employees = (List<Employee>) objectInputStream.readObject();
-                        sceneManager.showManagerScene(this, employee, orders, tasks,employees);
+                        List<Equipment> equipmentList = (List<Equipment>) objectInputStream.readObject();
+                        sceneManager.showManagerScene(this, employee, orders, tasks,employees,equipmentList);
                         break;
                     }
                 }

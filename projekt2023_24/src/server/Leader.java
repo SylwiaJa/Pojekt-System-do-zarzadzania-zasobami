@@ -11,10 +11,7 @@ public class Leader extends Employee {
         super(id, name, lastName, role, zone, login, password, task);
     }
 
-    @Override
-    public List<Task> getListOfTasks() {
-        return null;
-    }
+
 
     public List<Employee> getListOfEmployeeAndTask() {
 return  null;

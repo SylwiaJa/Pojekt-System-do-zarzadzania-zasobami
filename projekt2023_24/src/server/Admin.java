@@ -18,10 +18,7 @@ public class Admin extends Employee{
         MySQLDatabaseConnector mySQLDatabaseConnector = new MySQLDatabaseConnector();
         mySQLDatabaseConnector.updateEmployee(updateEmployee.getId(), updateEmployee.getRole(), updateEmployee.getZone());
     }
-    @Override
-    public List<Task> getListOfTasks() {
-        return null;
-    }
+
 
 
 }
