@@ -797,10 +797,10 @@ INSERT INTO equipmentCategory (name) VALUES
 --
 
 INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
-('equip1', 1, 'work', 1),
-('equip2', 1, 'work', 1),
-('equip3', 1, 'work', 2),
-('equip4', 2, 'work', 3);
+('equip1', 1, 'in use', 1),
+('equip2', 1, 'available', 1),
+('equip3', 1, 'available', 2),
+('equip4', 2, 'out of use', 3);
 
 
 
@@ -874,7 +874,10 @@ INSERT INTO taskstatus (taskID, employeeID, stepName, startStep) VALUES
 insert into license(name, description) VALUES
 ('license1', 'description1'),
 ('license2', 'description2'),
-('license3', 'description3');
+('license3', 'description3'),
+('license4', 'for equip cat 1'),
+('license5', 'for equip cat 2'),
+('license6', 'for equip cat 3');
 
 --
 -- Dumping data for table `employeelicense`
@@ -885,7 +888,10 @@ insert into employeelicense VALUES
 (2,3,'2022-01-04', '2025-01-04'),
 (3,1,'2022-01-04', '2025-01-04'),
 (3,2,'2022-01-04', '2025-01-04'),
-(3,3,'2022-01-04', '2025-01-04');
+(3,3,'2022-01-04', '2025-01-04'),
+(2,4,'2022-01-04', '2025-01-04'),
+(2,5,'2022-01-04', '2025-01-04'),
+(2,6,'2022-01-04', '2025-01-04');
 
 
 --
@@ -899,3 +905,34 @@ insert into taskcategorylicense VALUES
 (4,2),
 (5,1),
 (7,3);
+
+--
+-- Dumping data for table `equipmentcategorylicense`
+--
+insert into equipmentcategorylicense VALUES
+(1, 4),
+(2, 5),
+(3, 6);
+
+
+--
+-- Dumping data for table `equipmentcategorylicense`
+--
+insert into taskcategorycomponent VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(4, 2),
+(4, 3),
+(6, 1),
+(6, 3);
+
+--
+-- Dumping data for table `taskequipmentcategory`
+--
+insert into taskequipmentcategory VALUES
+(6, 1),
+(1, 1),
+(4, 1),
+(1, 2),
+(2, 2);

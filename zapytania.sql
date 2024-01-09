@@ -27,7 +27,7 @@ where ts.endStep ='0000-00-00 00:00:00' or ts.endStep is null;
 -- Lider może przeglądać listy wszystkich dostępnych maszyn i sprzętów wraz z informacją o ich aktualnym wykorzystaniu
 
 DELIMITER //
-CREATE FUNCTION EquipmentUse(n INT)
+CREATE FUNCTION EquipmentUse(n INT)					-- ZMIENIĆ
   RETURNS VARCHAR(20)
   BEGIN
     DECLARE s VARCHAR(20);
@@ -90,7 +90,7 @@ DELIMITER ;
 
 -- Pracownik może przeglądać aktualne zlecenia dostępne dla niego, zgodne z jego uprawnieniami
 DELIMITER //
-CREATE PROCEDURE taskForEmployee(empID)
+CREATE PROCEDURE taskForEmployee(empID int)
    BEGIN
 		SELECT t.taskID, t.name, t.priority, t.description, p.name 'product', t.quantity, t.norm, 
 			ts.stepName 'status' ,
@@ -101,22 +101,25 @@ CREATE PROCEDURE taskForEmployee(empID)
     		join equipment eq on eq.equipmentID=te.equipmentID
     		join taskcomponent tc  on tc.taskID=t.taskID
     		join component c on c.componentID=tc.componentID                    
-		where ts.endStep ='0000-00-00 00:00:00'  and ts.stepName='available'
+		where 
+		-- zadanie jest dostępne:
+		ts.endStep ='0000-00-00 00:00:00'  and ts.stepName='available' 
+		-- uprawnienie na zadanie:
 			and t.taskCategory in(select distinct taskcategoryid from taskcategorylicense  where licenseID in 
-			(select licenseId from employeelicense where employeeId=empID))
+			(select licenseId from employeelicense where employeeId=empID and expirationDate>=CURRENT_DATE))
+		-- uprawnienie na sprzęt:
+		    and eq.equipmentCategoryID in(select equipmentcategoryId from equipmentcategorylicense  where licenseID in 				
+			(select licenseId from employeelicense where employeeId=empID and expirationDate>=CURRENT_DATE))
+		-- componenty są dostępne:
+				-- DODAĆ
+		-- sprzęt jest dostępny:
+				-- DODAĆ
+		
 		GROUP BY t.taskID;
    END//
 
 DELIMITER ;
 --call taskForEmployee(2);
-
-
-
-
-
-
-
-
 
 
 
