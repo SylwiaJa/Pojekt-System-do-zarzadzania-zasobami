@@ -12,12 +12,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import server.Employee;
-import server.Equipment;
-import server.Order;
-import server.Task;
+import server.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ManagerController {
@@ -96,10 +95,11 @@ private List<Equipment> equipmentList;
                         Order order = getTableView().getItems().get(getIndex());
                         int orderId = order.getId();
                         // Tutaj dodaj logikę do obsługi przycisku Start dla danego zamówienia (orderId)
-                        System.out.println("Start button clicked for order with ID: " + orderId);
-
+                      List<Object> objects =  tcpClientFX.getOrderInfo(order);
+                            List<Equipment> equipment = (List<Equipment>) objects.get(0);
+                            List<Component> components = (List<Component>) objects.get(1);
                         // Otwórz nowe okno "New Task"
-                        openNewTaskWindow(order);
+                        openNewTaskWindow(order,equipment,components);
 
                     });
                 }
@@ -136,7 +136,7 @@ private List<Equipment> equipmentList;
         tabPane.getTabs().add(ordersTab);
     }
 
-    private void openNewTaskWindow(Order selectedOrder) {
+    private void openNewTaskWindow(Order selectedOrder, List<Equipment> equipmentList, List<Component> components) {
         Stage newTaskStage = new Stage();
         newTaskStage.setTitle("New Task");
 
@@ -145,7 +145,8 @@ private List<Equipment> equipmentList;
         TextField nameTextField = new TextField();
 
         Label priorityLabel = new Label("Priority:");
-        TextField priorityTextField = new TextField();
+        ComboBox<String> priorityComboBox = new ComboBox<>();
+        priorityComboBox.getItems().addAll("High", "Normal", "Low");
 
         Label descriptionLabel = new Label("Description:");
         TextArea descriptionTextArea = new TextArea();
@@ -153,13 +154,16 @@ private List<Equipment> equipmentList;
         Label normLabel = new Label("Norm:");
         TextField normTextField = new TextField();
 
-        Label componentLabel = new Label("Component:");
-        ComboBox<String> componentComboBox = new ComboBox<>();
-        componentComboBox.getItems().addAll("Component 1", "Component 2", "Component 3", "Component 4", "Component 5");
+        Label componentLabel = new Label("Components:");
+        VBox componentsVBox = new VBox();
+
+        List<CheckBox> componentCheckboxes = new ArrayList<>();
+        components.forEach(component -> componentCheckboxes.add(new CheckBox(component.getName())));
+        componentsVBox.getChildren().addAll(componentCheckboxes);
 
         Label equipmentLabel = new Label("Equipment:");
         ComboBox<String> equipmentComboBox = new ComboBox<>();
-        equipmentComboBox.getItems().addAll("Equipment 1", "Equipment 2", "Equipment 3", "Equipment 4", "Equipment 5");
+        equipmentList.forEach(equipment -> equipmentComboBox.getItems().add(equipment.getName()));
 
         Label zoneLabel = new Label("Zone:");
         ComboBox<String> zoneComboBox = new ComboBox<>();
@@ -198,7 +202,7 @@ private List<Equipment> equipmentList;
         gridPane.add(nameTextField, 1, 0);
 
         gridPane.add(priorityLabel, 0, 1);
-        gridPane.add(priorityTextField, 1, 1);
+        gridPane.add(priorityComboBox, 1, 1);
 
         gridPane.add(descriptionLabel, 0, 2);
         gridPane.add(descriptionTextArea, 1, 2);
@@ -207,7 +211,7 @@ private List<Equipment> equipmentList;
         gridPane.add(normTextField, 1, 3);
 
         gridPane.add(componentLabel, 0, 4);
-        gridPane.add(componentComboBox, 1, 4);
+        gridPane.add(componentsVBox, 1, 4);
 
         gridPane.add(equipmentLabel, 0, 5);
         gridPane.add(equipmentComboBox, 1, 5);
@@ -227,6 +231,7 @@ private List<Equipment> equipmentList;
         // Pokazujemy nowe okno
         newTaskStage.show();
     }
+
     private void addTasksTab(List<Task> tasks) {
         Tab tasksTab = new Tab("Tasks");
 

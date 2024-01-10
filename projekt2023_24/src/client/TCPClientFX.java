@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -165,4 +166,17 @@ public class TCPClientFX extends Application {
         }
         }
 
+    public List<Object> getOrderInfo(Order order) {
+        List<Object> objects=new ArrayList<>();
+        try {
+            objectOutputStream.writeObject("orders");
+            objectOutputStream.writeObject(order);
+            objects = (List<Object>) objectInputStream.readObject();
+
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return objects ;
+    }
 }

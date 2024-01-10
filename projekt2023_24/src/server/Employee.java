@@ -108,7 +108,7 @@ public class Employee implements Serializable {
                 "JOIN \n" +
                 "    product p ON oq.productID = p.productID\n" +
                 "JOIN \n" +
-                "    `order` o ON oq.orderID = o.OrderID\n";
+                "    orders o ON oq.orderID = o.OrderID\n";
         try {
             PreparedStatement preparedStatement= connection.prepareStatement(query);
             ResultSet result = preparedStatement.executeQuery();
@@ -237,5 +237,74 @@ public class Employee implements Serializable {
 
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    public List<Equipment> getListOfEquipmentToTask(String nameProduct) {
+        List<Equipment> equipmentList = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query="SELECT equipment.equipmentID,equipment.name, equipmentCategory.name AS equipment_category, equipment.status, zone.name AS equipment_zone\n" +
+                "FROM taskCategory\n" +
+                "JOIN taskEquipmentCategory ON taskCategory.taskCategoryID = taskEquipmentCategory.taskCategoryId\n" +
+                "JOIN equipment ON taskEquipmentCategory.equipmentCategoryId = equipment.equipmentCategoryId\n" +
+                "JOIN equipmentCategory ON equipment.equipmentCategoryId = equipmentCategory.equipmentCategoryID\n" +
+                "JOIN zone ON equipment.zoneId = zone.zoneID\n" +
+                "WHERE taskCategory.name =?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,nameProduct);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("equipmentID");
+                String nameComponent = result.getString("name");
+                String status = result.getString("status");
+                String zone = result.getString("equipment_zone");
+                equipmentList.add(new Equipment(id, nameComponent, status, zone));
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return equipmentList;
+
+    }
+
+    public List<Component> getListOfComponentToTask(String nameProduct) {
+        List<Component> components = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+            String query="SELECT component.componentID, Component.name, component.quantity \n" +
+                    "FROM TaskCategory\n" +
+                    "JOIN TaskCategoryComponent ON TaskCategory.taskCategoryID = TaskCategoryComponent.taskCategoryID\n" +
+                    "JOIN Component ON Component.componentID = TaskCategoryComponent.componentID\n" +
+                    "WHERE TaskCategory.name =?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,nameProduct);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("componentID");
+                String nameComponent = result.getString("name");
+                int quantity = result.getInt("quantity");
+                components.add(new Component(id,nameComponent,quantity));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return components;
     }
 }

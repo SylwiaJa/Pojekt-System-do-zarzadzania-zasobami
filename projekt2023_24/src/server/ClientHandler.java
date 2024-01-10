@@ -4,6 +4,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
@@ -43,6 +44,16 @@ public class ClientHandler implements Callable<Employee> {
                     String answer;
                     do {
                         answer = (String) objectInputStream.readObject();
+                        if(answer.equals("orders")){
+                            Order order = (Order) objectInputStream.readObject();
+                            String nameProduct=order.getProduct().getName();
+                            List<Equipment> equipmentListOfTask = employee.getListOfEquipmentToTask(nameProduct);
+                            List<Component> componentListOfTask = employee.getListOfComponentToTask(nameProduct);
+                            List<Object> objects = new ArrayList<>();
+                            objects.add(equipmentListOfTask);
+                            objects.add(componentListOfTask);
+                            objectOutputStream.writeObject(objects);
+                        }
 
                     }while (!answer.equals("Close"));
                 }
