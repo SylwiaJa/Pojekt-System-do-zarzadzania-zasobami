@@ -9,26 +9,37 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="5" vgap="5" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            >
+<GridPane id="gridPane"   xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
 
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
 
-    <Label text="Login:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <columnConstraints>
+        <ColumnConstraints fx:id="logoColumn"/>
+        <ColumnConstraints fx:id="loginColumn"/>
+    </columnConstraints>
 
-    <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <PasswordField fx:id="passField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-    <Button onAction="#loginButtonAction" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+    <ImageView id="logoImage" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="6" >
+    <image >
+        <Image  url="@logo.png" />
+    </image>
+    </ImageView>
+
+    <Label id="loginLabel" text="Login:" GridPane.columnIndex="1" GridPane.rowIndex="1" minWidth="100" alignment="CENTER_RIGHT"/>
+    <TextField fx:id="nameField" id="loginField" GridPane.columnIndex="2" GridPane.rowIndex="1" minWidth="100"/>
+
+    <Label id="passwordLabel" text="Password:" GridPane.columnIndex="3" GridPane.rowIndex="1" minWidth="100" alignment="CENTER_RIGHT"/>
+    <PasswordField fx:id="passField" id="passwordField" GridPane.columnIndex="4" GridPane.rowIndex="1" minWidth="100"/>
+
+    <Button id="loginButton" onAction="#loginButtonAction" text="Login" GridPane.columnIndex="5" GridPane.rowIndex="1" minWidth="100"/>
+
 </GridPane>
+</AnchorPane>

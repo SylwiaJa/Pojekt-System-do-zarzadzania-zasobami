@@ -1,0 +1,36 @@
+. root{
+    -fx-min-width: 800px;
+    -fx-min-height: 600px;
+    -fx-background-color: #fffaaa;
+}
+
+/* Styl dla GridPane */
+#gridPane {
+    -fx-min-width: 800;
+    -fx-min-height: 600;
+    -fx-padding: 0 80 5 80;
+
+}
+
+
+/* Styl dla Label i TextField */
+.label, .text-field {
+    -fx-padding: 5;
+}
+
+/* Styl dla Button */
+#loginButton {
+    -fx-padding: 5;
+}
+
+/* Styl dla kolumny z logo */
+#logoColumn {
+    -fx-pref-width: 400; /* Szerokość kolumny z logo */
+}
+
+/* Styl dla kolumny z polami logowania */
+#loginColumn {
+    -fx-alignment: CENTER;
+
+    -fx-pref-width: 400; /* Szerokość kolumny z polami logowania */
+}
