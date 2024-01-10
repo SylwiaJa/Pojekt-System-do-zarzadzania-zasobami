@@ -48,6 +48,33 @@ public class Manager extends Leader{
                 preparedStatement.setInt(7,task.getQuantity());
                 preparedStatement.setInt(8,task.getOrderID());
                 preparedStatement.executeUpdate();
+                query = "SELECT taskID\n" +
+                        "FROM task\n" +
+                        "ORDER BY taskID DESC\n" +
+                        "LIMIT 1;\n";
+                preparedStatement = connection.prepareStatement(query);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    int id = resultSet.getInt("taskID");
+                   query="UPDATE orderQuantity SET QuantityInProduction = QuantityInProduction + ?, orderID=2 WHERE orderQuantityID = ?;";
+                   preparedStatement = connection.prepareStatement(query);
+                   preparedStatement.setInt(1,task.getQuantity());
+                   preparedStatement.setInt(2,task.getOrderID());
+                   preparedStatement.executeUpdate();
+                    query="insert into taskEquipment(taskID, equipmentID) values (?,?)";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1,id);
+                    preparedStatement.setInt(2,task.getEquipment().getId());
+                    preparedStatement.executeUpdate();
+                    for (int i = 0; i < task.getComponent().size(); i++) {
+                        query="insert into taskComponent(taskID, componentID,quantity)values (?,?,?)";
+                        preparedStatement =connection.prepareStatement(query);
+                        preparedStatement.setInt(1,id);
+                        preparedStatement.setInt(2,task.getComponent().get(i).getId());
+                        preparedStatement.setInt(3,task.getQuantity());
+                        preparedStatement.executeUpdate();
+                    }
+                }
             }
         }catch (SQLException e){
             e.printStackTrace();

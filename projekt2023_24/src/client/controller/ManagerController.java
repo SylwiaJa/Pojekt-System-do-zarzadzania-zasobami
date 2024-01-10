@@ -113,7 +113,7 @@ private List<Equipment> equipmentList;
                         String status = order.getStatus();
 
                         // Wyświetl przycisk tylko dla zamówień z statusami "accepted" lub "inprogress"
-                        if ("accepted".equalsIgnoreCase(status) || "inprogress".equalsIgnoreCase(status)) {
+                        if ("accepted".equalsIgnoreCase(status) || "progress".equalsIgnoreCase(status)) {
                             setGraphic(startButton);
                         } else {
                             setGraphic(null);
@@ -202,7 +202,7 @@ private List<Equipment> equipmentList;
             assert selectedEquipment != null;
             Task task = new Task(1, nameTextField.getText(), priorityComboBox.getValue(), descriptionTextArea.getText(), Integer.parseInt(normTextField.getText()), selectedComponents, selectedEquipment, selectedEquipment.getZone(), quantitySpinner.getValue(),selectedOrder.getProduct().getId(), selectedOrder.getId());
          tcpClientFX.addTask(task);
-            selectedOrder.getProduct().setQuantityInProduction(quantitySpinner.getValue());
+            selectedOrder.getProduct().setQuantityInProduction(selectedOrder.getProduct().getQuantityInProduction()+quantitySpinner.getValue());
             // Aktualizuj dane w tabeli
             ordersTable.getItems().clear(); // Wyczyść aktualne dane
             ordersTable.getItems().addAll(orders); // Dodaj nowe dane
