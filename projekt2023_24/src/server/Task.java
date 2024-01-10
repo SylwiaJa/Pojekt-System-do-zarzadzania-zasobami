@@ -17,6 +17,9 @@ public class Task implements Serializable {
     private Employee employee;
     private String zone;
     private int quantity;
+    private int productID;
+    private int orderID;
+
 
     public Task(int taskID, String name, String priority, String description, int norm, String zone, int quantity) {
         this.taskID = taskID;
@@ -27,7 +30,7 @@ public class Task implements Serializable {
         this.zone=zone;
         this.quantity=quantity;
     }
-    public Task(int taskID, String name, String priority, String description, int norm, List<Component> component, Equipment equipment, String zone, int quantity) {
+    public Task(int taskID, String name, String priority, String description, int norm, List<Component> component, Equipment equipment, String zone, int quantity, int productID, int orderID) {
         this.taskID = taskID;
         this.name = name;
         this.priority = priority;
@@ -37,6 +40,8 @@ public class Task implements Serializable {
         this.equipment=equipment;
         this.zone=zone;
         this.quantity=quantity;
+        this.productID=productID;
+        this.orderID=orderID;
     }
 
     public Task(int taskID, String name, String priority, String description, int norm, List<Component> component, Equipment equipment, String status, Time timeInStep, Employee employee) {
@@ -56,6 +61,14 @@ public class Task implements Serializable {
         return name;
     }
 
+    public int getProductID() {
+        return productID;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
     public String getPriority() {
         return priority;
     }
@@ -70,6 +83,14 @@ public class Task implements Serializable {
 
     public String getZone() {
         return zone;
+    }
+
+    public List<Component> getComponent() {
+        return component;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
     }
 
     public int getQuantity() {

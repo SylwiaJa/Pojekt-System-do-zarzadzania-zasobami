@@ -98,6 +98,7 @@ public class Employee implements Serializable {
         }
         String query = "SELECT \n" +
                 "    oq.orderQuantityID,\n" +
+                "    p.productID,\n" +
                 "    p.name AS productName,\n" +
                 "    o.Status AS orderStatus,\n" +
                 "    oq.quantityOrdered,\n" +
@@ -108,18 +109,19 @@ public class Employee implements Serializable {
                 "JOIN \n" +
                 "    product p ON oq.productID = p.productID\n" +
                 "JOIN \n" +
-                "    orders o ON oq.orderID = o.OrderID\n";
+                "    orders o ON oq.orderID = o.OrderID;";
         try {
             PreparedStatement preparedStatement= connection.prepareStatement(query);
             ResultSet result = preparedStatement.executeQuery();
             while (result.next()){
                 int id = result.getInt("orderQuantityID");
+                int productID = result.getInt("productID");
                 String productName = result.getString("productName");
                 String orderStatus = result.getString("orderStatus");
                 int quantityOrdered = result.getInt("quantityOrdered");
                 int quantityInProduction = result.getInt("QuantityInProduction");
                 int quantityFinished = result.getInt("OuantityFinished");
-                orders.add(new Order(id, orderStatus,new Product(productName,quantityOrdered,quantityInProduction,quantityFinished)));
+                orders.add(new Order(id, orderStatus,new Product(productID,productName,quantityOrdered,quantityInProduction,quantityFinished)));
             }
 
         }catch (SQLException e){

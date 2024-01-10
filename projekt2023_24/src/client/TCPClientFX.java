@@ -179,4 +179,13 @@ public class TCPClientFX extends Application {
 
         return objects ;
     }
+
+    public void addTask(Task task) {
+        try {
+            objectOutputStream.writeObject("addTask");
+            objectOutputStream.writeObject(task);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        }
 }

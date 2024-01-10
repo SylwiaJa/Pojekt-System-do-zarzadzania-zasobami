@@ -54,6 +54,10 @@ public class ClientHandler implements Callable<Employee> {
                             objects.add(componentListOfTask);
                             objectOutputStream.writeObject(objects);
                         }
+                        if(answer.equals("addTask")){
+                            Task task = (Task) objectInputStream.readObject();
+                            ((Manager) employee).addNewTask(task);
+                        }
 
                     }while (!answer.equals("Close"));
                 }

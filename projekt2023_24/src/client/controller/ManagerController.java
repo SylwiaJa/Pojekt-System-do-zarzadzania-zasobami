@@ -97,7 +97,7 @@ private List<Equipment> equipmentList;
                             List<Equipment> equipment = (List<Equipment>) objects.get(0);
                             List<Component> components = (List<Component>) objects.get(1);
                         // Otwórz nowe okno "New Task"
-                        openNewTaskWindow(order,equipment,components);
+                        openNewTaskWindow(order,equipment,components, ordersTable);
 
                     });
                 }
@@ -134,7 +134,7 @@ private List<Equipment> equipmentList;
         tabPane.getTabs().add(ordersTab);
     }
 
-    private void openNewTaskWindow(Order selectedOrder, List<Equipment> equipmentList, List<Component> components) {
+    private void openNewTaskWindow(Order selectedOrder, List<Equipment> equipmentList, List<Component> components, TableView<Order> ordersTable) {
         Stage newTaskStage = new Stage();
         newTaskStage.setTitle("New Task");
 
@@ -189,20 +189,27 @@ private List<Equipment> equipmentList;
                     foundComponent.ifPresent(selectedComponents::add);
                 }
             }
-// Pobierz nazwę wybranego sprzętu
+
+            // Pobierz nazwę wybranego sprzętu
             String selectedEquipmentName = equipmentComboBox.getValue();
 
-// Szukaj obiektu Equipment o danej nazwie w equipmentList
+            // Szukaj obiektu Equipment o danej nazwie w equipmentList
             Equipment selectedEquipment = equipmentList.stream()
                     .filter(equipment -> equipment.getName().equals(selectedEquipmentName))
                     .findFirst()
                     .orElse(null);
 
             assert selectedEquipment != null;
-            Task task=   new Task(1, nameTextField.getText(),priorityComboBox.getValue(),descriptionTextArea.getText(),Integer.parseInt(normTextField.getText()),selectedComponents,selectedEquipment,selectedEquipment.getZone(),quantitySpinner.getValue());
-           selectedOrder.getProduct().setQuantityInProduction(quantitySpinner.getValue());
+            Task task = new Task(1, nameTextField.getText(), priorityComboBox.getValue(), descriptionTextArea.getText(), Integer.parseInt(normTextField.getText()), selectedComponents, selectedEquipment, selectedEquipment.getZone(), quantitySpinner.getValue(),selectedOrder.getProduct().getId(), selectedOrder.getId());
+         tcpClientFX.addTask(task);
+            selectedOrder.getProduct().setQuantityInProduction(quantitySpinner.getValue());
+            // Aktualizuj dane w tabeli
+            ordersTable.getItems().clear(); // Wyczyść aktualne dane
+            ordersTable.getItems().addAll(orders); // Dodaj nowe dane
+
             newTaskStage.close();
         });
+
 
         // Ustawiamy akcję dla przycisku "Cancel"
         cancelButton.setOnAction(event -> {

@@ -14,7 +14,7 @@ public class Product implements Serializable {
         this.quantityOrdered = quantityOrdered;
     }
 
-    public Product( String name, int quantityOrdered, int quantityInProduction, int quantityFinished) {
+    public Product( int id, String name, int quantityOrdered, int quantityInProduction, int quantityFinished) {
         this.id = id;
         this.name = name;
         this.quantityOrdered = quantityOrdered;
@@ -48,5 +48,9 @@ public class Product implements Serializable {
 
     public void setQuantityInProduction(int quantityInProduction) {
         this.quantityInProduction = quantityInProduction;
+    }
+
+    public int getId() {
+        return id;
     }
 }
