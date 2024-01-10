@@ -45,4 +45,8 @@ public class Product implements Serializable {
                 "\t" + quantityInProduction +
                 "\t" + quantityFinished ;
     }
+
+    public void setQuantityInProduction(int quantityInProduction) {
+        this.quantityInProduction = quantityInProduction;
+    }
 }

@@ -2,6 +2,7 @@ package server;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.List;
 
 public class Task implements Serializable {
     private int taskID;
@@ -9,7 +10,7 @@ public class Task implements Serializable {
     private String priority;
     private String description;
     private int norm;
-    private Component component;
+    private List<Component> component;
     private Equipment equipment;
     private String status;
     private Time timeInStep;
@@ -26,7 +27,7 @@ public class Task implements Serializable {
         this.zone=zone;
         this.quantity=quantity;
     }
-    public Task(int taskID, String name, String priority, String description, int norm, Component component, Equipment equipment, String zone, int quantity) {
+    public Task(int taskID, String name, String priority, String description, int norm, List<Component> component, Equipment equipment, String zone, int quantity) {
         this.taskID = taskID;
         this.name = name;
         this.priority = priority;
@@ -38,7 +39,7 @@ public class Task implements Serializable {
         this.quantity=quantity;
     }
 
-    public Task(int taskID, String name, String priority, String description, int norm, Component component, Equipment equipment, String status, Time timeInStep, Employee employee) {
+    public Task(int taskID, String name, String priority, String description, int norm, List<Component> component, Equipment equipment, String status, Time timeInStep, Employee employee) {
         this.taskID = taskID;
         this.name = name;
         this.priority = priority;

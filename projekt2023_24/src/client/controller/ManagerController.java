@@ -4,7 +4,6 @@ import client.TCPClientFX;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,8 +15,7 @@ import server.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class ManagerController {
     private TCPClientFX tcpClientFX;
@@ -165,9 +163,6 @@ private List<Equipment> equipmentList;
         ComboBox<String> equipmentComboBox = new ComboBox<>();
         equipmentList.forEach(equipment -> equipmentComboBox.getItems().add(equipment.getName()));
 
-        Label zoneLabel = new Label("Zone:");
-        ComboBox<String> zoneComboBox = new ComboBox<>();
-        zoneComboBox.getItems().addAll("Zone 1", "Zone 2", "Zone 3", "Zone 4", "Zone 5");
 
         // Dodajemy pole Spinner dla ilości (Quantity)
         Label quantityLabel = new Label("Quantity:");
@@ -180,14 +175,38 @@ private List<Equipment> equipmentList;
         // Ustawiamy akcję dla przycisku "Apply"
         applyButton.setOnAction(event -> {
             // Tutaj dodaj logikę do zastosowania wprowadzonych danych
-            System.out.println("Applying changes...");
+            List<Component> selectedComponents = new ArrayList<>();
+
+            for (CheckBox checkBox : componentCheckboxes) {
+                if (checkBox.isSelected()) {
+                    String componentName = checkBox.getText();
+
+                    // Szukaj obiektu Component po nazwie w liście components
+                    Optional<Component> foundComponent = components.stream()
+                            .filter(component -> component.getName().equals(componentName))
+                            .findFirst();
+
+                    foundComponent.ifPresent(selectedComponents::add);
+                }
+            }
+// Pobierz nazwę wybranego sprzętu
+            String selectedEquipmentName = equipmentComboBox.getValue();
+
+// Szukaj obiektu Equipment o danej nazwie w equipmentList
+            Equipment selectedEquipment = equipmentList.stream()
+                    .filter(equipment -> equipment.getName().equals(selectedEquipmentName))
+                    .findFirst()
+                    .orElse(null);
+
+            assert selectedEquipment != null;
+            Task task=   new Task(1, nameTextField.getText(),priorityComboBox.getValue(),descriptionTextArea.getText(),Integer.parseInt(normTextField.getText()),selectedComponents,selectedEquipment,selectedEquipment.getZone(),quantitySpinner.getValue());
+           selectedOrder.getProduct().setQuantityInProduction(quantitySpinner.getValue());
             newTaskStage.close();
         });
 
         // Ustawiamy akcję dla przycisku "Cancel"
         cancelButton.setOnAction(event -> {
             // Tutaj dodaj logikę do anulowania wprowadzonych zmian
-            System.out.println("Cancelling changes...");
             newTaskStage.close();
         });
 
@@ -216,8 +235,6 @@ private List<Equipment> equipmentList;
         gridPane.add(equipmentLabel, 0, 5);
         gridPane.add(equipmentComboBox, 1, 5);
 
-        gridPane.add(zoneLabel, 0, 6);
-        gridPane.add(zoneComboBox, 1, 6);
 
         gridPane.add(quantityLabel, 0, 7);
         gridPane.add(quantitySpinner, 1, 7);
