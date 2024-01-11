@@ -37,16 +37,23 @@ public class Manager extends Leader{
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int taskCategoryID = resultSet.getInt("taskCategoryID");
-                query = "insert into task (name,priority,description, taskCategory,norm,productID,quantity,orderID) values (?,?,?,?,?,?,?,?);";
+                query = "select zoneID from zone where name=?";
                 preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setString(1,task.getName());
-                preparedStatement.setString(2,task.getPriority());
-                preparedStatement.setString(3,task.getDescription());
-                preparedStatement.setInt(4,taskCategoryID);
-                preparedStatement.setInt(5,task.getNorm());
-                preparedStatement.setInt(6,task.getProductID());
-                preparedStatement.setInt(7,task.getQuantity());
-                preparedStatement.setInt(8,task.getOrderID());
+                preparedStatement.setString(1, task.getEquipment().getZone());
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    int zoneID = resultSet.getInt("zoneID");
+                    query = "insert into task (name,priority,description, taskCategory,norm,productID,quantity,orderID,zoneID) values (?,?,?,?,?,?,?,?,?);";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, task.getName());
+                preparedStatement.setString(2, task.getPriority());
+                preparedStatement.setString(3, task.getDescription());
+                preparedStatement.setInt(4, taskCategoryID);
+                preparedStatement.setInt(5, task.getNorm());
+                preparedStatement.setInt(6, task.getProductID());
+                preparedStatement.setInt(7, task.getQuantity());
+                preparedStatement.setInt(8, task.getOrderID());
+                preparedStatement.setInt(9,zoneID);
                 preparedStatement.executeUpdate();
                 query = "SELECT taskID\n" +
                         "FROM task\n" +
@@ -54,28 +61,29 @@ public class Manager extends Leader{
                         "LIMIT 1;\n";
                 preparedStatement = connection.prepareStatement(query);
                 resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()){
+                while (resultSet.next()) {
                     int id = resultSet.getInt("taskID");
-                   query="UPDATE orderQuantity SET QuantityInProduction = QuantityInProduction + ?, orderID=2 WHERE orderQuantityID = ?;";
-                   preparedStatement = connection.prepareStatement(query);
-                   preparedStatement.setInt(1,task.getQuantity());
-                   preparedStatement.setInt(2,task.getOrderID());
-                   preparedStatement.executeUpdate();
-                    query="insert into taskEquipment(taskID, equipmentID) values (?,?)";
+                    query = "UPDATE orderQuantity SET QuantityInProduction = QuantityInProduction + ?, orderID=2 WHERE orderQuantityID = ?;";
                     preparedStatement = connection.prepareStatement(query);
-                    preparedStatement.setInt(1,id);
-                    preparedStatement.setInt(2,task.getEquipment().getId());
+                    preparedStatement.setInt(1, task.getQuantity());
+                    preparedStatement.setInt(2, task.getOrderID());
+                    preparedStatement.executeUpdate();
+                    query = "insert into taskEquipment(taskID, equipmentID) values (?,?)";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.setInt(2, task.getEquipment().getId());
                     preparedStatement.executeUpdate();
                     for (int i = 0; i < task.getComponent().size(); i++) {
-                        query="insert into taskComponent(taskID, componentID,quantity)values (?,?,?)";
-                        preparedStatement =connection.prepareStatement(query);
-                        preparedStatement.setInt(1,id);
-                        preparedStatement.setInt(2,task.getComponent().get(i).getId());
-                        preparedStatement.setInt(3,task.getQuantity());
+                        query = "insert into taskComponent(taskID, componentID,quantity)values (?,?,?)";
+                        preparedStatement = connection.prepareStatement(query);
+                        preparedStatement.setInt(1, id);
+                        preparedStatement.setInt(2, task.getComponent().get(i).getId());
+                        preparedStatement.setInt(3, task.getQuantity());
                         preparedStatement.executeUpdate();
                     }
+
                 }
-            }
+            } }
         }catch (SQLException e){
             e.printStackTrace();
         }
