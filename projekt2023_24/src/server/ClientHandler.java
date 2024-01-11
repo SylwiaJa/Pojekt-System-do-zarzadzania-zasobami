@@ -58,6 +58,11 @@ public class ClientHandler implements Callable<Employee> {
                             Task task = (Task) objectInputStream.readObject();
                             ((Manager) employee).addNewTask(task);
                         }
+                        if(answer.equals("getUseEquipment")){
+                            int equipmentID = (int) objectInputStream.readObject();
+                            List<List<String>> useEquipment = ((Manager) employee).getEquipmentTimeOfUseReport(equipmentID);
+                            objectOutputStream.writeObject(useEquipment);
+                        }
 
                     }while (!answer.equals("Close"));
                 }

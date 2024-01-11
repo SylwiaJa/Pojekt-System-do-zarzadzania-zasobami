@@ -189,4 +189,16 @@ public class TCPClientFX extends Application {
             e.printStackTrace();
         }
         }
+
+    public List<List<String>> getUseEquipment(int id) {
+        try {
+            objectOutputStream.writeObject("getUseEquipment");
+            objectOutputStream.writeObject(id);
+            List<List<String>> useEquipment = (List<List<String>>) objectInputStream.readObject();
+            return useEquipment;
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

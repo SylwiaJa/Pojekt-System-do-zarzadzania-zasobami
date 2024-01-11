@@ -21,6 +21,10 @@ public class Order implements Serializable {
         return id;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getStatus() {
         return status;
     }

@@ -16,6 +16,7 @@ import server.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 public class ManagerController {
     private TCPClientFX tcpClientFX;
@@ -203,6 +204,7 @@ private List<Equipment> equipmentList;
             Task task = new Task(1, nameTextField.getText(), priorityComboBox.getValue(), descriptionTextArea.getText(), Integer.parseInt(normTextField.getText()), selectedComponents, selectedEquipment, selectedEquipment.getZone(), quantitySpinner.getValue(),selectedOrder.getProduct().getId(), selectedOrder.getId());
          tcpClientFX.addTask(task);
             selectedOrder.getProduct().setQuantityInProduction(selectedOrder.getProduct().getQuantityInProduction()+quantitySpinner.getValue());
+            selectedOrder.setStatus("progress");
             // Aktualizuj dane w tabeli
             ordersTable.getItems().clear(); // Wyczyść aktualne dane
             ordersTable.getItems().addAll(orders); // Dodaj nowe dane
@@ -426,12 +428,8 @@ private List<Equipment> equipmentList;
                 {
                     viewButton.setOnAction(event -> {
                         Equipment equipment = getTableView().getItems().get(getIndex());
-                        int equipmentId = equipment.getId();
-                        // Tutaj dodaj logikę do obsługi przycisku View dla danego sprzętu (equipmentId)
-                        System.out.println("View button clicked for equipment with ID: " + equipmentId);
-
-                        // Otwórz nowe okno "View Equipment"
-                        // openViewEquipmentWindow(equipment);
+                        List<List<String>> equipmentUse = tcpClientFX.getUseEquipment(equipment.getId());
+                         openViewEquipmentWindow(equipment,equipmentUse);
                     });
                 }
 
@@ -457,6 +455,73 @@ private List<Equipment> equipmentList;
 
         // Dodajemy zakładkę do TabPane
         tabPane.getTabs().add(equipmentsTab);
+    }
+    private void openViewEquipmentWindow(Equipment equipment, List<List<String>> equipmentUse) {
+        // Tworzymy nowe okno "View Equipment"
+        Stage viewEquipmentStage = new Stage();
+        viewEquipmentStage.setTitle("View Equipment");
+
+        // Tworzymy kontener VBox dla układu okna
+        VBox vbox = new VBox(10);
+
+        // Dodajemy etykiety i pola tekstowe do VBox
+        Label nameLabel = new Label("Name: " + equipment.getName());
+
+        // Lista rozwijana (ComboBox) dla statusu
+        Label statusLable = new Label("Status: ");
+        ComboBox<String> statusComboBox = new ComboBox<>();
+        statusComboBox.getItems().addAll("available", "in use", "out of use");
+        statusComboBox.setValue(equipment.getStatus()); // Ustawienie domyślnego statusu
+
+        Label zoneLabel = new Label("Zone: " + equipment.getZone());
+
+        // Dodajemy elementy do VBox
+        vbox.getChildren().addAll(nameLabel, statusLable, statusComboBox, zoneLabel);
+
+        // Dodaj informacje z equipmentUse
+        for (List<String> innerList : equipmentUse) {
+            StringJoiner stringJoiner = new StringJoiner(" ");
+            for (String value : innerList) {
+                stringJoiner.add(value);
+
+            }
+            Label label = new Label(stringJoiner.toString());
+            vbox.getChildren().add(label);
+
+        }
+
+        // Tworzymy HBox dla przycisków Apply i Cancel
+        HBox buttonBox = new HBox(10);
+        Button applyButton = new Button("Apply");
+        Button cancelButton = new Button("Cancel");
+
+        // Obsługa przycisku Apply
+        applyButton.setOnAction(event -> {
+            // Tutaj dodaj logikę do zastosowania zmian (np. aktualizacja statusu w bazie danych)
+            System.out.println("Applied changes for equipment with ID: " + equipment.getId());
+
+            // Zamknij okno po zastosowaniu zmian
+            viewEquipmentStage.close();
+        });
+
+        // Obsługa przycisku Cancel
+        cancelButton.setOnAction(event -> {
+            // Zamknij okno bez zastosowywania zmian
+            viewEquipmentStage.close();
+        });
+
+        // Dodaj przyciski do HBox
+        buttonBox.getChildren().addAll(applyButton, cancelButton);
+
+        // Dodaj HBox do VBox
+        vbox.getChildren().add(buttonBox);
+
+        // Ustawiamy VBox jako scenę
+        Scene scene = new Scene(vbox, 400, 300);  // Zwiększyłem szerokość okna, aby pomieścić więcej informacji
+        viewEquipmentStage.setScene(scene);
+
+        // Pokazujemy nowe okno
+        viewEquipmentStage.show();
     }
 
     @FXML
