@@ -201,4 +201,13 @@ public class TCPClientFX extends Application {
         }
         return null;
     }
+
+    public void updateEquipment(Equipment equipment) {
+        try{
+            objectOutputStream.writeObject("updateEquipment");
+            objectOutputStream.writeObject(equipment);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

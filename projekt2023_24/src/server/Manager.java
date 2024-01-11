@@ -150,8 +150,25 @@ return useEquipment;
     public void addEquipment(Equipment equipment){
 
     }
-    public void changeEquipmentStatus(Equipment equipment, String status){
-
+    public void changeEquipmentStatus(Equipment equipment){
+        int id = equipment.getId();
+        String status = equipment.getStatus();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "update equipment set status=? where equipmentID=?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,status);
+            preparedStatement.setInt(2,id);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
 

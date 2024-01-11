@@ -497,8 +497,8 @@ private List<Equipment> equipmentList;
 
         // Obsługa przycisku Apply
         applyButton.setOnAction(event -> {
-            // Tutaj dodaj logikę do zastosowania zmian (np. aktualizacja statusu w bazie danych)
-            System.out.println("Applied changes for equipment with ID: " + equipment.getId());
+            equipment.setStatus(statusComboBox.getValue());
+           tcpClientFX.updateEquipment(equipment);
 
             // Zamknij okno po zastosowaniu zmian
             viewEquipmentStage.close();

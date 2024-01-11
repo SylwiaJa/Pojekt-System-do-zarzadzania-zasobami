@@ -63,6 +63,10 @@ public class ClientHandler implements Callable<Employee> {
                             List<List<String>> useEquipment = ((Manager) employee).getEquipmentTimeOfUseReport(equipmentID);
                             objectOutputStream.writeObject(useEquipment);
                         }
+                        if (answer.equals("updateEquipment")){
+                            Equipment equipment = (Equipment) objectInputStream.readObject();
+                                ((Manager) employee).changeEquipmentStatus(equipment);
+                        }
 
                     }while (!answer.equals("Close"));
                 }

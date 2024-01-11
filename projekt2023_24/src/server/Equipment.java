@@ -13,6 +13,10 @@ public class Equipment extends Inventory{
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getZone() {
         return zone;
     }
