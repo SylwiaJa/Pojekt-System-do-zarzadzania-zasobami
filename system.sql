@@ -384,7 +384,7 @@ CREATE TABLE `taskStatus` (
   `taskID` int(10) NOT NULL,
   `employeeID` int(10) NOT NULL,
   `stepName` varchar(20) NOT NULL,
-  `startStep` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `startStep` timestamp NOT NULL DEFAULT current_timestamp(), -- ON UPDATE current_timestamp(),
   `endStep` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -936,3 +936,5 @@ insert into taskequipmentcategory VALUES
 (4, 1),
 (1, 2),
 (2, 2);
+
+
