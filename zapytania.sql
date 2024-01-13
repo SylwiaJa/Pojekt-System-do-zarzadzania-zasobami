@@ -133,7 +133,7 @@ create or replace procedure getTask(empID int, tskID int)
 
 DELIMITER ;
 
-call getTask(2, 3);
+-- call getTask(2, 3);
 
 
 -- Zmiana statusu z „dostępne” na „w trakcie realizacji” skutkuje wysłaniem zamówienia na przypisane do zlecenia komponenty do magazynu, Zmiana statusu z „dostępne” na „w trakcie realizacji” rezerwuje dostęp do narzędzi, maszyn i innych wykorzystywanych zasobów
@@ -168,21 +168,117 @@ DELIMITER ;
 -- call getTask(2, 3);
 
 
-
 -- Pracownik może zmienić status zlecenia, które wykonuje na „wykonane” oraz wprowadzić odpowiednie dane do systemu
 DELIMITER //
 
-create or replace procedure endTask(empID int, tskID int, quantOk int, QuantNok int)
+create or replace procedure endTask(empID int, tskID int, quantOk int, quantNok int)
 	begin 
     	update taskstatus set endStep=CURRENT_TIMESTAMP where taskID=tskID and stepName='in progress';
         insert into taskstatus (taskID, employeeID, stepName, startStep) values
-        	(tskID, empID, 'finished', CURRENT_TIMESTAMP);
-        update task set resultId=tskID where taskId=tskId;											-- dodać id przy tworzeniu zlecenia i to usunąć
-        update result set quantityOk=quantOk, quantityNok=quantNok where resultId=tskID;
+        	(tskID, empID, 'finished', CURRENT_TIMESTAMP);         								
+		insert into result values (tskID, quantOk, quantNok);  
+        update task set resultId=tskID where taskId=tskId;         	
     end//
 
 DELIMITER ;
-call endTask(2, 3, 1,11);
+-- call endTask(2, 3, 1,11);
 
 
 
+-- Zmiana statusu zlecenia na „wykonane” zwalnia dostęp do danych narzędzi i innych wykorzystywanych zasobów
+DELIMITER //
+create or replace trigger taskFinished after insert on taskstatus for each row
+begin  
+	if new.stepName='finished' then  
+		update equipment set status='available' 
+        where equipmentID in(select equipmentID from taskequipment where taskID=new.taskId);
+	end if;
+end//
+DELIMITER ;
+-- call endTask(1, 1, 2, 2);
+
+
+
+-- Kierownik może tworzyć nowe kategorie zadań i przypisywać do nich wymagane uprawnienia, sprzęty, materiały i inne wykorzystywane zasoby
+
+DELIMITER //
+create or replace procedure addTaskCategory (taskCatName varchar(20))
+	begin 
+    	insert into taskCategory (name ) values (taskCatName);
+    end//
+DELIMITER ;
+-- call addTaskCategory('newCategory2')
+
+DELIMITER //
+create or replace procedure addTaskCategoryLicence (taskCatName varchar(20), licID int)
+	begin 
+		insert into taskcategorylicense values ((select taskCategoryID from taskCategory where name = taskCatName), licID);
+	end//
+DELIMITER ;
+-- call addTaskCategoryLicence('newCategory2',1 )
+
+DELIMITER //
+create or replace procedure addTaskEquipCategory (taskCatName varchar(20), equipCatId int)
+	begin 
+		insert into taskequipmentcategory values ((select taskCategoryID from taskCategory where name = taskCatName), equipCatId);
+	end//
+DELIMITER ;
+-- call addTaskEquipCategory('newCategory2', 1)
+
+
+
+-- Kierownik może tworzyć nowe zlecenia z wybranej kategorii zadań, Kierownik ma możliwość nadania priorytetu zadaniu 
+
+DELIMITER //
+create or replace procedure addTask (taskName varchar(20), prior varchar(20), descr varchar(100),  taskCatId int, normQuant int, prodID int, quant int, ordID int)
+	begin 
+		insert into task (name, priority, description, taskCategory, norm, productID, quantity, orderID) 
+        values (taskName, prior, descr,  taskCatId, normQuant, prodID, quant, ordID);
+        
+        -- COMPONENT, EQUIPMENT
+	end//
+DELIMITER ;
+-- call addTask ('newTask', 'low', 'decr', 2, 10, 1, 10, 1);
+
+
+-- Kierownik ma możliwość zmianę aktualnego priorytetu zadania
+DELIMITER //
+create or replace procedure changePriority (tskID int, newPriority varchar(20))
+	begin 
+		update task set priority=newPriority where taskID=tskID;
+	end//
+DELIMITER ;
+-- call changePriority (1, 'test2');
+
+
+
+/* -- Kierownik może przypisywać pracownikom nowe uprawnienia do korzystania z danych maszyn i sprzętu
+DELIMITER //
+create or replace procedure addEmployeeLicense (empID int, licID int, StrtDate date, ExpirDate date)
+	begin 
+		insert into employeelicense (employeeID, licenseID, startDate, expirationDate)
+        valeus (empID, licID, StrtDate, ExpirDate);
+	end//
+DELIMITER ;
+call addEmployeeLicense (4, 1, '2022-01-04', '2025-01-04'); */
+
+
+/* -- Kierownik może dodawać nowe sprzęty i maszyny wraz z informacją o kategorii i wymaganych uprawnieniach
+DELIMITER //
+create or replace procedure addEquipment (equipName varchar(20), equipCatID int, stat varchar(20), zonId int)
+	begin 
+		insert into equipment (name, equipmentCategoryID, status, zoneID)
+        valeus (equipName, equipCatID, stat, zonId);
+	end//
+DELIMITER ;
+ call addEquipment ('newEquip', 1, 'available', 1); */
+
+
+-- Kierownik może zmieniać status maszyn i sprzętów na „niedostępne”
+DELIMITER //
+create or replace procedure changeEquipStatus (equipID int, newStatus varchar(20))
+	begin 
+		update equipment set status=newStatus where equipmentID=equipID;
+	end//
+DELIMITER ;
+call changeEquipStatus (1, 'test');

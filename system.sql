@@ -636,8 +636,8 @@ ALTER TABLE `product`
 --
 -- AUTO_INCREMENT for table `result`
 --
-ALTER TABLE `result`
-  MODIFY `resultID` int(10) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `result`
+ -- MODIFY `resultID` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -808,21 +808,21 @@ INSERT INTO equipment (name, equipmentCategoryID, status, zoneID) VALUES
 -- Dumping data for table `result`
 --
 
-insert into result (quantityOK, quantityNOK) values 
+/* insert into result (quantityOK, quantityNOK) values 
 (9,1),
 (4,1),
 (2,0),
-(1,0);
+(1,0); */
 
 --
 -- Dumping data for table `task`
 --
 
-INSERT INTO task (name, priority, description, taskCategory, norm, resultID, productID, quantity, orderID, zoneID) VALUES
-('task1', 'normal', 'description1', 1, 10, 1, 1, 10, 1, 1),
-('task2', 'normal', 'description2', 2, 5, 2, 2, 5, 1, 2), 
-('task3', 'high', 'description3', 4, 2, 3, 4, 2, 1, 4), 
-('task4', 'low', 'description4', 6, 1, 4, 6, 1, 1, 6);
+INSERT INTO task (name, priority, description, taskCategory, norm,  productID, quantity, orderID, zoneID) VALUES
+('task1', 'normal', 'description1', 1, 10, 1,  10, 1, 1),
+('task2', 'normal', 'description2', 2, 5, 2, 5, 1, 2), 
+('task3', 'high', 'description3', 4, 2, 3, 2, 1, 4), 
+('task4', 'low', 'description4', 6, 1, 4, 1, 1, 6);
 
 --
 -- Dumping data for table `taskComponent`
