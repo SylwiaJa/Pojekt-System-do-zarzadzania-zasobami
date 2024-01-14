@@ -18,7 +18,7 @@
 
     <!-- Dodane Label'e -->
     <Label fx:id="name" />
-    <Label fx:id="lastName" GridPane.columnIndex="1" />
+    <Label fx:id="lastName"  GridPane.columnIndex="1" />
     <Label fx:id="role" GridPane.columnIndex="2" />
     <Label fx:id="zone" GridPane.columnIndex="3" />
 

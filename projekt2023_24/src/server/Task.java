@@ -5,6 +5,11 @@ import java.sql.Time;
 import java.util.List;
 
 public class Task implements Serializable {
+    private  String componentName;
+    private  String equipmentName;
+    private  String product;
+    private  int quantityNOK;
+    private int quantityOK;
     private int taskID;
     private String name;
     private String priority;
@@ -19,6 +24,7 @@ public class Task implements Serializable {
     private int quantity;
     private int productID;
     private int orderID;
+    private String category;
 
 
     public Task(int taskID, String name, String priority, String description, int norm, String zone, int quantity) {
@@ -55,6 +61,43 @@ public class Task implements Serializable {
         this.status = status;
         this.timeInStep = timeInStep;
         this.employee = employee;
+    }
+
+    public Task(int taskID, String taskName, String priority, String description, String category, int norm, int quantityOK,
+                int quantityNOK, String status,String product, int quantity, String zone, String equipment, String component) {
+        this.taskID=taskID;
+        this.name=taskName;
+        this.priority=priority;
+        this.description=description;
+        this.category = category;
+        this.norm=norm;
+        this.quantityOK = quantityOK;
+        this.quantityNOK = quantityNOK;
+        this.product = product;
+        this.quantity = quantity;
+        this.zone =zone;
+        this.equipmentName = equipment;
+        this.componentName = component;
+        this.status=status;
+
+
+    }
+
+    public Task(int taskID, String name, String priority, String description, String productName, int quantity, int norm, String status, String equipment, String component) {
+        this.taskID=taskID;
+        this.name=name;
+        this.priority=priority;
+        this.description=description;
+        this.norm=norm;
+        this.product = productName;
+        this.quantity = quantity;
+        this.equipmentName = equipment;
+        this.componentName = component;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public String getName() {

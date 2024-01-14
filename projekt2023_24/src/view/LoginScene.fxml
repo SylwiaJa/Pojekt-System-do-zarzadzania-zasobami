@@ -12,7 +12,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.image.Image?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<AnchorPane style="-fx-background-color: #fffaaa" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             >
 <GridPane id="gridPane"   xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
@@ -39,7 +39,7 @@
     <Label id="passwordLabel" text="Password:" GridPane.columnIndex="3" GridPane.rowIndex="1" minWidth="100" alignment="CENTER_RIGHT"/>
     <PasswordField fx:id="passField" id="passwordField" GridPane.columnIndex="4" GridPane.rowIndex="1" minWidth="100"/>
 
-    <Button id="loginButton" onAction="#loginButtonAction" text="Login" GridPane.columnIndex="5" GridPane.rowIndex="1" minWidth="100"/>
+    <Button id="loginButton" onAction="#loginButtonAction" text="Login" GridPane.columnIndex="5" GridPane.rowIndex="1" minWidth="100"  />
 
 </GridPane>
 </AnchorPane>

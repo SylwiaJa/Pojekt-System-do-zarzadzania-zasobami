@@ -20,7 +20,14 @@
 
 /* Styl dla Button */
 #loginButton {
-    -fx-padding: 5;
+    -fx-padding: 5 0 5 0;
+    -fx-background-color: #3f919a;
+    -fx-font-size: 12;
+    -fx-font-family: Arial;
+    -fx-background-radius: 12;
+
+
+
 }
 
 /* Styl dla kolumny z logo */

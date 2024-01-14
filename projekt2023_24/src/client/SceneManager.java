@@ -43,10 +43,10 @@ public class SceneManager {
         }
     }
 
-    public void showEmployeeScene(TCPClientFX tcpClientFX, Employee employee) {
+    public void showEmployeeScene(TCPClientFX tcpClientFX, Employee employee, List<Task> tasks) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EmployeeScene.fxml"));
-            EmployeeController employeeController = new EmployeeController(tcpClientFX,employee);
+            EmployeeController employeeController = new EmployeeController(tcpClientFX,employee, tasks);
             loader.setController(employeeController);
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));

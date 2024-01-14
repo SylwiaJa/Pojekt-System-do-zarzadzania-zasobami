@@ -18,18 +18,9 @@ public class ServerTCP {
             System.out.println("Serwer nasłuchuje na porcie 12345");
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Połączono z " + clientSocket.getInetAddress().getHostAddress() + " " + clientSocket.getInetAddress().getHostName());
-                Callable<Employee> clientHandler = new ClientHandler(clientSocket);
-                FutureTask<Employee> task = new FutureTask<>(clientHandler);
-                executorService.execute(task);
+                System.out.println("Połączono z " + clientSocket);
+                executorService.execute(new ClientHandler(clientSocket));
 
-                try {
-                    Employee result = task.get();
-                    Login login = new Login();
-                    login.endLogin(result);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();

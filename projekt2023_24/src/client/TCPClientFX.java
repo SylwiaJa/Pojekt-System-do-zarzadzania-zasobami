@@ -72,7 +72,9 @@ public class TCPClientFX extends Application {
             if (employee != null) {
                 switch (employee.getRole()) {
                     case "Production Employee":
-                        sceneManager.showEmployeeScene(this, employee);
+                       List<Task> employeeTasks = (List<Task>) objectInputStream.readObject();
+                        employeeTasks.forEach(task -> System.out.println(task.getName()));
+                        sceneManager.showEmployeeScene(this, employee,employeeTasks);
                         break;
                     case "Admin": {
                         List<Employee> employees = (List<Employee>) objectInputStream.readObject();

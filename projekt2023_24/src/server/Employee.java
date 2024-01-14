@@ -36,6 +36,7 @@ public class Employee implements Serializable {
         this.zone = zone;
         this.login = login;
         this.password = password;
+
     }
     public Employee(int id, String name, String lastName, String role, String zone) {
         this.id = id;
