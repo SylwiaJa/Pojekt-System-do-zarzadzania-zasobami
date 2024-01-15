@@ -64,10 +64,7 @@ public class AdminController {
          zones = tcpClientFX.getZones();
         // Dodajemy zakładki i ich zawartość
         addEmployeesTab();
-       // addTasksTab();
-       // addOrdersTab();
-      //  addEquipmentsTab();
-      //  addComponentsTab();
+
     }
 
     private void addEmployeesTab() {
