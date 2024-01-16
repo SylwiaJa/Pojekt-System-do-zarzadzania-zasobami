@@ -319,7 +319,8 @@ INSERT INTO `taskCategory` (`taskCategoryID`, `name`) VALUES
 
 CREATE TABLE `taskCategoryComponent` (
   `taskCategoryID` int(10) NOT NULL,
-  `componentID` int(10) NOT NULL
+  `componentID` int(10) NOT NULL,
+  `quantity` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -919,13 +920,13 @@ insert into equipmentcategorylicense VALUES
 -- Dumping data for table `equipmentcategorylicense`
 --
 insert into taskcategorycomponent VALUES
-(1, 1),
-(1, 2),
-(2, 2),
-(4, 2),
-(4, 3),
-(6, 1),
-(6, 3);
+(1, 1, 10),
+(1, 2, 2),
+(2, 2, 5),
+(4, 2, 10),
+(4, 3, 20),
+(6, 1, 3),
+(6, 3, 10);
 
 --
 -- Dumping data for table `taskequipmentcategory`
