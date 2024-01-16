@@ -87,9 +87,64 @@ CREATE OR REPLACE PROCEDURE zoneEfficiency(startDate timestamp, endDate timestam
 -- call zoneEfficiency('2024-01-02 10:17:36', '2024-01-07 10:17:36');
 
 
+-- Funkcja sprawdza czy dla danego zadania dostępne są wszystkie komponenty
+DELIMITER //
+CREATE OR REPLACE FUNCTION componentAvailability(tskID int)
+	RETURNS boolean
+	BEGIN
+    	DECLARE loopEnd BOOLEAN DEFAULT false;
+        DECLARE taskQuant int;
+        DECLARE compQuant int;
+        declare k cursor for select tc.quantity, c.quantity
+			from taskcomponent tc join component c on tc.componentid=c.componentid
+			where tc.taskid=tskID;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET loopEnd = true;
+        OPEN k;		
+    		et:LOOP
+        		FETCH k INTO taskQuant, compQuant;
+				IF loopEnd = true THEN LEAVE et; 
+            	END IF;	
+				if taskQuant>compQuant then return false;
+                end if;
+         	END LOOP;
+		CLOSE k;  
+	RETURN true;
+END //
+DELIMITER ;
+
+-- select componentAvailability(3)
+
+
+-- Funkcja sprawdza czy dla danego zadania dostępne są wszystkie sprzęty
+DELIMITER //
+CREATE OR REPLACE FUNCTION equipmentAvailability(tskID int)
+	RETURNS boolean
+	BEGIN
+    	DECLARE loopEnd BOOLEAN DEFAULT false;
+        DECLARE stat varchar(20);
+        declare k cursor for select status
+			from equipment e join taskequipment te on e.equipmentID=te.equipmentID
+			where te.taskId=tskID;
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET loopEnd = true;
+        OPEN k;		
+    		et:LOOP
+        		FETCH k INTO stat;
+				IF loopEnd = true THEN LEAVE et; 
+            	END IF;	
+				if stat<>'available' then return false;
+                end if;
+         	END LOOP;
+		CLOSE k;  
+	RETURN true;
+END //
+DELIMITER ;
+
+-- select equipmentAvailability(3)
+
+
 -- Pracownik może przeglądać aktualne zlecenia dostępne dla niego, zgodne z jego uprawnieniami
 DELIMITER //
-CREATE PROCEDURE taskForEmployee(empID int)
+CREATE or replace PROCEDURE taskForEmployee(empID int)
    BEGIN
 		SELECT t.taskID, t.name, t.priority, t.description, p.name 'product', t.quantity, t.norm, 
 			ts.stepName 'status' ,
@@ -110,15 +165,16 @@ CREATE PROCEDURE taskForEmployee(empID int)
 		    and eq.equipmentCategoryID in(select equipmentcategoryId from equipmentcategorylicense  where licenseID in 				
 			(select licenseId from employeelicense where employeeId=empID and expirationDate>=CURRENT_DATE))
 		-- componenty są dostępne:
-				-- DODAĆ
+			and componentAvailability(t.taskID)=true
 		-- sprzęt jest dostępny:
-				-- DODAĆ
+			and equipmentAvailability(t.taskID)=true
 		
 		GROUP BY t.taskID;
    END//
 
 DELIMITER ;
---call taskForEmployee(2);
+call taskForEmployee(2);
+
 
 
 -- Pracownik może wybrać zlecenie z dostępnych i zmienić jego status z „dostępne” na „w trakcie realizacji”
