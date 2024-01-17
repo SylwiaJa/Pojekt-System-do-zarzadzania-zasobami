@@ -106,54 +106,42 @@ return task;
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        String query = "SELECT \n" +
-                "    t.taskID,\n" +
-                "    t.name,\n" +
-                "    t.priority,\n" +
-                "    t.description,\n" +
-                "    p.name as product,\n" +
-                "    t.quantity,\n" +
-                "    t.norm,\n" +
-                "    ts.stepName as status,\n" +
-                "    GROUP_CONCAT(DISTINCT eq.name) as equipment,\n" +
-                "    GROUP_CONCAT(DISTINCT c.name) as component\n" +
-                "FROM \n" +
-                "    task t\n" +
-                "JOIN \n" +
-                "    product p ON p.productID = t.productID \n" +
-                "JOIN \n" +
-                "    taskstatus ts ON ts.taskID = t.taskID \n" +
-                "JOIN \n" +
-                "    taskequipment te ON te.taskID = t.taskID\n" +
-                "JOIN \n" +
-                "    equipment eq ON eq.equipmentID = te.equipmentID\n" +
-                "JOIN \n" +
-                "    taskcomponent tc ON tc.taskID = t.taskID\n" +
-                "JOIN \n" +
-                "    component c ON c.componentID = tc.componentID\n" +
-                "WHERE \n" +
+        String query = "SELECT t.taskID, t.name, t.priority, t.description, p.name AS 'product', t.quantity, t.norm,\n" +
+                "       ts.stepName AS 'status',\n" +
+                "       GROUP_CONCAT(DISTINCT eq.name) AS 'equipment', GROUP_CONCAT(DISTINCT c.name) AS 'component'\n" +
+                "FROM task t\n" +
+                "         JOIN product p ON p.productID = t.productID\n" +
+                "         JOIN taskstatus ts ON ts.taskID = t.taskID\n" +
+                "         JOIN taskequipment te ON te.taskID = t.taskID\n" +
+                "         JOIN equipment eq ON eq.equipmentID = te.equipmentID\n" +
+                "         JOIN taskcomponent tc ON tc.taskID = t.taskID\n" +
+                "         JOIN component c ON c.componentID = tc.componentID\n" +
+                "WHERE\n" +
+                "  -- zadanie jest dostępne:\n" +
                 "    ts.endStep = '0000-00-00 00:00:00' AND ts.stepName = 'available'\n" +
-                "    AND t.taskCategory IN (\n" +
-                "        SELECT DISTINCT taskcategoryid \n" +
-                "        FROM taskcategorylicense \n" +
-                "        WHERE licenseID IN (\n" +
-                "            SELECT licenseId \n" +
-                "            FROM employeelicense \n" +
-                "            WHERE employeeId = ? AND expirationDate >= CURRENT_DATE\n" +
-                "        )\n" +
-                "    )\n" +
-                "    AND eq.equipmentCategoryID IN (\n" +
-                "        SELECT equipmentcategoryId \n" +
-                "        FROM equipmentcategorylicense \n" +
-                "        WHERE licenseID IN (\n" +
-                "            SELECT licenseId \n" +
-                "            FROM employeelicense \n" +
-                "            WHERE employeeId = ? AND expirationDate >= CURRENT_DATE\n" +
-                "        )\n" +
-                "    )\n" +
-                " \n" +
-                "GROUP BY \n" +
-                "    t.taskID;\n";
+                "  -- uprawnienie na zadanie:\n" +
+                "  AND t.taskCategory IN (SELECT DISTINCT taskcategoryid FROM taskcategorylicense WHERE licenseID IN\n" +
+                "                                                                                       (SELECT licenseId FROM employeelicense WHERE employeeId = ? AND expirationDate >= CURRENT_DATE))\n" +
+                "  -- uprawnienie na sprzęt:\n" +
+                "  AND eq.equipmentCategoryID IN (SELECT equipmentcategoryId FROM equipmentcategorylicense WHERE licenseID IN\n" +
+                "                                                                                                (SELECT licenseId FROM employeelicense WHERE employeeId = ? AND expirationDate >= CURRENT_DATE))\n" +
+                "  -- componenty są dostępne:\n" +
+                "  AND (\n" +
+                "          SELECT COUNT(*) = SUM(CASE WHEN tc.quantity <= c.quantity THEN 1 ELSE 0 END)\n" +
+                "          FROM taskcomponent tc\n" +
+                "                   JOIN component c ON tc.componentid = c.componentid\n" +
+                "          WHERE tc.taskid = t.taskid\n" +
+                "      ) > 0\n" +
+                "\n" +
+                "  -- sprzęt jest dostępny:\n" +
+                "  AND (\n" +
+                "          SELECT COUNT(*) = SUM(CASE WHEN e.status = 'available' THEN 1 ELSE 0 END)\n" +
+                "          FROM equipment e\n" +
+                "                   JOIN taskequipment te ON e.equipmentID = te.equipmentID\n" +
+                "          WHERE te.taskId = t.taskid\n" +
+                "      ) > 0\n" +
+                "\n" +
+                "GROUP BY t.taskID;\n";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, employeeID);

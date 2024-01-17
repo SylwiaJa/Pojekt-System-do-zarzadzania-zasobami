@@ -67,10 +67,8 @@ public class ClientHandler implements Runnable {
                             Equipment equipment = (Equipment) objectInputStream.readObject();
                             ((Manager) employee).changeEquipmentStatus(equipment);
                         }
-                        if(answer.equals("Close")){
-                            log.endLogin(employee);
-                        }
                     } while (!answer.equals("Close"));
+                    log.endLogin(employee);
                 }
 
                 if (employee instanceof Admin) {
@@ -86,10 +84,9 @@ public class ClientHandler implements Runnable {
                             Employee updateEmployee = (Employee) objectInputStream.readObject();
                             ((Admin) employee).changeRole(updateEmployee);
                         }
-                        if(answer.equals("Close")){
-                            log.endLogin(employee);
-                        }
+
                     } while (!answer.equals("Close"));
+                    log.endLogin(employee);
                 }
 
                 if (employee instanceof ProductionEmployee) {
@@ -102,7 +99,11 @@ public class ClientHandler implements Runnable {
                         tasks.add(myTask);
                         objectOutputStream.writeObject(tasks);
                     }
-
+                    String answer;
+                    do {
+                        answer = (String) objectInputStream.readObject();
+                    }while (answer.equals("CLose"));
+                    log.endLogin(employee);
                 }
             } else {
                 objectOutputStream.writeObject(null);

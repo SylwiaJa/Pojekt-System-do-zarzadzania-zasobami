@@ -58,7 +58,7 @@ public Login(){
         String dataFormat = format.format(data);
         String startTime = employee.getStartTime();
 
-        String sqlQuery = "update loginHistory SET startTime=?,endTime=? where employeeID=?";
+        String sqlQuery = "update loginHistory SET startTime=?,endTime=? where employeeID=? AND endTime='0000-00-00 00:00:00'";
         try {
             PreparedStatement statement =connection.prepareStatement(sqlQuery);
             statement.setString(1,startTime);
