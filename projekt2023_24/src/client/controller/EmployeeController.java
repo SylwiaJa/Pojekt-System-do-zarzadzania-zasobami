@@ -78,6 +78,18 @@ public class EmployeeController {
         taskNameColumn = new TableColumn<>("Task Name");
         taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
+        TableColumn<Task, String> descriptionColumn = new TableColumn<>("Description");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        TableColumn<Task, String> priorityColumn = new TableColumn<>("Priority");
+        priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
+
+        TableColumn<Task, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        TableColumn<Task, Integer> normColumn = new TableColumn<>("Norm");
+        normColumn.setCellValueFactory(new PropertyValueFactory<>("norm"));
+
         actionColumn = new TableColumn<>("Action");
         actionColumn.setCellFactory(param -> new TableCell<>() {
             private final Button acceptButton = new Button("Accept");
@@ -97,10 +109,11 @@ public class EmployeeController {
             }
         });
 
-        taskTableView.getColumns().addAll(taskNameColumn, actionColumn);
+        taskTableView.getColumns().addAll(taskNameColumn, descriptionColumn, priorityColumn, quantityColumn, normColumn, actionColumn);
 
         taskDetailsVBox.getChildren().add(taskTableView);
     }
+
 
     @FXML
     private void endButtonAction(Task task) {

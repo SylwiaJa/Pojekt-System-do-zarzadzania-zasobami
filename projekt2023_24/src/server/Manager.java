@@ -82,15 +82,6 @@ public class Manager extends Leader{
                         preparedStatement.setInt(3, task.getQuantity());
                         preparedStatement.executeUpdate();
                     }
-                    query = "insert into  result (resultID, quantityOK, quantityNOK) values (?,0,0)";
-                    preparedStatement=connection.prepareStatement(query);
-                    preparedStatement.setInt(1,id);
-                    preparedStatement.executeUpdate();
-                    query="update task set resultID=? where taskID=?";
-                    preparedStatement=connection.prepareStatement(query);
-                    preparedStatement.setInt(1,id);
-                    preparedStatement.setInt(2,id);
-                    preparedStatement.executeUpdate();
                     int employeeID = employee.getId();
                     query="insert into taskStatus(taskID,employeeID,stepName,startStep) values (?,?,'available',CURRENT_TIMESTAMP)";
                     preparedStatement=connection.prepareStatement(query);
