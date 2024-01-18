@@ -211,4 +211,8 @@ public class TCPClientFX extends Application {
             e.printStackTrace();
         }
     }
+
+    public void endTask(Task task) {
+
+    }
 }
