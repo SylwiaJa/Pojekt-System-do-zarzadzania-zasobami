@@ -34,8 +34,6 @@ public class ProductionEmployee extends Employee{
                 "    MAX(task.description) as taskDescription,\n" +
                 "    MAX(taskCategory.name) as nameCategory,\n" +
                 "    MAX(task.norm) as taskNorm,\n" +
-                "    MAX(result.quantityOK) as quantityOK,\n" +
-                "    MAX(result.quantityNOK) as quantityNOK,\n" +
                 "    MAX(taskStatus.stepName) as status,\n" +
                 "    MAX(product.name) as productName,\n" +
                 "    MAX(task.quantity) as taskQuantity,\n" +
@@ -48,8 +46,6 @@ public class ProductionEmployee extends Employee{
                 "    taskStatus ON taskStatus.taskID = task.taskID\n" +
                 "JOIN \n" +
                 "    taskCategory ON taskCategory.taskCategoryID = task.taskCategory\n" +
-                "JOIN \n" +
-                "    result ON result.resultID = task.resultID\n" +
                 "JOIN \n" +
                 "    product ON product.productID = task.productID\n" +
                 "JOIN \n" +
@@ -80,8 +76,8 @@ public class ProductionEmployee extends Employee{
                 String description = resultSet.getString("taskDescription");
                 String category = resultSet.getString("nameCategory");
                 int norm = resultSet.getInt("taskNorm");
-                int quantityOK = resultSet.getInt("quantityOK");
-                int quantityNOK = resultSet.getInt("quantityNOK");
+                int quantityOK = 0;
+                int quantityNOK = 0;
                 String status = resultSet.getString("status");
                 String product = resultSet.getString("productName");
                 int quantity = resultSet.getInt("taskQuantity");

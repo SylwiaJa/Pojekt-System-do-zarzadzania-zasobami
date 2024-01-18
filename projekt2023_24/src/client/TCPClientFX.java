@@ -213,6 +213,11 @@ public class TCPClientFX extends Application {
     }
 
     public void endTask(Task task) {
-
+        try{
+            objectOutputStream.writeObject("endTask");
+            objectOutputStream.writeObject(task);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

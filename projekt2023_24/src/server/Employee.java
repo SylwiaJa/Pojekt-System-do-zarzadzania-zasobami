@@ -82,7 +82,51 @@ public class Employee implements Serializable {
     public void acceptTask(Task task){
 
     }
-    public void endTask(Task task){
+    public void endTask(Task task, Employee employee){
+        System.out.println(task.getName()+" "+task.getQuantityOK()+"/"+task.getQuantityNOK()+" "+employee.getName()+" "+employee.getLastName());
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+        String query = "UPDATE taskStatus\n" +
+                "SET endStep = CURRENT_TIMESTAMP\n" +
+                "WHERE taskID =? AND stepName = 'in progress';";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, task.getTaskID());
+            preparedStatement.executeUpdate();
+            query = "INSERT INTO taskstatus (taskID, employeeID, stepName, startStep)\n" +
+                    "VALUES (?, ?, 'finished', CURRENT_TIMESTAMP);";
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setInt(1,task.getTaskID());
+            preparedStatement.setInt(2,employee.getId());
+            preparedStatement.executeUpdate();
+            query="INSERT INTO result (resultID, quantityOK, quantityNOK)\n" +
+                    "VALUES (?, ?, ?);";
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setInt(1,task.getTaskID());
+            preparedStatement.setInt(2,task.getQuantityOK());
+            preparedStatement.setInt(3,task.getQuantityNOK());
+            preparedStatement.executeUpdate();
+            query="UPDATE task\n" +
+                    "SET resultId = ?\n" +
+                    "WHERE taskId = ?;";
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setInt(1,task.getTaskID());
+            preparedStatement.setInt(2,task.getTaskID());
+            preparedStatement.executeUpdate();
+            query="update equipment set status='available' where equipmentID in (SELECT equipmentID FROM taskequipment WHERE taskID = ?)";
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setInt(1,task.getTaskID());
+            preparedStatement.executeUpdate();
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
     public void addTaskResult(Task task, Result result){

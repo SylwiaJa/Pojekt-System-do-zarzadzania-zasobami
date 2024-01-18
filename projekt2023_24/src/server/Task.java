@@ -128,6 +128,22 @@ public class Task implements Serializable {
         return zone;
     }
 
+    public void setQuantityNOK(int quantityNOK) {
+        this.quantityNOK = quantityNOK;
+    }
+
+    public int getQuantityNOK() {
+        return quantityNOK;
+    }
+
+    public int getQuantityOK() {
+        return quantityOK;
+    }
+
+    public void setQuantityOK(int quantityOK) {
+        this.quantityOK = quantityOK;
+    }
+
     public List<Component> getComponent() {
         return component;
     }

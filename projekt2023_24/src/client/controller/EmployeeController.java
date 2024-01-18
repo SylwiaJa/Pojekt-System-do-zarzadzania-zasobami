@@ -146,6 +146,8 @@ public class EmployeeController {
                     errorAlert.setContentText("The sum of QuantityOK and QuantityNOK should be equal to the Task's Quantity.");
                     errorAlert.showAndWait();
                 } else {
+                    task.setQuantityOK(intQuantityOK);
+                    task.setQuantityNOK(intQuantityNOK);
                    tcpClientFX.endTask(task);
                     Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
                     infoAlert.setTitle("Task Completed");

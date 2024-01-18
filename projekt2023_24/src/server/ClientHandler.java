@@ -102,6 +102,10 @@ public class ClientHandler implements Runnable {
                     String answer;
                     do {
                         answer = (String) objectInputStream.readObject();
+                        if(answer.equals("endTask")){
+                            Task task = (Task) objectInputStream.readObject();
+                            employee.endTask(task, employee);
+                        }
                     }while (answer.equals("CLose"));
                     log.endLogin(employee);
                 }
