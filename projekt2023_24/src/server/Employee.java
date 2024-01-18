@@ -150,7 +150,17 @@ public class Employee implements Serializable {
             preparedStatement=connection.prepareStatement(query);
             preparedStatement.setInt(1,task.getTaskID());
             preparedStatement.executeUpdate();
-
+            query="UPDATE orderQuantity set QuantityInProduction=QuantityInProduction-?, OuantityFinished=OuantityFinished+? WHERE orderQuantityID IN (SELECT orderID from task WHERE taskID=?)";
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setInt(1,task.getQuantity());
+            preparedStatement.setInt(2,task.getQuantityOK());
+            preparedStatement.setInt(3,task.getTaskID());
+            preparedStatement.executeUpdate();
+            query="UPDATE orderQuantity\n" +
+                    "SET orderID = 4\n" +
+                    "WHERE quantityOrdered = OuantityFinished;";
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.executeUpdate();
 
         }catch (SQLException e){
             e.printStackTrace();
