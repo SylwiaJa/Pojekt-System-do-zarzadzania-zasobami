@@ -263,4 +263,16 @@ public class TCPClientFX extends Application {
         }
         return myTaskInfo;
     }
+
+    public List<List<String>> getEmployeeInfo(Employee employee) {
+        List<List<String>> empInfo = new ArrayList<>();
+        try{
+            objectOutputStream.writeObject("getEmpInfo");
+            objectOutputStream.writeObject(employee);
+            empInfo = (List<List<String>>) objectInputStream.readObject();
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return empInfo;
+    }
 }

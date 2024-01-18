@@ -397,7 +397,7 @@ private List<Equipment> equipmentList;
                         System.out.println("View button clicked for employee with ID: " + employeeId);
 
                         // Otwórz nowe okno "View Employee"
-                      //  openViewEmployeeWindow(employee);
+                        openViewEmployeeWindow(employee);
                     });
                 }
 
@@ -424,6 +424,33 @@ private List<Equipment> equipmentList;
         // Dodajemy zakładkę do TabPane
         tabPane.getTabs().add(employeesTab);
     }
+
+    private void openViewEmployeeWindow(Employee employee) {
+       List<List<String>> empInfo =  tcpClientFX.getEmployeeInfo(employee);
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Task Details");
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+
+        for (List<String> info : empInfo) {
+            Label label = new Label(info.get(0)+" "+info.get(1)+" "+info.get(2)+" "+info.get(3)+" "+info.get(4));
+            layout.getChildren().add(label);
+        }
+
+        Button closeButton = new Button("OK");
+        closeButton.setOnAction(e -> window.close());
+        layout.getChildren().add(closeButton);
+
+        Scene scene = new Scene(layout, 300, 400);
+        window.setScene(scene);
+
+        window.showAndWait();
+
+    }
+
     private void addEquipmentsTab(List<Equipment> equipments) {
         Tab equipmentsTab = new Tab("Equipments");
 

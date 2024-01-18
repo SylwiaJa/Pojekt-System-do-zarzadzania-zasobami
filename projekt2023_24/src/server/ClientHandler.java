@@ -72,6 +72,11 @@ public class ClientHandler implements Runnable {
                            List<String> infoTask =  ((Manager) employee).getTaskInfo(myTask);
                            objectOutputStream.writeObject(infoTask);
                         }
+                        if(answer.equals("getEmpInfo")){
+                            Employee emp = (Employee) objectInputStream.readObject();
+                            List<List<String>> empInfo = ((Manager) employee).getEmpInfo(emp);
+                            objectOutputStream.writeObject(empInfo);
+                        }
                     } while (!answer.equals("Close"));
                     log.endLogin(employee);
                 }

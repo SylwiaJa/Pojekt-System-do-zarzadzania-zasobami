@@ -176,6 +176,45 @@ return useEquipment;
             e.printStackTrace();
         }
     }
+    public List<List<String>> getEmpInfo(Employee employee){
+        List<List<String>> empInfo = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "select concat(e.name,' ',e.lastName) 'employee', z.name 'zone', \n" +
+                "\t\tt.name 'task', t.description,\n" +
+                "        ts.stepName 'status', ts.startStep, TIMESTAMPDIFF(HOUR, ts.startStep, CURRENT_TIMESTAMP) 'hours'\n" +
+                "from employee e left join zone z on e.zoneID=z.zoneID\n" +
+                "\t\t\t\tleft join taskstatus ts on ts.employeeID=e.employeeID\n" +
+                "                left join task t on t.taskID=ts.taskID\n" +
+                "where ts.endStep ='0000-00-00 00:00:00' AND ts.employeeID=?;";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,employee.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                String task = resultSet.getString("task");
+                String description = resultSet.getString("description");
+                String status = resultSet.getString("status");
+                String startStep = resultSet.getString("startStep");
+                String hours = resultSet.getString("hours");
+                List<String> info = new ArrayList<>();
+                info.add(task);
+                info.add(description);
+                info.add(status);
+                info.add(startStep);
+                info.add(hours);
+                empInfo.add(info);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return  empInfo;
+    }
     public List<String> getTaskInfo(Task task){
         List<String> taskInfo = new ArrayList<>();
         try {
