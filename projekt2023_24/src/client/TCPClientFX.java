@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import client.controller.LoginController;
 import server.Employee;
@@ -71,18 +73,39 @@ public class TCPClientFX extends Application {
             Employee employee = (Employee) objectInputStream.readObject();
             if (employee != null) {
                 switch (employee.getRole()) {
-                    case "Production Employee":
-                       List<Task> employeeTasks = (List<Task>) objectInputStream.readObject();
-                        sceneManager.showEmployeeScene(this, employee,employeeTasks);
+                    case "Production Employee": {
+                        List<Task> employeeTasks = (List<Task>) objectInputStream.readObject();
+
+                        if (employeeTasks.size() == 0) {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("No Tasks");
+                            alert.setHeaderText(null);
+                            alert.setContentText("No tasks available for you. Please contact your supervisor.");
+
+                            // Dodaj przycisk "OK"
+                            ButtonType okButton = new ButtonType("OK");
+                            alert.getButtonTypes().setAll(okButton);
+
+                            // Obsługa zdarzenia dla przycisku "OK"
+                            alert.setOnCloseRequest(event -> {
+                                sceneManager.showLoginScene(this);
+                            });
+
+                            alert.showAndWait();
+                        }else {
+                            sceneManager.showEmployeeScene(this, employee, employeeTasks);
+                        }
                         break;
+                    }
                     case "Admin": {
                         List<Employee> employees = (List<Employee>) objectInputStream.readObject();
                         sceneManager.showAdminScene(this, employee, employees);
                         break;
                     }
-                    case "Leader":
+                    case "Leader": {
                         sceneManager.showLeaderScene(this, employee);
                         break;
+                    }
                     case "Manager": {
                         List<Order> orders = (List<Order>) objectInputStream.readObject();
                         List<Task> tasks = (List<Task>) objectInputStream.readObject();
