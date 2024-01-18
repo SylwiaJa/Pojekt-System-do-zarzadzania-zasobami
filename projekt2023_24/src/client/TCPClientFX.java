@@ -45,7 +45,6 @@ public class TCPClientFX extends Application {
 
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             primaryStage.setTitle("Welcome");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -251,5 +250,17 @@ public class TCPClientFX extends Application {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public List<String> getTaskInfo(Task task) {
+        List<String> myTaskInfo = new ArrayList<>();
+        try{
+            objectOutputStream.writeObject("getTaskInfo");
+            objectOutputStream.writeObject(task);
+            myTaskInfo = (List<String>) objectInputStream.readObject();
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return myTaskInfo;
     }
 }

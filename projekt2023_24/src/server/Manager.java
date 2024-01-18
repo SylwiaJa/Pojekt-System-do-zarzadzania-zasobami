@@ -176,6 +176,74 @@ return useEquipment;
             e.printStackTrace();
         }
     }
-
-
+    public List<String> getTaskInfo(Task task){
+        List<String> taskInfo = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "SELECT t.taskID, t.name, t.priority, t.description, p.name 'product', t.quantity, t.norm, \n" +
+                "\t\tts.stepName 'status',\n" +
+                "        concat(e.name,' ',e.lastName) 'employee',\n" +
+                "        GROUP_CONCAT(DISTINCT eq.name) 'equipment' , GROUP_CONCAT(DISTINCT c.name) 'component'\n" +
+                "FROM task t join product p on p.productID=t.productID \n" +
+                "\t\t\tjoin taskstatus ts on ts.taskID=t.taskID \n" +
+                "            join employee e on ts.employeeID=e.employeeID\n" +
+                "            join taskequipment te  on te.taskID=t.taskID\n" +
+                "            join equipment eq on eq.equipmentID=te.equipmentID\n" +
+                "            join taskcomponent tc  on tc.taskID=t.taskID\n" +
+                "            join component c on c.componentID=tc.componentID    \n" +
+                "            WHERE ts.endStep='0000-00-00 00:00:00' AND t.taskID=?\n" +
+                "GROUP BY t.taskID;";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,task.getTaskID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int taskID = resultSet.getInt("taskID");
+                String name = resultSet.getString("name");
+                String priority = resultSet.getString("priority");
+                String description = resultSet.getString("description");
+                String product = resultSet.getString("product");
+                int quantity = resultSet.getInt("quantity");
+                int norm = resultSet.getInt("norm");
+                String status = resultSet.getString("status");
+                String employee = resultSet.getString("employee");
+                String equipment = resultSet.getString("equipment");
+                String component = resultSet.getString("component");
+                taskInfo.add(String.valueOf(taskID));
+                taskInfo.add(name);
+                taskInfo.add(priority);
+                taskInfo.add(description);
+                taskInfo.add(product);
+                taskInfo.add(String.valueOf(quantity));
+                taskInfo.add(String.valueOf(norm));
+                taskInfo.add(status);
+                taskInfo.add(employee);
+                taskInfo.add(equipment);
+                taskInfo.add(component);
+                query="SELECT \n" +
+                        "    SEC_TO_TIME(SUM(total_duration)) AS total_duration\n" +
+                        "FROM (\n" +
+                        "    SELECT \n" +
+                        "        TIME_TO_SEC(TIMEDIFF(IF(endStep = '0000-00-00 00:00:00', CURRENT_TIMESTAMP, endStep), startStep)) AS total_duration\n" +
+                        "    FROM taskStatus\n" +
+                        "    WHERE taskID = ? AND stepName IN ('available', 'in progress')\n" +
+                        ") AS subquery;\n";
+                preparedStatement=connection.prepareStatement(query);
+                preparedStatement.setInt(1,task.getTaskID());
+                resultSet=preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    String time = resultSet.getString("total_duration");
+                    taskInfo.add(time);
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return  taskInfo;
+    }
 }

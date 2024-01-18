@@ -67,6 +67,11 @@ public class ClientHandler implements Runnable {
                             Equipment equipment = (Equipment) objectInputStream.readObject();
                             ((Manager) employee).changeEquipmentStatus(equipment);
                         }
+                        if(answer.equals("getTaskInfo")){
+                            Task myTask = (Task) objectInputStream.readObject();
+                           List<String> infoTask =  ((Manager) employee).getTaskInfo(myTask);
+                           objectOutputStream.writeObject(infoTask);
+                        }
                     } while (!answer.equals("Close"));
                     log.endLogin(employee);
                 }

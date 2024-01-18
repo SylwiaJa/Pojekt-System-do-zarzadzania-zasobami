@@ -4,12 +4,14 @@ import client.TCPClientFX;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import server.*;
 
@@ -296,8 +298,7 @@ private List<Equipment> equipmentList;
                         // Tutaj dodaj logikę do obsługi przycisku View dla danego zadania (taskId)
                         System.out.println("View button clicked for task with ID: " + taskId);
 
-                        // Otwórz nowe okno "View Task"
-                        //openViewTaskWindow(task);
+                        openViewTaskWindow(task);
                     });
                 }
 
@@ -325,6 +326,29 @@ private List<Equipment> equipmentList;
         tabPane.getTabs().add(tasksTab);
     }
 
+    private void openViewTaskWindow(Task task) {
+        List<String> taskInfo = tcpClientFX.getTaskInfo(task);
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Task Details");
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        for (String info : taskInfo) {
+            Label label = new Label(info);
+            layout.getChildren().add(label);
+        }
+
+        Button closeButton = new Button("OK");
+        closeButton.setOnAction(e -> window.close());
+        layout.getChildren().add(closeButton);
+
+        Scene scene = new Scene(layout, 300, 400);
+        window.setScene(scene);
+
+        window.showAndWait();
+    }
 
 
     private int calculateMaxQuantity(Order selectedOrder) {
