@@ -184,7 +184,24 @@ public class EmployeeController {
 
     @FXML
     private void acceptButtonAction(Task task) {
-        System.out.println("Accept button clicked for task: " + task.getName());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Task Information");
+        alert.setHeaderText(null); // Ustawienie nagłówka na null, aby nie wyświetlać zbędnego nagłówka.
+
+        String contentText = String.format(
+                "Name: %s\nDescription: %s\nQuantity: %d\nComponent Name: %s\nEquipment Name: %s\n\nTask has been initiated.\n Please log in again.",
+                task.getName(), task.getDescription(), task.getQuantity(), task.getComponentName(), task.getEquipmentName());
+
+        alert.setContentText(contentText);
+
+        ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == okButton) {
+            tcpClientFX.takeNewTask(task);
+            tcpClientFX.logOut();
+        }
     }
 
     @FXML

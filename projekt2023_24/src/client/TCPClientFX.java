@@ -220,4 +220,13 @@ public class TCPClientFX extends Application {
             e.printStackTrace();
         }
     }
+
+    public void takeNewTask(Task task) {
+        try{
+            objectOutputStream.writeObject("takeNewTask");
+            objectOutputStream.writeObject(task);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

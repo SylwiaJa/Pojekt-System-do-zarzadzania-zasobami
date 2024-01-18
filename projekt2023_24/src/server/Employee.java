@@ -80,10 +80,38 @@ public class Employee implements Serializable {
     }
 
     public void acceptTask(Task task){
-
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+        String query="update taskstatus set endStep=CURRENT_TIMESTAMP where taskID=? and stepName='available';";
+    try {
+        PreparedStatement preparedStatement=connection.prepareStatement(query);
+        preparedStatement.setInt(1,task.getTaskID());
+        preparedStatement.executeUpdate();
+        query="insert into taskstatus (taskID, employeeID, stepName, startStep) values\n" +
+                "        \t(?, ?, 'in progress', CURRENT_TIMESTAMP);";
+        preparedStatement=connection.prepareStatement(query);
+        preparedStatement.setInt(1,task.getTaskID());
+        preparedStatement.setInt(2,id);
+        preparedStatement.executeUpdate();
+        query="UPDATE equipment SET status='in use' WHERE equipmentID in (SELECT equipmentID FROM taskEquipment WHERE taskID=?)";
+        preparedStatement=connection.prepareStatement(query);
+        preparedStatement.setInt(1,task.getTaskID());
+        preparedStatement.executeUpdate();
+        query="UPDATE component Set quantity=quantity-? WHERE componentID in (SELECT componentID FROM taskComponent WHERE taskID=?)";
+        preparedStatement=connection.prepareStatement(query);
+        preparedStatement.setInt(1,task.getQuantity());
+        preparedStatement.setInt(2,task.getTaskID());
+        preparedStatement.executeUpdate();
+    }catch (SQLException e){
+        e.printStackTrace();
+    }
     }
     public void endTask(Task task, Employee employee){
-        System.out.println(task.getName()+" "+task.getQuantityOK()+"/"+task.getQuantityNOK()+" "+employee.getName()+" "+employee.getLastName());
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
