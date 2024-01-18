@@ -41,7 +41,7 @@ public class ProductionEmployee extends Employee{
                 "    MAX(task.quantity) as taskQuantity,\n" +
                 "    MAX(zone.name) as zoneName,\n" +
                 "    MAX(equipment.name) as equipmentName,\n" +
-                "    GROUP_CONCAT(component.name) as componentName \n" +
+                "    GROUP_CONCAT( DISTINCT component.name) as componentName \n" +
                 "FROM \n" +
                 "    task\n" +
                 "JOIN \n" +

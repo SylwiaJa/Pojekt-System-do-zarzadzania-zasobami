@@ -147,6 +147,22 @@ public class Task implements Serializable {
 
     }
 
+    public String getComponentName() {
+        return componentName;
+    }
+
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
+    }
+
+    public String getEquipmentName() {
+        return equipmentName;
+    }
+
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
+    }
+
     public int getId() {
         return taskID;
     }

@@ -1,13 +1,11 @@
 package client.controller;
 
 import client.TCPClientFX;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import server.Employee;
 import server.Task;
 
@@ -29,7 +27,11 @@ public class EmployeeController {
     private Label zone;
 
     @FXML
-    private TabPane tabPane;
+    private VBox taskDetailsVBox;
+
+    private TableView<Task> taskTableView;
+    private TableColumn<Task, String> taskNameColumn;
+    private TableColumn<Task, Void> actionColumn;
 
     public EmployeeController(TCPClientFX tcpClientFX, Employee employee, List<Task> tasks) {
         this.tcpClientFX = tcpClientFX;
@@ -45,7 +47,69 @@ public class EmployeeController {
         zone.setText("Zone: " + employee.getZone());
 
 
+            if ("in progress".equalsIgnoreCase(tasks.get(0).getStatus())) {
+                Label taskLabel = new Label(
+                        "Task: " + tasks.get(0).getName() +
+                                "\nDescription: " + tasks.get(0).getDescription() +
+                                "\nPriority: " + tasks.get(0).getPriority() +
+                                "\nQuantity: " + tasks.get(0).getQuantity() +
+                                "\nEquipment Name: " + tasks.get(0).getEquipmentName() +
+                                "\nComponent Name: " + tasks.get(0).getComponentName() +
+                                "\nStatus: " + tasks.get(0).getStatus()
+                );
+
+                Button endButton = new Button("End");
+                endButton.setOnAction(event -> endButtonAction(tasks.get(0)));
+
+                taskDetailsVBox.getChildren().add(taskLabel);
+                taskDetailsVBox.getChildren().add(endButton);
+            } else if ("available".equalsIgnoreCase(tasks.get(0).getStatus())) {
+                setupTaskTableView();
+            }
+
     }
+
+    private void setupTaskTableView() {
+        taskTableView = new TableView<>();
+        taskTableView.setItems(FXCollections.observableArrayList(tasks));
+
+        taskNameColumn = new TableColumn<>("Task Name");
+        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        actionColumn = new TableColumn<>("Action");
+        actionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button acceptButton = new Button("Accept");
+
+            {
+                acceptButton.setOnAction(event -> acceptButtonAction(getTableRow().getItem()));
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(acceptButton);
+                }
+            }
+        });
+
+        taskTableView.getColumns().addAll(taskNameColumn, actionColumn);
+
+        taskDetailsVBox.getChildren().add(taskTableView);
+    }
+
+    @FXML
+    private void endButtonAction(Task task) {
+        System.out.println("End button clicked");
+    }
+
+    @FXML
+    private void acceptButtonAction(Task task) {
+        System.out.println("Accept button clicked for task: " + task.getName());
+    }
+
     @FXML
     private void employeeButtonAction() {
         tcpClientFX.logOut();

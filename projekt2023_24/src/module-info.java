@@ -8,4 +8,6 @@ module system.demo {
     exports client;
     exports client.controller;
     opens client.controller to javafx.fxml;
+    opens server to javafx.base, javafx.fxml;
+
 }

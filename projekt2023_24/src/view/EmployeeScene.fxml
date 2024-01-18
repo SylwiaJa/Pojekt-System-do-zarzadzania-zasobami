@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<?import javafx.scene.layout.VBox?>
 <GridPane hgap="5" maxHeight="600.0" maxWidth="600.0" minHeight="400.0" minWidth="400.0" vgap="5" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
     <padding>
@@ -16,16 +17,21 @@
     <Button onAction="#employeeButtonAction" text="Wyloguj" GridPane.columnIndex="4" />
 
     <!-- Dodane Label'e -->
-    <Label fx:id="name"/>
-    <Label fx:id="lastName" GridPane.columnIndex="1" />
-    <Label fx:id="role" GridPane.columnIndex="2" />
-    <Label fx:id="zone" GridPane.columnIndex="3" />
+    <Label fx:id="name" GridPane.rowIndex="1" />
+    <Label fx:id="lastName" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+    <Label fx:id="role" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+    <Label fx:id="zone" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+
+    <!-- Dodane VBox dla etykiet z zadaniami i przyciskiem "End" -->
+    <VBox fx:id="taskDetailsVBox" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="5" >
+        <!-- Zawartość będzie generowana dynamicznie przez kontroler -->
+    </VBox>
 
     <columnConstraints>
         <ColumnConstraints maxWidth="108.5" minWidth="13.5" prefWidth="78.5" />
-      <ColumnConstraints maxWidth="314.0" minWidth="0.0" prefWidth="117.0" />
+        <ColumnConstraints maxWidth="314.0" minWidth="0.0" prefWidth="117.0" />
         <ColumnConstraints maxWidth="342.0" minWidth="0.0" prefWidth="163.0" />
-      <ColumnConstraints hgrow="ALWAYS" maxWidth="415.0" minWidth="56.0" prefWidth="138.0" />
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="415.0" minWidth="56.0" prefWidth="138.0" />
         <ColumnConstraints hgrow="ALWAYS" maxWidth="366.0" minWidth="56.0" prefWidth="75.0" />
     </columnConstraints>
     <rowConstraints>
