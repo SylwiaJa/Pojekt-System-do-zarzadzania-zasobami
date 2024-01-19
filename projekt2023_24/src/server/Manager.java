@@ -335,4 +335,24 @@ public List<Employee> getListOfEmployees(){
         }
         return zone;
     }
+
+    public void addLicenseToTaskCategory(String s, String s1) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "insert into taskcategorylicense values ((select taskCategoryID from taskCategory where name = ?), (select licenseID from license where name=?));";
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+preparedStatement.setString(1,s);
+preparedStatement.setString(2,s1);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

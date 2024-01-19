@@ -99,6 +99,14 @@ private List<Equipment> equipmentList;
         ComboBox<String> licenseComboBox1 = new ComboBox<>(taskCategoryOptions);
         ComboBox<String> licenseComboBox2 = new ComboBox<>(licenseOptions);
         Button addLicenseButton = new Button("Add");
+        addLicenseButton.setOnAction(actionEvent -> {
+            tcpClientFX.addLicenseToTaskCategory(licenseComboBox1.getValue(), licenseComboBox2.getValue());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Added");
+            alert.showAndWait();
+        });
 
         // Napis: dodaj sprzęt do kategorii zadania
         Label equipmentLabel = new Label("Dodaj sprzęt do kategorii zadania:");

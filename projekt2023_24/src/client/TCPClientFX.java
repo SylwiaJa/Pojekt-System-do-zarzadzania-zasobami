@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -284,6 +285,15 @@ public class TCPClientFX extends Application {
         try{
             objectOutputStream.writeObject("addTaskCategory");
             objectOutputStream.writeObject(text);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addLicenseToTaskCategory(String value, String value1) {
+        try{
+            objectOutputStream.writeObject("addLTTC");
+            objectOutputStream.writeObject(new ArrayList<>(Arrays.asList(value,value1)));
         }catch (IOException e){
             e.printStackTrace();
         }

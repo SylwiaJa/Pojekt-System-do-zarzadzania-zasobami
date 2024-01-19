@@ -104,14 +104,18 @@ public class ClientHandler implements Runnable {
                             String category = (String) objectInputStream.readObject();
                             ((Manager) employee).addTaskCategory(category);
                         }
+                        if (answer.equals("addLTTC")){
+                            List<String> list = (List<String>) objectInputStream.readObject();
+                            ((Manager)employee).addLicenseToTaskCategory(list.get(0),list.get(1));
+                        }
                     } while (!answer.equals("Close"));
                     log.endLogin(employee);
+                    return;
                 }
                 if(employee instanceof Leader){
                     List<Task> tasks = ((Leader)employee).getListOfTask();
                     List<Employee> employees = ((Leader)employee).getListOfEmployees();
                     List<Equipment> equipments = ((Leader)employee).getListOfEquipment();
-
                     objectOutputStream.writeObject(tasks);
                     objectOutputStream.writeObject(employees);
                     objectOutputStream.writeObject(equipments);
