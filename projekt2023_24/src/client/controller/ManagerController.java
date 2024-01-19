@@ -115,7 +115,14 @@ private List<Equipment> equipmentList;
         ComboBox<String> equipmentComboBox1 = new ComboBox<>(taskCategoryOptions);
         ComboBox<String> equipmentComboBox2 = new ComboBox<>(equipmentOptions);
         Button addEquipmentButton = new Button("Add");
-
+            addEquipmentButton.setOnAction(actionEvent -> {
+                tcpClientFX.addEquipmentToTaskCategory(equipmentComboBox1.getValue(),equipmentComboBox2.getValue());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Added");
+                alert.showAndWait();
+            });
         // Napis: Add new equipment
         Label newEquipmentLabel = new Label("Add new equipment:");
         ObservableList<String> statusOptions = FXCollections.observableArrayList("available","out of use");

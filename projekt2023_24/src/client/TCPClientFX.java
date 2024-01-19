@@ -298,4 +298,13 @@ public class TCPClientFX extends Application {
             e.printStackTrace();
         }
     }
+
+    public void addEquipmentToTaskCategory(String value, String value1) {
+        try{
+            objectOutputStream.writeObject("addETTC");
+            objectOutputStream.writeObject(new ArrayList<>(Arrays.asList(value,value1)));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
