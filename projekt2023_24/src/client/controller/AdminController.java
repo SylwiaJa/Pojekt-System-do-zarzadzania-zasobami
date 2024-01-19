@@ -105,6 +105,7 @@ public class AdminController {
 
                         // Tworzymy VBox, aby umieścić ComboBoxy, etykiety z danymi pracownika oraz przyciski
                         VBox vbox = new VBox();
+
                         vbox.setSpacing(10);
 
                         // ComboBox dla roli
@@ -116,15 +117,24 @@ public class AdminController {
                         zoneComboBox.setValue(employee.getZone()); // Ustawiamy początkową wartość na strefę pracownika
 
                         // Etykiety z danymi pracownika
-                        vbox.getChildren().add(new Label("Name: " + employee.getName()));
-                        vbox.getChildren().add(new Label("Last name: " + employee.getLastName()));
+                        Label nameLabel = new Label("Name: " + employee.getName());
+                        nameLabel.getStyleClass().add("textInfo");
+                        vbox.getChildren().add(nameLabel);
+
+                        Label lastNameLabel = new Label("Last name: " + employee.getLastName());
+                        lastNameLabel.getStyleClass().add("textInfo");
+                        vbox.getChildren().add(lastNameLabel);
 
                         // Etykieta i ComboBox dla roli
-                        HBox roleBox = new HBox(new Label("Role: "), roleComboBox);
+                        Label role=new Label("Role: ");
+                        role.getStyleClass().add("textInfo");
+                        HBox roleBox = new HBox(role, roleComboBox);
                         vbox.getChildren().add(roleBox);
 
                         // Etykieta i ComboBox dla strefy
-                        HBox zoneBox = new HBox(new Label("Zone: "), zoneComboBox);
+                        Label zone=new Label("Zone: ");
+                        zone.getStyleClass().add("textInfo");
+                        HBox zoneBox = new HBox(zone, zoneComboBox);
                         vbox.getChildren().add(zoneBox);
 
                         // Przycisk "Apply"
@@ -154,9 +164,11 @@ public class AdminController {
 
                         // Dodajemy przyciski do VBox
                         vbox.getChildren().addAll(applyButton, cancelButton);
+                        vbox.getStyleClass().add("vBoxStyle2");
 
                         // Dodajemy VBox do sceny
-                        Scene editScene = new Scene(vbox, 300, 200);
+                        Scene editScene = new Scene(vbox, 400, 400);
+                        editScene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
 
                         // Ustawiamy scenę w nowym oknie
                         editStage.setScene(editScene);
