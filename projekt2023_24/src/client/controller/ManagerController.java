@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import server.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class ManagerController {
@@ -150,19 +151,20 @@ private List<Equipment> equipmentList;
 
         // Użyj DatePicker dla daty
         DatePicker datePicker = new DatePicker();
-
-
         // Napis: Do
         Label toLabel = new Label("-");
-
         // Użyj DatePicker dla drugiej daty
         DatePicker endDatePicker = new DatePicker();
-
-
-
         // Dodanie przycisku "Add"
         Button addPermissionsButton = new Button("Add");
-
+addPermissionsButton.setOnAction(actionEvent -> {
+    tcpClientFX.addLicenseToEmployee(permissionsComboBox1.getValue(),permissionsComboBox2.getValue(),datePicker.getValue().toString(), endDatePicker.getValue().toString());
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Information Dialog");
+    alert.setHeaderText(null);
+    alert.setContentText("Added");
+    alert.showAndWait();
+});
         // Ustawienie układu (layout)
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);

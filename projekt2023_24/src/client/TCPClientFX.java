@@ -15,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -312,6 +313,15 @@ public class TCPClientFX extends Application {
         try{
             objectOutputStream.writeObject("addNewEquipment");
             objectOutputStream.writeObject(new ArrayList<>(Arrays.asList(text,value,value1,value2)));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addLicenseToEmployee(String value, String value1, String value2, String value3) {
+        try{
+            objectOutputStream.writeObject("addLicenseToEmployee");
+            objectOutputStream.writeObject(new ArrayList<>(Arrays.asList(value,value1,value2,value3)));
         }catch (IOException e){
             e.printStackTrace();
         }

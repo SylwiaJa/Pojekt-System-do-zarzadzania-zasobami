@@ -118,8 +118,29 @@ public class Manager extends Leader{
     public void changeTaskPriority(Task task, String  priority){
 
     }
-    public void addLicenseToEmployee(Employee employee, License license){
-
+    public void addLicenseToEmployee(List<String> list ){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "insert into employeelicense (employeeID, licenseID, startDate, expirationDate)\n" +
+                "        values ((select employeeID from employee where name=? AND lastName=?), (select licenseID from license where name=? ), ?, ?);";
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            List<String> name = Arrays.asList(list.get(0).split(" "));
+            preparedStatement.setString(1,name.get(0));
+            preparedStatement.setString(2,name.get(1));
+            preparedStatement.setString(3,list.get(1));
+            preparedStatement.setString(4,list.get(2));
+            preparedStatement.setString(5,list.get(3));
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     public void addEquipment(String s1,String s2,String s3,String s4 ){
         try {
