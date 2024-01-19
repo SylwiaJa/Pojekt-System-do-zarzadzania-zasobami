@@ -30,12 +30,28 @@ public class ClientHandler implements Runnable {
                 employee = connector.getUserInfo(login, password);
                 log.startLogin(employee);
                 objectOutputStream.writeObject(employee);
+                if (employee instanceof Admin) {
+                    List<Employee> employees = ((Admin) employee).getListOfEmployees();
+                    objectOutputStream.writeObject(employees);
+                    objectOutputStream.writeObject(connector.getRolesList());
+                    objectOutputStream.writeObject(connector.getZonesList());
 
+                    String answer;
+                    do {
+                        answer = (String) objectInputStream.readObject();
+                        if (answer.equals("Update")) {
+                            Employee updateEmployee = (Employee) objectInputStream.readObject();
+                            ((Admin) employee).changeRole(updateEmployee);
+                        }
+
+                    } while (!answer.equals("Close"));
+                    log.endLogin(employee);
+                }
                 if (employee instanceof Manager) {
                     List<Order> orders = employee.getListOfOrder();
-                    List<Task> tasks = employee.getListOfTask();
-                    List<Employee> employees = employee.getListOfEmployees();
-                    List<Equipment> equipments = employee.getListOfEquipment();
+                    List<Task> tasks = ((Manager)employee).getListOfTask();
+                    List<Employee> employees = ((Manager)employee).getListOfEmployees();
+                    List<Equipment> equipments = ((Manager)employee).getListOfEquipment();
                     objectOutputStream.writeObject(orders);
                     objectOutputStream.writeObject(tasks);
                     objectOutputStream.writeObject(employees);
@@ -60,44 +76,60 @@ public class ClientHandler implements Runnable {
                         }
                         if (answer.equals("getUseEquipment")) {
                             int equipmentID = (int) objectInputStream.readObject();
-                            List<List<String>> useEquipment = ((Manager) employee).getEquipmentTimeOfUseReport(equipmentID);
+                            List<List<String>> useEquipment =  employee.getEquipmentTimeOfUseReport(equipmentID);
                             objectOutputStream.writeObject(useEquipment);
                         }
                         if (answer.equals("updateEquipment")) {
                             Equipment equipment = (Equipment) objectInputStream.readObject();
-                            ((Manager) employee).changeEquipmentStatus(equipment);
+                            employee.changeEquipmentStatus(equipment);
                         }
                         if(answer.equals("getTaskInfo")){
                             Task myTask = (Task) objectInputStream.readObject();
-                           List<String> infoTask =  ((Manager) employee).getTaskInfo(myTask);
+                           List<String> infoTask =   employee.getTaskInfo(myTask);
                            objectOutputStream.writeObject(infoTask);
                         }
                         if(answer.equals("getEmpInfo")){
                             Employee emp = (Employee) objectInputStream.readObject();
-                            List<List<String>> empInfo = ((Manager) employee).getEmpInfo(emp);
+                            List<List<String>> empInfo =  employee.getEmpInfo(emp);
                             objectOutputStream.writeObject(empInfo);
                         }
                     } while (!answer.equals("Close"));
                     log.endLogin(employee);
                 }
+                if(employee instanceof Leader){
+                    List<Task> tasks = ((Leader)employee).getListOfTask();
+                    List<Employee> employees = ((Leader)employee).getListOfEmployees();
+                    List<Equipment> equipments = ((Leader)employee).getListOfEquipment();
 
-                if (employee instanceof Admin) {
-                    List<Employee> employees = ((Admin) employee).getListOfEmployees();
+                    objectOutputStream.writeObject(tasks);
                     objectOutputStream.writeObject(employees);
-                    objectOutputStream.writeObject(connector.getRolesList());
-                    objectOutputStream.writeObject(connector.getZonesList());
-
+                    objectOutputStream.writeObject(equipments);
                     String answer;
-                    do {
+                    do{
                         answer = (String) objectInputStream.readObject();
-                        if (answer.equals("Update")) {
-                            Employee updateEmployee = (Employee) objectInputStream.readObject();
-                            ((Admin) employee).changeRole(updateEmployee);
+                        if (answer.equals("getUseEquipment")) {
+                            int equipmentID = (int) objectInputStream.readObject();
+                            List<List<String>> useEquipment = employee.getEquipmentTimeOfUseReport(equipmentID);
+                            objectOutputStream.writeObject(useEquipment);
                         }
-
-                    } while (!answer.equals("Close"));
+                        if (answer.equals("updateEquipment")) {
+                            Equipment equipment = (Equipment) objectInputStream.readObject();
+                            employee.changeEquipmentStatus(equipment);
+                        }
+                        if(answer.equals("getTaskInfo")){
+                            Task myTask = (Task) objectInputStream.readObject();
+                            List<String> infoTask =   employee.getTaskInfo(myTask);
+                            objectOutputStream.writeObject(infoTask);
+                        }
+                        if(answer.equals("getEmpInfo")){
+                            Employee emp = (Employee) objectInputStream.readObject();
+                            List<List<String>> empInfo = employee.getEmpInfo(emp);
+                            objectOutputStream.writeObject(empInfo);
+                        }
+                    }while (!answer.equals("Close"));
                     log.endLogin(employee);
                 }
+
 
                 if (employee instanceof ProductionEmployee) {
                     Task myTask = ((ProductionEmployee) employee).getMyTask(employee);

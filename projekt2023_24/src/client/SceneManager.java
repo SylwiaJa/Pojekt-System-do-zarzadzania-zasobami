@@ -55,10 +55,10 @@ public class SceneManager {
         }
     }
 
-    public void showLeaderScene(TCPClientFX tcpClientFX, Employee employee) {
+    public void showLeaderScene(TCPClientFX tcpClientFX, Employee employee, List<Task> tasks, List<Employee> employees, List<Equipment> equipmentList) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LeaderScene.fxml"));
-            LeaderController leaderController = new LeaderController(tcpClientFX,employee);
+            LeaderController leaderController = new LeaderController(tcpClientFX,employee, tasks, employees, equipmentList);
             loader.setController(leaderController);
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));

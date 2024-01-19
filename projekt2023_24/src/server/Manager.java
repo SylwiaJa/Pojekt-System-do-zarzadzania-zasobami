@@ -95,55 +95,7 @@ public class Manager extends Leader{
             e.printStackTrace();
         }
     }
-    public List<List<String>> getEquipmentTimeOfUseReport(int id){
-        List<List<String>> useEquipment = new ArrayList<>();
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-            System.out.println("Pomyślnie połączono z bazą danych");
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        String query = "SELECT\n" +
-                "    employee.name,\n" +
-                "    employee.lastName,\n" +
-                "    taskStatus.startStep,\n" +
-                "    taskStatus.endStep,\n" +
-                "    task.name as taskName,\n" +
-                "    TIMESTAMPDIFF(HOUR, taskStatus.startStep, taskStatus.endStep) AS hoursInUse\n" +
-                "FROM\n" +
-                "    equipment\n" +
-                "JOIN taskEquipment ON taskEquipment.equipmentID = equipment.equipmentID\n" +
-                "JOIN task ON task.taskID = taskEquipment.taskID\n" +
-                "JOIN taskStatus ON taskStatus.taskID = task.taskID\n" +
-                "JOIN employee ON employee.employeeID = taskStatus.employeeID\n" +
-                "WHERE\n" +
-                "    equipment.equipmentID = ?;\n";
 
-try{
-    PreparedStatement preparedStatement = connection.prepareStatement(query);
-    preparedStatement.setInt(1,id);
-    ResultSet resultSet = preparedStatement.executeQuery();
-    while (resultSet.next()){
-        String name = resultSet.getString("name");
-        String lastName = resultSet.getString("lastName");
-        String startDate = resultSet.getString("startStep");
-        String endDate = resultSet.getString("endStep");
-        String taskName = resultSet.getString("taskName");
-        int use = resultSet.getInt("hoursInUse");
-        useEquipment.add(Arrays.asList(name,lastName,startDate,endDate,taskName,use+""));
-    }
-    for (List<String> innerList : useEquipment) {
-        for (String value : innerList) {
-            System.out.print(value + " ");
-        }
-        System.out.println();
-    }
-}catch (SQLException e){
-    e.printStackTrace();
-}
-return useEquipment;
-    }
     public void addTaskPriority(Task task, String priority){
 
     }
@@ -156,28 +108,38 @@ return useEquipment;
     public void addEquipment(Equipment equipment){
 
     }
-    public void changeEquipmentStatus(Equipment equipment){
-        int id = equipment.getId();
-        String status = equipment.getStatus();
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-            System.out.println("Pomyślnie połączono z bazą danych");
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        String query = "update equipment set status=? where equipmentID=?";
-        try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1,status);
-            preparedStatement.setInt(2,id);
-            preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+
+public List<Employee> getListOfEmployees(){
+    List<Employee> employees = new ArrayList<>();
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+        System.out.println("Pomyślnie połączono z bazą danych");
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
     }
-    public List<List<String>> getEmpInfo(Employee employee){
-        List<List<String>> empInfo = new ArrayList<>();
+    String query = "SELECT e.employeeID, e.name, e.lastName, r.roleName AS role, z.name AS zone\n" +
+            "FROM Employee e\n" +
+            "JOIN role r ON e.roleID = r.roleID\n" +
+            "JOIN zone z ON e.zoneID = z.zoneID;";
+    try {
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            int id = result.getInt("employeeID");
+            String name = result.getString("name");
+            String lastName = result.getString("lastName");
+            String role = result.getString("role");
+            String zone = result.getString("zone");
+            employees.add(new Employee(id, name,lastName,role,zone));
+        }
+    }catch (SQLException e){
+        e.printStackTrace();
+    }
+    return  employees;
+}
+    public List<Task> getListOfTask(){
+        List<Task> tasks = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
@@ -185,38 +147,38 @@ return useEquipment;
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        String query = "select concat(e.name,' ',e.lastName) 'employee', z.name 'zone', \n" +
-                "\t\tt.name 'task', t.description,\n" +
-                "        ts.stepName 'status', ts.startStep, TIMESTAMPDIFF(HOUR, ts.startStep, CURRENT_TIMESTAMP) 'hours'\n" +
-                "from employee e left join zone z on e.zoneID=z.zoneID\n" +
-                "\t\t\t\tleft join taskstatus ts on ts.employeeID=e.employeeID\n" +
-                "                left join task t on t.taskID=ts.taskID\n" +
-                "where ts.endStep ='0000-00-00 00:00:00' AND ts.employeeID=?;";
-        try{
+        String query = "SELECT \n" +
+                "    t.taskID AS taskID,\n" +
+                "    t.name AS name,\n" +
+                "    t.priority,\n" +
+                "    t.description,\n" +
+                "    t.norm,\n" +
+                "    z.name AS zone_name,\n" +
+                "    t.quantity\n" +
+                "FROM \n" +
+                "    Task t\n" +
+                "JOIN \n" +
+                "    Zone z ON t.zoneID = z.zoneID;\n";
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1,employee.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                String task = resultSet.getString("task");
-                String description = resultSet.getString("description");
-                String status = resultSet.getString("status");
-                String startStep = resultSet.getString("startStep");
-                String hours = resultSet.getString("hours");
-                List<String> info = new ArrayList<>();
-                info.add(task);
-                info.add(description);
-                info.add(status);
-                info.add(startStep);
-                info.add(hours);
-                empInfo.add(info);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                int id = result.getInt("taskID");
+                String name = result.getString("name");
+                String priority = result.getString("priority");
+                String description = result.getString("description");
+                int norm = result.getInt("norm");
+                String zoneName = result.getString("zone_name");
+                int quantity = result.getInt("quantity");
+                tasks.add(new Task(id, name,priority,description,norm,zoneName,quantity));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return  empInfo;
+        return  tasks;
     }
-    public List<String> getTaskInfo(Task task){
-        List<String> taskInfo = new ArrayList<>();
+    public List<Equipment> getListOfEquipment(){
+        List<Equipment> equipments = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
@@ -224,65 +186,31 @@ return useEquipment;
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        String query = "SELECT t.taskID, t.name, t.priority, t.description, p.name 'product', t.quantity, t.norm, \n" +
-                "\t\tts.stepName 'status',\n" +
-                "        concat(e.name,' ',e.lastName) 'employee',\n" +
-                "        GROUP_CONCAT(DISTINCT eq.name) 'equipment' , GROUP_CONCAT(DISTINCT c.name) 'component'\n" +
-                "FROM task t join product p on p.productID=t.productID \n" +
-                "\t\t\tjoin taskstatus ts on ts.taskID=t.taskID \n" +
-                "            join employee e on ts.employeeID=e.employeeID\n" +
-                "            join taskequipment te  on te.taskID=t.taskID\n" +
-                "            join equipment eq on eq.equipmentID=te.equipmentID\n" +
-                "            join taskcomponent tc  on tc.taskID=t.taskID\n" +
-                "            join component c on c.componentID=tc.componentID    \n" +
-                "            WHERE ts.endStep='0000-00-00 00:00:00' AND t.taskID=?\n" +
-                "GROUP BY t.taskID;";
-        try{
+
+        String query = "SELECT \n" +
+                "    e.equipmentID AS equipmentID,\n" +
+                "    e.name AS equipmentName,\n" +
+                "    e.status,\n" +
+                "    z.name AS zoneName\n" +
+                "FROM \n" +
+                "    equipment e\n" +
+                "JOIN \n" +
+                "    zone z ON e.zoneID = z.zoneID;";
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1,task.getTaskID());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                int taskID = resultSet.getInt("taskID");
-                String name = resultSet.getString("name");
-                String priority = resultSet.getString("priority");
-                String description = resultSet.getString("description");
-                String product = resultSet.getString("product");
-                int quantity = resultSet.getInt("quantity");
-                int norm = resultSet.getInt("norm");
-                String status = resultSet.getString("status");
-                String employee = resultSet.getString("employee");
-                String equipment = resultSet.getString("equipment");
-                String component = resultSet.getString("component");
-                taskInfo.add(String.valueOf(taskID));
-                taskInfo.add(name);
-                taskInfo.add(priority);
-                taskInfo.add(description);
-                taskInfo.add(product);
-                taskInfo.add(String.valueOf(quantity));
-                taskInfo.add(String.valueOf(norm));
-                taskInfo.add(status);
-                taskInfo.add(employee);
-                taskInfo.add(equipment);
-                taskInfo.add(component);
-                query="SELECT \n" +
-                        "    SEC_TO_TIME(SUM(total_duration)) AS total_duration\n" +
-                        "FROM (\n" +
-                        "    SELECT \n" +
-                        "        TIME_TO_SEC(TIMEDIFF(IF(endStep = '0000-00-00 00:00:00', CURRENT_TIMESTAMP, endStep), startStep)) AS total_duration\n" +
-                        "    FROM taskStatus\n" +
-                        "    WHERE taskID = ? AND stepName IN ('available', 'in progress')\n" +
-                        ") AS subquery;\n";
-                preparedStatement=connection.prepareStatement(query);
-                preparedStatement.setInt(1,task.getTaskID());
-                resultSet=preparedStatement.executeQuery();
-                while (resultSet.next()){
-                    String time = resultSet.getString("total_duration");
-                    taskInfo.add(time);
-                }
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("equipmentID");
+                String name = result.getString("equipmentName");
+                String status = result.getString("status");
+                String zoneName = result.getString("zoneName");
+                equipments.add(new Equipment(id, name,status,zoneName));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return  taskInfo;
+
+        return equipments;
     }
 }

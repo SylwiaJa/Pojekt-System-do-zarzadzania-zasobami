@@ -15,10 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import server.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class ManagerController {
     private TCPClientFX tcpClientFX;
@@ -430,7 +427,6 @@ private List<Equipment> equipmentList;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Task Details");
-
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
 
