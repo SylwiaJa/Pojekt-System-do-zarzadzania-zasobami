@@ -1,7 +1,10 @@
 . root{
-    -fx-min-width: 800px;
-    -fx-min-height: 600px;
     -fx-background-color: #122c45;
+}
+
+.center-screen {
+    -fx-alignment: center;
+    -fx-padding: 20;
 }
 
 /* Styl dla GridPane */
