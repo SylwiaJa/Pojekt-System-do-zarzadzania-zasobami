@@ -130,6 +130,7 @@ private Employee employee;
 
         for (String info : taskInfo) {
             Label label = new Label(info);
+            label.getStyleClass().add("textInfo");
             layout.getChildren().add(label);
         }
 
@@ -137,7 +138,8 @@ private Employee employee;
         closeButton.setOnAction(e -> window.close());
         layout.getChildren().add(closeButton);
 
-        Scene scene = new Scene(layout, 300, 400);
+        Scene scene = new Scene(layout, 300, 500);
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         window.setScene(scene);
 
         window.showAndWait();
@@ -216,6 +218,7 @@ private Employee employee;
 
         for (List<String> info : empInfo) {
             Label label = new Label(info.get(0)+" "+info.get(1)+" "+info.get(2)+" "+info.get(3)+" "+info.get(4));
+            label.getStyleClass().add("textInfo");
             layout.getChildren().add(label);
         }
 
@@ -223,7 +226,8 @@ private Employee employee;
         closeButton.setOnAction(e -> window.close());
         layout.getChildren().add(closeButton);
 
-        Scene scene = new Scene(layout, 300, 400);
+        Scene scene = new Scene(layout, 400, 200);
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         window.setScene(scene);
 
         window.showAndWait();
@@ -293,17 +297,21 @@ private Employee employee;
 
         // Tworzymy kontener VBox dla układu okna
         VBox vbox = new VBox(10);
+        vbox.getStyleClass().add("padd");
 
         // Dodajemy etykiety i pola tekstowe do VBox
         Label nameLabel = new Label("Name: " + equipment.getName());
+        nameLabel.getStyleClass().add("textInfo");
 
         // Lista rozwijana (ComboBox) dla statusu
         Label statusLable = new Label("Status: ");
+        statusLable.getStyleClass().add("textInfo");
         ComboBox<String> statusComboBox = new ComboBox<>();
         statusComboBox.getItems().addAll("available", "in use", "out of use");
         statusComboBox.setValue(equipment.getStatus()); // Ustawienie domyślnego statusu
 
         Label zoneLabel = new Label("Zone: " + equipment.getZone());
+        zoneLabel.getStyleClass().add("textInfo");
 
         // Dodajemy elementy do VBox
         vbox.getChildren().addAll(nameLabel, statusLable, statusComboBox, zoneLabel);
@@ -316,6 +324,7 @@ private Employee employee;
 
             }
             Label label = new Label(stringJoiner.toString());
+            label.getStyleClass().add("textInfo");
             vbox.getChildren().add(label);
 
         }
@@ -347,7 +356,8 @@ private Employee employee;
         vbox.getChildren().add(buttonBox);
 
         // Ustawiamy VBox jako scenę
-        Scene scene = new Scene(vbox, 400, 300);  // Zwiększyłem szerokość okna, aby pomieścić więcej informacji
+        Scene scene = new Scene(vbox, 500, 300);  // Zwiększyłem szerokość okna, aby pomieścić więcej informacji
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         viewEquipmentStage.setScene(scene);
 
         // Pokazujemy nowe okno
