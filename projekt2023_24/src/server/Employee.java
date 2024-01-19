@@ -410,12 +410,16 @@ public class Employee implements Serializable {
                 "JOIN taskStatus ON taskStatus.taskID = task.taskID\n" +
                 "JOIN employee ON employee.employeeID = taskStatus.employeeID\n" +
                 "WHERE\n" +
-                "    equipment.equipmentID = ?;\n";
+                "    equipment.equipmentID = ?\n" +
+                "ORDER BY\n" +
+                "    taskStatus.endStep DESC\n" +
+                "LIMIT 5;\n";
 
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            int hoursSum=0;
             while (resultSet.next()){
                 String name = resultSet.getString("name");
                 String lastName = resultSet.getString("lastName");
@@ -423,14 +427,10 @@ public class Employee implements Serializable {
                 String endDate = resultSet.getString("endStep");
                 String taskName = resultSet.getString("taskName");
                 int use = resultSet.getInt("hoursInUse");
+                hoursSum+=use;
                 useEquipment.add(Arrays.asList(name,lastName,startDate,endDate,taskName,use+""));
             }
-            for (List<String> innerList : useEquipment) {
-                for (String value : innerList) {
-                    System.out.print(value + " ");
-                }
-                System.out.println();
-            }
+            useEquipment.add(List.of(hoursSum + ""));
         }catch (SQLException e){
             e.printStackTrace();
         }
