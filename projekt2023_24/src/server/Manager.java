@@ -146,7 +146,6 @@ public class Manager extends Leader{
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-            System.out.println("Pomyślnie połączono z bazą danych");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
