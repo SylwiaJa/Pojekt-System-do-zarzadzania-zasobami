@@ -112,6 +112,10 @@ public class ClientHandler implements Runnable {
                             List<String> list = (List<String>) objectInputStream.readObject();
                             ((Manager)employee).addEquipmentToTaskCategory(list.get(0),list.get(1));
                         }
+                        if (answer.equals("addNewEquipment")){
+                            List<String> list = (List<String>) objectInputStream.readObject();
+                            ((Manager)employee).addEquipment(list.get(0),list.get(1),list.get(2),list.get(3));
+                        }
 
                     } while (!answer.equals("Close"));
                     log.endLogin(employee);

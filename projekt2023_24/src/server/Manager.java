@@ -121,8 +121,26 @@ public class Manager extends Leader{
     public void addLicenseToEmployee(Employee employee, License license){
 
     }
-    public void addEquipment(Equipment equipment){
-
+    public void addEquipment(String s1,String s2,String s3,String s4 ){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "insert into equipment (name, equipmentCategoryID, status, zoneID) values (?, (select equipmentCategoryID from equipmentCategory where name=? ), ?, (select zoneID from zone where name=?));";
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,s1);
+            preparedStatement.setString(2,s2);
+            preparedStatement.setString(3,s3);
+            preparedStatement.setString(4,s4);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
 public List<Employee> getListOfEmployees(){

@@ -133,8 +133,8 @@ private List<Equipment> equipmentList;
         ComboBox<String> newEquipmentComboBox2 = new ComboBox<>(statusOptions);
         ComboBox<String> newEquipmentComboBox3 = new ComboBox<>(zoneOptions);
         Button addNewEquipmentButton = new Button("Add");
-        addEquipmentButton.setOnAction(actionEvent -> {
-
+        addNewEquipmentButton.setOnAction(actionEvent -> {
+            tcpClientFX.addNewEquipment(newEquipmentTextField.getText(), newEquipmentComboBox1.getValue(),newEquipmentComboBox2.getValue(),newEquipmentComboBox3.getValue());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText(null);

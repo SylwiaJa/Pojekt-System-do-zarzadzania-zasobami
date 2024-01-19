@@ -307,4 +307,13 @@ public class TCPClientFX extends Application {
             e.printStackTrace();
         }
     }
+
+    public void addNewEquipment(String text, String value, String value1, String value2) {
+        try{
+            objectOutputStream.writeObject("addNewEquipment");
+            objectOutputStream.writeObject(new ArrayList<>(Arrays.asList(text,value,value1,value2)));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
