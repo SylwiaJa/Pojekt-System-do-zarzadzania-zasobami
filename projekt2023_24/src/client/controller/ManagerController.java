@@ -3,6 +3,8 @@ package client.controller;
 import client.TCPClientFX;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -57,8 +59,90 @@ private List<Equipment> equipmentList;
         addTasksTab(tasks);
         addEmployeesTab(employees);
         addEquipmentsTab(equipmentList);
+        addOther();
 
     }
+
+    private void addOther() {
+        Tab otherTab = new Tab("Other");
+
+        // Napis: Dodaj kategorię zadania
+        Label taskCategoryLabel = new Label("Dodaj kategorię zadania:");
+        TextField taskCategoryTextField = new TextField();
+        Button addTaskCategoryButton = new Button("Add");
+
+        // Napis: dodaj licencje do kategorii
+        Label licenseLabel = new Label("Dodaj licencje do kategorii:");
+        ObservableList<String> licenseOptions = FXCollections.observableArrayList("Licencja A", "Licencja B", "Licencja C");
+        ComboBox<String> licenseComboBox1 = new ComboBox<>(licenseOptions);
+        ComboBox<String> licenseComboBox2 = new ComboBox<>(licenseOptions);
+        Button addLicenseButton = new Button("Add");
+
+        // Napis: dodaj sprzęt do kategorii zadania
+        Label equipmentLabel = new Label("Dodaj sprzęt do kategorii zadania:");
+        ObservableList<String> equipmentOptions = FXCollections.observableArrayList("Sprzęt A", "Sprzęt B", "Sprzęt C");
+        ComboBox<String> equipmentComboBox1 = new ComboBox<>(equipmentOptions);
+        ComboBox<String> equipmentComboBox2 = new ComboBox<>(equipmentOptions);
+        Button addEquipmentButton = new Button("Add");
+
+        // Napis: Add new equipment
+        Label newEquipmentLabel = new Label("Add new equipment:");
+        TextField newEquipmentTextField = new TextField();
+        ComboBox<String> newEquipmentComboBox1 = new ComboBox<>(equipmentOptions);
+        ComboBox<String> newEquipmentComboBox2 = new ComboBox<>(equipmentOptions);
+        ComboBox<String> newEquipmentComboBox3 = new ComboBox<>(equipmentOptions);
+        Button addNewEquipmentButton = new Button("Add");
+// Napis: Add permissions to the employee
+        Label permissionsLabel = new Label("Add permissions to the employee:");
+        ObservableList<String> permissionsOptions = FXCollections.observableArrayList("Permission A", "Permission B", "Permission C");
+        ComboBox<String> permissionsComboBox1 = new ComboBox<>(permissionsOptions);
+        ComboBox<String> permissionsComboBox2 = new ComboBox<>(permissionsOptions);
+
+        // Użyj DatePicker dla daty
+        DatePicker datePicker = new DatePicker();
+
+        // Użyj Spinner dla godziny
+        Spinner<Integer> hourSpinner = new Spinner<>(0, 23, 0);
+        Spinner<Integer> minuteSpinner = new Spinner<>(0, 59, 0);
+
+        // Ustawienie formatu godziny w Spinnerze
+        hourSpinner.getEditor().setPrefWidth(50);
+        minuteSpinner.getEditor().setPrefWidth(50);
+
+        // Napis: Do
+        Label toLabel = new Label("-");
+
+        // Użyj DatePicker dla drugiej daty
+        DatePicker endDatePicker = new DatePicker();
+
+        // Użyj Spinner dla drugiej godziny
+        Spinner<Integer> endHourSpinner = new Spinner<>(0, 23, 0);
+        Spinner<Integer> endMinuteSpinner = new Spinner<>(0, 59, 0);
+
+        // Ustawienie formatu godziny w drugim Spinnerze
+        endHourSpinner.getEditor().setPrefWidth(50);
+        endMinuteSpinner.getEditor().setPrefWidth(50);
+
+        // Dodanie przycisku "Add"
+        Button addPermissionsButton = new Button("Add");
+
+        // Ustawienie układu (layout)
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(10, 10, 10, 10));
+
+        gridPane.addRow(0, taskCategoryLabel, taskCategoryTextField, addTaskCategoryButton);
+        gridPane.addRow(1, licenseLabel, licenseComboBox1, licenseComboBox2, addLicenseButton);
+        gridPane.addRow(2, equipmentLabel, equipmentComboBox1, equipmentComboBox2, addEquipmentButton);
+        gridPane.addRow(3, newEquipmentLabel, newEquipmentTextField, newEquipmentComboBox1, newEquipmentComboBox2, newEquipmentComboBox3, addNewEquipmentButton);
+        gridPane.addRow(4, permissionsLabel, permissionsComboBox1, permissionsComboBox2, datePicker, hourSpinner, minuteSpinner, toLabel, endDatePicker, endHourSpinner, endMinuteSpinner, addPermissionsButton);
+
+        otherTab.setContent(gridPane);
+
+        tabPane.getTabs().add(otherTab);
+    }
+
     private void addOrdersTab() {
         Tab ordersTab = new Tab("Orders");
 
