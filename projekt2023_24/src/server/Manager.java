@@ -213,4 +213,110 @@ public List<Employee> getListOfEmployees(){
 
         return equipments;
     }
+
+    public List<String> getListOfTaskCategory() {
+        List<String> taskCategory = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT taskCategory.name FROM taskCategory";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                String name = result.getString("name");
+                taskCategory.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return taskCategory;
+    }
+
+    public List<String> getListofEquipmentCategory() {
+        List<String> eqCategory = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT equipmentCategory.name FROM equipmentCategory";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                String name = result.getString("name");
+                eqCategory.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return eqCategory;
+    }
+
+    public List<License> getLicenseList() {
+        List<License> licenseList = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT *  from license";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("licenseID");
+                String name = result.getString("name");
+                String description = result.getString("description");
+                licenseList.add(new License(id, name,description));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return licenseList;
+    }
+
+    public List<String> getListOfZone() {
+        List<String> zone = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT zone.name from zone";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                String name = result.getString("name");
+                zone.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return zone;
+    }
 }
