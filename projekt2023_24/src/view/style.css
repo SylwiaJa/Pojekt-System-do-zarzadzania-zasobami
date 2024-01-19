@@ -1,0 +1,87 @@
+. root{
+    -fx-min-width: 800px;
+    -fx-min-height: 600px;
+    -fx-background-color: #122c45;
+}
+
+/* Styl dla GridPane */
+#gridPane {
+    -fx-min-width: 800;
+    -fx-min-height: 600;
+    -fx-padding: 0 80 5 80;
+
+}
+/* Styl dla textInfo */
+.textInfo {
+    -fx-padding: 5;
+    -fx-background-color: #122c45;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-text-fill: #fef9e6;
+}
+
+/* Styl dla VBox */
+.vBoxStyle {
+    -fx-padding: 5;
+    -fx-background-color: #fef9e6;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-text-fill: #122c45;
+}
+
+
+
+/* Styl dla TextField */
+.text-field {
+    -fx-padding: 5;
+}
+
+/* Styl dla Label */
+.label{
+    -fx-padding: 5;
+}
+
+/* Styl dla button */
+.button{
+    -fx-padding: 5;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-background-radius: 5;
+}
+
+/* Styl dla logoutButton */
+.logoutButton {
+    -fx-padding: 5;
+    -fx-background-color:  #fef9e6;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-text-fill: #122c45;
+    -fx-background-radius: 8;
+}
+
+/* Styl dla Button */
+#loginButton {
+    -fx-padding: 5;
+    -fx-background-color:  #fef9e6;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-text-fill: #122c45
+    -fx-background-radius: 12;
+}
+
+/* Styl dla kolumny z logo */
+#logoColumn {
+    -fx-pref-width: 400; /* Szerokość kolumny z logo */
+}
+
+/* Styl dla kolumny z polami logowania */
+#loginColumn {
+    -fx-alignment: CENTER;
+
+    -fx-pref-width: 400; /* Szerokość kolumny z polami logowania */
+}

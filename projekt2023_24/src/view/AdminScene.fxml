@@ -3,41 +3,69 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="5" maxHeight="600.0" maxWidth="600.0" minHeight="400.0" minWidth="400.0" vgap="5" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane alignment="center" hgap="5" maxHeight="600.0" maxWidth="600.0" minHeight="400.0" minWidth="400.0" stylesheets="@style.css" vgap="5" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
+    <ImageView fitHeight="119.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true" GridPane.valignment="TOP">
+        <image>
+            <Image url="@logo.png" />
+        </image>
+        <GridPane.margin>
+            <Insets />
+        </GridPane.margin>
+    </ImageView>
 
-    <Button onAction="#adminButtonAction" text="Wyloguj" GridPane.columnIndex="4" />
+    <Button alignment="CENTER" contentDisplay="CENTER" onAction="#adminButtonAction" styleClass="logoutButton" text="Log out" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+        <GridPane.margin>
+            <Insets right="10.0" top="10.0" />
+        </GridPane.margin>
+    </Button>
 
     <!-- Dodane Label'e -->
-    <Label fx:id="name" />
-    <Label fx:id="lastName"  GridPane.columnIndex="1" />
-    <Label fx:id="role" GridPane.columnIndex="2" />
-    <Label fx:id="zone" GridPane.columnIndex="3" />
+    <Label fx:id="name" styleClass="textInfo" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <GridPane.margin>
+            <Insets bottom="10.0" />
+        </GridPane.margin></Label>
+    <Label fx:id="lastName" styleClass="textInfo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <GridPane.margin>
+            <Insets bottom="10.0" />
+        </GridPane.margin></Label>
+    <Label fx:id="role" styleClass="textInfo" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <GridPane.margin>
+            <Insets bottom="10.0" />
+        </GridPane.margin></Label>
+    <Label fx:id="zone" styleClass="textInfo" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <GridPane.margin>
+            <Insets bottom="10.0" />
+        </GridPane.margin></Label>
 
-    <TabPane fx:id="tabPane" GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="1">
+    <TabPane fx:id="tabPane" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.rowIndex="2">
         <tabs>
 
         </tabs>
+        <GridPane.margin>
+            <Insets left="20.0" right="20.0" top="10.0" />
+        </GridPane.margin>
     </TabPane>
 
     <columnConstraints>
-        <ColumnConstraints maxWidth="108.5" minWidth="13.5" prefWidth="78.5" />
-        <ColumnConstraints maxWidth="314.0" minWidth="0.0" prefWidth="117.0" />
-        <ColumnConstraints maxWidth="342.0" minWidth="0.0" prefWidth="163.0" />
-        <ColumnConstraints hgrow="ALWAYS" maxWidth="415.0" minWidth="56.0" prefWidth="138.0" />
-        <ColumnConstraints hgrow="ALWAYS" maxWidth="366.0" minWidth="56.0" prefWidth="75.0" />
+        <ColumnConstraints maxWidth="172.0000183105469" minWidth="13.5" prefWidth="200.0" />
+        <ColumnConstraints maxWidth="314.0" minWidth="0.0" prefWidth="200.0" />
+        <ColumnConstraints maxWidth="342.0" minWidth="0.0" prefWidth="200.0" />
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="415.0" minWidth="56.0" prefWidth="200.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="191.0" minHeight="10.0" prefHeight="33.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="327.0" minHeight="169.0" prefHeight="327.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="191.0" minHeight="10.0" prefHeight="120.40000610351564" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="445.60000915527337" minHeight="47.20001831054688" prefHeight="54.399993896484375" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="445.60000915527337" minHeight="169.0" prefHeight="384.80000000000007" vgrow="ALWAYS" />
         <RowConstraints />
         <RowConstraints />
         <RowConstraints />

@@ -1,17 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="145.0" prefWidth="155.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Button layoutX="59.0" layoutY="118.0" mnemonicParsing="false" onAction="#errorButtonAction" text="Close" />
-      <Label layoutX="26.0" layoutY="73.0" prefHeight="44.0" prefWidth="141.0" text="Login error !!!" textFill="#e10000">
+<AnchorPane style="-fx-background-color: #122c45;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <GridPane id="gridPane" prefHeight="308.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+      <padding>
+         <Insets bottom="10" left="10" right="10" top="10" />
+      </padding>
+
+      <ImageView id="logoImage" fitHeight="247.0" fitWidth="247.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </ImageView>
+
+      <Label id="loginLabel" alignment="CENTER_RIGHT" minWidth="100" text="Invalid login data !!!" textFill="#fef9e6" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
          <font>
-            <Font size="24.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-   </children>
+
+      <Button id="loginButton" minWidth="100" onAction="#errorButtonAction" style="-fx-background-color: #fef9e6;" text="Close" textFill="#122c45" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+
+
+      <columnConstraints>
+         <ColumnConstraints fx:id="logo1" halignment="CENTER" maxWidth="258.39996337890625" minWidth="87.39997558593751" prefWidth="124.0" />
+         <ColumnConstraints fx:id="logo2" maxWidth="385.20001220703125" minWidth="124.80003662109368" prefWidth="124.0" />
+         <ColumnConstraints fx:id="login" maxWidth="105.59995117187498" minWidth="102.39999999999998" prefWidth="102.39999999999998" />
+         <ColumnConstraints maxWidth="150.60000000000002" minWidth="112.79998779296875" prefWidth="112.79998779296875" />
+         <ColumnConstraints maxWidth="155.20001220703125" minWidth="124.79998779296875" prefWidth="155.20001220703125" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints maxHeight="316.00000610351566" minHeight="0.0" prefHeight="90.00000915527343" />
+         <RowConstraints maxHeight="635.1999969482422" minHeight="0.0" prefHeight="54.79999084472655" />
+         <RowConstraints maxHeight="356.8000427246094" minHeight="30.399987792968773" prefHeight="58.599999999999994" />
+         <RowConstraints maxHeight="619.2000061035155" minHeight="30.399987792968773" prefHeight="89.79999999999998" />
+      </rowConstraints>
+
+   </GridPane>
 </AnchorPane>
