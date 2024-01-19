@@ -24,6 +24,21 @@
     -fx-text-fill: #fef9e6;
 }
 
+/* Styl dla textInfo2 */
+.textInfo2 {
+    -fx-padding: 5;
+    -fx-background-color: #122c45;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-text-fill: #fef9e6;
+}
+
+.center-vbox {
+    -fx-alignment: center;
+    -fx-padding: 10;
+}
+
 /* Styl dla VBox */
 .vBoxStyle {
     -fx-padding: 5;
@@ -34,7 +49,15 @@
     -fx-text-fill: #122c45;
 }
 
-
+/* Styl dla VBox2 */
+.vBoxStyle2 {
+    -fx-padding: 10;
+    -fx-background-color: #122c45;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+    -fx-text-fill: #fef9e6;
+}
 
 /* Styl dla TextField */
 .text-field {
