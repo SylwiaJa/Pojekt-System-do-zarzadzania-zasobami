@@ -5,10 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import server.Employee;
-import server.Equipment;
-import server.Order;
-import server.Task;
+import server.*;
 
 
 import java.io.IOException;
@@ -67,10 +64,10 @@ public class SceneManager {
         }
     }
 
-    public void showManagerScene(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks, List<Employee> employees, List<Equipment> equipmentList) {
+    public void showManagerScene(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks, List<Employee> employees, List<Equipment> equipmentList, List<String> taskCategories, List<String> equipmentCategories, List<License> licenseList, List<String> zoneList) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ManagerScene.fxml"));
-            ManagerController managerController = new ManagerController(tcpClientFX,employee,orders, tasks,employees,equipmentList);
+            ManagerController managerController = new ManagerController(tcpClientFX,employee,orders, tasks,employees,equipmentList,taskCategories,equipmentCategories,licenseList,zoneList);
             loader.setController(managerController);
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));

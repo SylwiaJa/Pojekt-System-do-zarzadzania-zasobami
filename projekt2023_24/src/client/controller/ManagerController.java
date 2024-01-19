@@ -37,14 +37,24 @@ private List<Equipment> equipmentList;
 
     @FXML
     private TabPane tabPane;
+    List<String> taskCategories;
+    List<String> equipmentCategories;
+    List<License> licenseList;
+    List<String> zoneList;
 
-    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks, List<Employee> employees, List<Equipment> equipmentList) {
+    public ManagerController(TCPClientFX tcpClientFX, Employee employee, List<Order> orders, List<Task> tasks,
+                             List<Employee> employees, List<Equipment> equipmentList,List<String> taskCategories,
+                             List<String> equipmentCategories,List<License> licenseList, List<String> zoneList) {
         this.tcpClientFX = tcpClientFX;
         this.employee = employee;
         this.orders = orders;
         this.tasks = tasks;
         this.employees = employees;
         this.equipmentList=equipmentList;
+        this.taskCategories=taskCategories;
+        this.equipmentCategories=equipmentCategories;
+        this.licenseList=licenseList;
+        this.zoneList=zoneList;
     }
 
     @FXML
@@ -72,31 +82,39 @@ private List<Equipment> equipmentList;
         Button addTaskCategoryButton = new Button("Add");
 
         // Napis: dodaj licencje do kategorii
-        Label licenseLabel = new Label("Dodaj licencje do kategorii:");
-        ObservableList<String> licenseOptions = FXCollections.observableArrayList("Licencja A", "Licencja B", "Licencja C");
-        ComboBox<String> licenseComboBox1 = new ComboBox<>(licenseOptions);
+        Label licenseLabel = new Label("Dodaj licencje do kategorii zadania:");
+        ObservableList<String> licenseOptions = FXCollections.observableArrayList();
+        licenseList.forEach(license -> licenseOptions.add(license.getName()));
+        ObservableList<String> taskCategoryOptions = FXCollections.observableArrayList();
+        taskCategoryOptions.addAll(taskCategories);
+        ComboBox<String> licenseComboBox1 = new ComboBox<>(taskCategoryOptions);
         ComboBox<String> licenseComboBox2 = new ComboBox<>(licenseOptions);
         Button addLicenseButton = new Button("Add");
 
         // Napis: dodaj sprzęt do kategorii zadania
         Label equipmentLabel = new Label("Dodaj sprzęt do kategorii zadania:");
-        ObservableList<String> equipmentOptions = FXCollections.observableArrayList("Sprzęt A", "Sprzęt B", "Sprzęt C");
-        ComboBox<String> equipmentComboBox1 = new ComboBox<>(equipmentOptions);
+        ObservableList<String> equipmentOptions = FXCollections.observableArrayList();
+        equipmentOptions.addAll(equipmentCategories);
+        ComboBox<String> equipmentComboBox1 = new ComboBox<>(taskCategoryOptions);
         ComboBox<String> equipmentComboBox2 = new ComboBox<>(equipmentOptions);
         Button addEquipmentButton = new Button("Add");
 
         // Napis: Add new equipment
         Label newEquipmentLabel = new Label("Add new equipment:");
+        ObservableList<String> statusOptions = FXCollections.observableArrayList("available","out of use");
+        ObservableList<String> zoneOptions = FXCollections.observableArrayList();
+        zoneOptions.addAll(zoneList);
         TextField newEquipmentTextField = new TextField();
         ComboBox<String> newEquipmentComboBox1 = new ComboBox<>(equipmentOptions);
-        ComboBox<String> newEquipmentComboBox2 = new ComboBox<>(equipmentOptions);
-        ComboBox<String> newEquipmentComboBox3 = new ComboBox<>(equipmentOptions);
+        ComboBox<String> newEquipmentComboBox2 = new ComboBox<>(statusOptions);
+        ComboBox<String> newEquipmentComboBox3 = new ComboBox<>(zoneOptions);
         Button addNewEquipmentButton = new Button("Add");
 // Napis: Add permissions to the employee
         Label permissionsLabel = new Label("Add permissions to the employee:");
-        ObservableList<String> permissionsOptions = FXCollections.observableArrayList("Permission A", "Permission B", "Permission C");
-        ComboBox<String> permissionsComboBox1 = new ComboBox<>(permissionsOptions);
-        ComboBox<String> permissionsComboBox2 = new ComboBox<>(permissionsOptions);
+        ObservableList<String> employeeOptions = FXCollections.observableArrayList();
+        employees.forEach(e->employeeOptions.add(e.getName()+" "+e.getLastName()));
+        ComboBox<String> permissionsComboBox1 = new ComboBox<>(employeeOptions);
+        ComboBox<String> permissionsComboBox2 = new ComboBox<>(licenseOptions);
 
         // Użyj DatePicker dla daty
         DatePicker datePicker = new DatePicker();

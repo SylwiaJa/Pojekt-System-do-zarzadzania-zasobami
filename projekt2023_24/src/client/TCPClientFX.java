@@ -8,10 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import client.controller.LoginController;
-import server.Employee;
-import server.Equipment;
-import server.Order;
-import server.Task;
+import server.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -113,7 +110,11 @@ public class TCPClientFX extends Application {
                         List<Task> tasks = (List<Task>) objectInputStream.readObject();
                         List<Employee> employees = (List<Employee>) objectInputStream.readObject();
                         List<Equipment> equipmentList = (List<Equipment>) objectInputStream.readObject();
-                        sceneManager.showManagerScene(this, employee, orders, tasks,employees,equipmentList);
+                        List<String> taskCategories = (List<String>) objectInputStream.readObject();
+                        List<String> equipmentCategories = (List<String>) objectInputStream.readObject();
+                        List<License> licenseList = (List<License>) objectInputStream.readObject();
+                        List<String> zoneList = (List<String>) objectInputStream.readObject();
+                        sceneManager.showManagerScene(this, employee, orders, tasks,employees,equipmentList,taskCategories,equipmentCategories,licenseList,zoneList);
                         break;
                     }
                 }

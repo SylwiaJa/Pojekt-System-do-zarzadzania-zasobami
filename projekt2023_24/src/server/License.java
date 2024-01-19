@@ -1,6 +1,8 @@
 package server;
 
-public class License {
+import java.io.Serializable;
+
+public class License implements Serializable {
     private String id;
     private String name;
     private String description;
@@ -10,6 +12,19 @@ public class License {
         this.name = name;
         this.description = description;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public boolean checkLicense(Employee employee, Task task){
         return true;
     }

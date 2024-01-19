@@ -52,11 +52,18 @@ public class ClientHandler implements Runnable {
                     List<Task> tasks = ((Manager)employee).getListOfTask();
                     List<Employee> employees = ((Manager)employee).getListOfEmployees();
                     List<Equipment> equipments = ((Manager)employee).getListOfEquipment();
+                    List<String> taskCategories = ((Manager)employee).getListOfTaskCategory();
+                    List<String> equipmentCategories = ((Manager)employee).getListofEquipmentCategory();
+                    List<License> licenseList = ((Manager)employee).getLicenseList();
+                    List<String> zoneList = ((Manager)employee).getListOfZone();
                     objectOutputStream.writeObject(orders);
                     objectOutputStream.writeObject(tasks);
                     objectOutputStream.writeObject(employees);
                     objectOutputStream.writeObject(equipments);
-
+                    objectOutputStream.writeObject(taskCategories);
+                    objectOutputStream.writeObject(equipmentCategories);
+                    objectOutputStream.writeObject(licenseList);
+                    objectOutputStream.writeObject(zoneList);
                     String answer;
                     do {
                         answer = (String) objectInputStream.readObject();
