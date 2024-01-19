@@ -279,4 +279,13 @@ public class TCPClientFX extends Application {
         }
         return empInfo;
     }
+
+    public void addTaskCategory(String text) {
+        try{
+            objectOutputStream.writeObject("addTaskCategory");
+            objectOutputStream.writeObject(text);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,9 +1,11 @@
 package server;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
 
 public class Manager extends Leader{
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/system";
@@ -18,7 +20,21 @@ public class Manager extends Leader{
         super(id, name, lastName, role, zone, login, password, task);
     }
     public void addTaskCategory(String category){
-
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Pomyślnie połączono z bazą danych");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "insert into taskCategory (name ) values (?) ";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,category);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     public void addNewTask(Task task, Employee employee){
         try {

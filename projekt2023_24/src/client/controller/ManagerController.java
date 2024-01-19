@@ -80,6 +80,15 @@ private List<Equipment> equipmentList;
         Label taskCategoryLabel = new Label("Dodaj kategorię zadania:");
         TextField taskCategoryTextField = new TextField();
         Button addTaskCategoryButton = new Button("Add");
+        addTaskCategoryButton.setOnAction(actionEvent -> {
+            tcpClientFX.addTaskCategory(taskCategoryTextField.getText());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Added");
+
+            alert.showAndWait();
+        });
 
         // Napis: dodaj licencje do kategorii
         Label licenseLabel = new Label("Dodaj licencje do kategorii zadania:");
