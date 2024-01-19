@@ -34,8 +34,7 @@
     -fx-text-fill: #fef9e6;
 }
 
-.center-vbox {
-    -fx-alignment: center;
+.padd {
     -fx-padding: 10;
 }
 
