@@ -133,6 +133,14 @@ private List<Equipment> equipmentList;
         ComboBox<String> newEquipmentComboBox2 = new ComboBox<>(statusOptions);
         ComboBox<String> newEquipmentComboBox3 = new ComboBox<>(zoneOptions);
         Button addNewEquipmentButton = new Button("Add");
+        addEquipmentButton.setOnAction(actionEvent -> {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Added");
+            alert.showAndWait();
+        });
 // Napis: Add permissions to the employee
         Label permissionsLabel = new Label("Add permissions to the employee:");
         ObservableList<String> employeeOptions = FXCollections.observableArrayList();
@@ -143,13 +151,6 @@ private List<Equipment> equipmentList;
         // Użyj DatePicker dla daty
         DatePicker datePicker = new DatePicker();
 
-        // Użyj Spinner dla godziny
-        Spinner<Integer> hourSpinner = new Spinner<>(0, 23, 0);
-        Spinner<Integer> minuteSpinner = new Spinner<>(0, 59, 0);
-
-        // Ustawienie formatu godziny w Spinnerze
-        hourSpinner.getEditor().setPrefWidth(50);
-        minuteSpinner.getEditor().setPrefWidth(50);
 
         // Napis: Do
         Label toLabel = new Label("-");
@@ -157,13 +158,7 @@ private List<Equipment> equipmentList;
         // Użyj DatePicker dla drugiej daty
         DatePicker endDatePicker = new DatePicker();
 
-        // Użyj Spinner dla drugiej godziny
-        Spinner<Integer> endHourSpinner = new Spinner<>(0, 23, 0);
-        Spinner<Integer> endMinuteSpinner = new Spinner<>(0, 59, 0);
 
-        // Ustawienie formatu godziny w drugim Spinnerze
-        endHourSpinner.getEditor().setPrefWidth(50);
-        endMinuteSpinner.getEditor().setPrefWidth(50);
 
         // Dodanie przycisku "Add"
         Button addPermissionsButton = new Button("Add");
@@ -178,7 +173,7 @@ private List<Equipment> equipmentList;
         gridPane.addRow(1, licenseLabel, licenseComboBox1, licenseComboBox2, addLicenseButton);
         gridPane.addRow(2, equipmentLabel, equipmentComboBox1, equipmentComboBox2, addEquipmentButton);
         gridPane.addRow(3, newEquipmentLabel, newEquipmentTextField, newEquipmentComboBox1, newEquipmentComboBox2, newEquipmentComboBox3, addNewEquipmentButton);
-        gridPane.addRow(4, permissionsLabel, permissionsComboBox1, permissionsComboBox2, datePicker, hourSpinner, minuteSpinner, toLabel, endDatePicker, endHourSpinner, endMinuteSpinner, addPermissionsButton);
+        gridPane.addRow(4, permissionsLabel, permissionsComboBox1, permissionsComboBox2, datePicker, toLabel, endDatePicker,  addPermissionsButton);
 
         otherTab.setContent(gridPane);
 
