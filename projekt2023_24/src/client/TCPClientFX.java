@@ -73,26 +73,7 @@ public class TCPClientFX extends Application {
                 switch (employee.getRole()) {
                     case "Production Employee": {
                         List<Task> employeeTasks = (List<Task>) objectInputStream.readObject();
-
-                        if (employeeTasks.size() == 0) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("No Tasks");
-                            alert.setHeaderText(null);
-                            alert.setContentText("No tasks available for you. Please contact your supervisor.");
-
-                            // Dodaj przycisk "OK"
-                            ButtonType okButton = new ButtonType("OK");
-                            alert.getButtonTypes().setAll(okButton);
-
-                            // Obsługa zdarzenia dla przycisku "OK"
-                            alert.setOnCloseRequest(event -> {
-                                sceneManager.showLoginScene(this);
-                            });
-
-                            alert.showAndWait();
-                        }else {
                             sceneManager.showEmployeeScene(this, employee, employeeTasks);
-                        }
                         break;
                     }
                     case "Admin": {

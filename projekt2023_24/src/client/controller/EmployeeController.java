@@ -47,28 +47,31 @@ public class EmployeeController {
         lastName.setText("Last name: " + employee.getLastName());
         role.setText("Role: " + employee.getRole());
         zone.setText("Zone: " + employee.getZone());
+if(tasks.size()==0){
+    Label lable = new Label("No tasks available for you. Please contact your supervisor.");
+    taskDetailsVBox.getChildren().add((lable));
+}else {
 
+    if ("in progress".equalsIgnoreCase(tasks.get(0).getStatus())) {
+        Label taskLabel = new Label(
+                "Task: " + tasks.get(0).getName() +
+                        "\nDescription: " + tasks.get(0).getDescription() +
+                        "\nPriority: " + tasks.get(0).getPriority() +
+                        "\nQuantity: " + tasks.get(0).getQuantity() +
+                        "\nEquipment Name: " + tasks.get(0).getEquipmentName() +
+                        "\nComponent Name: " + tasks.get(0).getComponentName() +
+                        "\nStatus: " + tasks.get(0).getStatus()
+        );
 
-            if ("in progress".equalsIgnoreCase(tasks.get(0).getStatus())) {
-                Label taskLabel = new Label(
-                        "Task: " + tasks.get(0).getName() +
-                                "\nDescription: " + tasks.get(0).getDescription() +
-                                "\nPriority: " + tasks.get(0).getPriority() +
-                                "\nQuantity: " + tasks.get(0).getQuantity() +
-                                "\nEquipment Name: " + tasks.get(0).getEquipmentName() +
-                                "\nComponent Name: " + tasks.get(0).getComponentName() +
-                                "\nStatus: " + tasks.get(0).getStatus()
-                );
+        Button endButton = new Button("End");
+        endButton.setOnAction(event -> endButtonAction(tasks.get(0)));
 
-                Button endButton = new Button("End");
-                endButton.setOnAction(event -> endButtonAction(tasks.get(0)));
-
-                taskDetailsVBox.getChildren().add(taskLabel);
-                taskDetailsVBox.getChildren().add(endButton);
-            } else if ("available".equalsIgnoreCase(tasks.get(0).getStatus())) {
-                setupTaskTableView();
-            }
-
+        taskDetailsVBox.getChildren().add(taskLabel);
+        taskDetailsVBox.getChildren().add(endButton);
+    } else if ("available".equalsIgnoreCase(tasks.get(0).getStatus())) {
+        setupTaskTableView();
+    }
+}
     }
 
     private void setupTaskTableView() {
