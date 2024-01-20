@@ -185,6 +185,14 @@ public class ManagerController {
 
         // Dodanie przycisku "Add"
         Button addPermissionsButton = new Button("Add");
+        addPermissionsButton.setOnAction(actionEvent -> {
+            tcpClientFX.addLicenseToEmployee(permissionsComboBox1.getValue(),permissionsComboBox2.getValue(),datePicker.getValue().toString(), endDatePicker.getValue().toString());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Added");
+            alert.showAndWait();
+        });
 
         // Ustawienie układu (layout)
         GridPane gridPane = new GridPane();
