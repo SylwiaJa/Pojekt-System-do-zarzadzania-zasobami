@@ -17,7 +17,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import server.*;
 
-import java.time.LocalDate;
 import java.util.*;
 
 public class ManagerController {
@@ -26,7 +25,7 @@ public class ManagerController {
     private List<Order> orders;
     private List<Task> tasks;
     private List<Employee> employees;
-private List<Equipment> equipmentList;
+    private List<Equipment> equipmentList;
     @FXML
     private Label name;
     @FXML
@@ -78,7 +77,9 @@ private List<Equipment> equipmentList;
         Tab otherTab = new Tab("Other");
 
         // Napis: Dodaj kategorię zadania
-        Label taskCategoryLabel = new Label("Dodaj kategorię zadania:");
+        Label taskCategoryLabel = new Label("Add task category:");
+        taskCategoryLabel.getStyleClass().add("textInfo2");
+        taskCategoryLabel.setMinWidth(100);
         TextField taskCategoryTextField = new TextField();
         Button addTaskCategoryButton = new Button("Add");
         addTaskCategoryButton.setOnAction(actionEvent -> {
@@ -92,13 +93,17 @@ private List<Equipment> equipmentList;
         });
 
         // Napis: dodaj licencje do kategorii
-        Label licenseLabel = new Label("Dodaj licencje do kategorii zadania:");
+        Label licenseLabel = new Label("Add license to categoty:");
+        licenseLabel.getStyleClass().add("textInfo2");
+        licenseLabel.setMinWidth(100);
         ObservableList<String> licenseOptions = FXCollections.observableArrayList();
         licenseList.forEach(license -> licenseOptions.add(license.getName()));
         ObservableList<String> taskCategoryOptions = FXCollections.observableArrayList();
         taskCategoryOptions.addAll(taskCategories);
         ComboBox<String> licenseComboBox1 = new ComboBox<>(taskCategoryOptions);
+        licenseComboBox1.setMinWidth(170);
         ComboBox<String> licenseComboBox2 = new ComboBox<>(licenseOptions);
+        licenseComboBox2.setMinWidth(170);
         Button addLicenseButton = new Button("Add");
         addLicenseButton.setOnAction(actionEvent -> {
             tcpClientFX.addLicenseToTaskCategory(licenseComboBox1.getValue(), licenseComboBox2.getValue());
@@ -110,29 +115,39 @@ private List<Equipment> equipmentList;
         });
 
         // Napis: dodaj sprzęt do kategorii zadania
-        Label equipmentLabel = new Label("Dodaj sprzęt do kategorii zadania:");
+        Label equipmentLabel = new Label("Add equipment to category:");
+        equipmentLabel.setMinWidth(100);
+        equipmentLabel.getStyleClass().add("textInfo2");
         ObservableList<String> equipmentOptions = FXCollections.observableArrayList();
         equipmentOptions.addAll(equipmentCategories);
         ComboBox<String> equipmentComboBox1 = new ComboBox<>(taskCategoryOptions);
+        equipmentComboBox1.setMinWidth(170);
         ComboBox<String> equipmentComboBox2 = new ComboBox<>(equipmentOptions);
+        equipmentComboBox2.setMinWidth(170);
         Button addEquipmentButton = new Button("Add");
-            addEquipmentButton.setOnAction(actionEvent -> {
-                tcpClientFX.addEquipmentToTaskCategory(equipmentComboBox1.getValue(),equipmentComboBox2.getValue());
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information Dialog");
-                alert.setHeaderText(null);
-                alert.setContentText("Added");
-                alert.showAndWait();
-            });
+        addEquipmentButton.setOnAction(actionEvent -> {
+            tcpClientFX.addEquipmentToTaskCategory(equipmentComboBox1.getValue(),equipmentComboBox2.getValue());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Added");
+            alert.showAndWait();
+        });
+
         // Napis: Add new equipment
         Label newEquipmentLabel = new Label("Add new equipment:");
+        newEquipmentLabel.getStyleClass().add("textInfo2");
+        newEquipmentLabel.setMinWidth(100);
         ObservableList<String> statusOptions = FXCollections.observableArrayList("available","out of use");
         ObservableList<String> zoneOptions = FXCollections.observableArrayList();
         zoneOptions.addAll(zoneList);
         TextField newEquipmentTextField = new TextField();
         ComboBox<String> newEquipmentComboBox1 = new ComboBox<>(equipmentOptions);
+        newEquipmentComboBox1.setMinWidth(170);
         ComboBox<String> newEquipmentComboBox2 = new ComboBox<>(statusOptions);
+        newEquipmentComboBox2.setMinWidth(170);
         ComboBox<String> newEquipmentComboBox3 = new ComboBox<>(zoneOptions);
+        newEquipmentComboBox3.setMinWidth(170);
         Button addNewEquipmentButton = new Button("Add");
         addNewEquipmentButton.setOnAction(actionEvent -> {
             tcpClientFX.addNewEquipment(newEquipmentTextField.getText(), newEquipmentComboBox1.getValue(),newEquipmentComboBox2.getValue(),newEquipmentComboBox3.getValue());
@@ -142,40 +157,48 @@ private List<Equipment> equipmentList;
             alert.setContentText("Added");
             alert.showAndWait();
         });
-// Napis: Add permissions to the employee
-        Label permissionsLabel = new Label("Add permissions to the employee:");
+
+        // Napis: Add permissions to the employee
+        Label permissionsLabel = new Label("Add license to employee:");
+        permissionsLabel.getStyleClass().add("textInfo2");
+        permissionsLabel.setMinWidth(100);
         ObservableList<String> employeeOptions = FXCollections.observableArrayList();
         employees.forEach(e->employeeOptions.add(e.getName()+" "+e.getLastName()));
         ComboBox<String> permissionsComboBox1 = new ComboBox<>(employeeOptions);
+        permissionsComboBox1.setMinWidth(170);
         ComboBox<String> permissionsComboBox2 = new ComboBox<>(licenseOptions);
+        permissionsComboBox2.setMinWidth(170);
 
         // Użyj DatePicker dla daty
         DatePicker datePicker = new DatePicker();
+
+
         // Napis: Do
-        Label toLabel = new Label("-");
+        Label emptyLabel = new Label("");
+        Label emptyLabel2 = new Label("");
+        //emptyLabel.getStyleClass().add("textInfo2");
+
         // Użyj DatePicker dla drugiej daty
         DatePicker endDatePicker = new DatePicker();
+
+
+
         // Dodanie przycisku "Add"
         Button addPermissionsButton = new Button("Add");
-addPermissionsButton.setOnAction(actionEvent -> {
-    tcpClientFX.addLicenseToEmployee(permissionsComboBox1.getValue(),permissionsComboBox2.getValue(),datePicker.getValue().toString(), endDatePicker.getValue().toString());
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Information Dialog");
-    alert.setHeaderText(null);
-    alert.setContentText("Added");
-    alert.showAndWait();
-});
+
         // Ustawienie układu (layout)
         GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
+        gridPane.setHgap(4);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10, 10, 10, 10));
 
         gridPane.addRow(0, taskCategoryLabel, taskCategoryTextField, addTaskCategoryButton);
         gridPane.addRow(1, licenseLabel, licenseComboBox1, licenseComboBox2, addLicenseButton);
         gridPane.addRow(2, equipmentLabel, equipmentComboBox1, equipmentComboBox2, addEquipmentButton);
-        gridPane.addRow(3, newEquipmentLabel, newEquipmentTextField, newEquipmentComboBox1, newEquipmentComboBox2, newEquipmentComboBox3, addNewEquipmentButton);
-        gridPane.addRow(4, permissionsLabel, permissionsComboBox1, permissionsComboBox2, datePicker, toLabel, endDatePicker,  addPermissionsButton);
+        gridPane.addRow(3, newEquipmentLabel, newEquipmentTextField, newEquipmentComboBox1, newEquipmentComboBox2);
+        gridPane.addRow(4, emptyLabel, newEquipmentComboBox3, addNewEquipmentButton);
+        gridPane.addRow(5, permissionsLabel, permissionsComboBox1, permissionsComboBox2);
+        gridPane.addRow(6, emptyLabel2, datePicker, endDatePicker,  addPermissionsButton);
 
         otherTab.setContent(gridPane);
 
@@ -216,9 +239,9 @@ addPermissionsButton.setOnAction(actionEvent -> {
                         Order order = getTableView().getItems().get(getIndex());
                         int orderId = order.getId();
                         // Tutaj dodaj logikę do obsługi przycisku Start dla danego zamówienia (orderId)
-                      List<Object> objects =  tcpClientFX.getOrderInfo(order);
-                            List<Equipment> equipment = (List<Equipment>) objects.get(0);
-                            List<Component> components = (List<Component>) objects.get(1);
+                        List<Object> objects =  tcpClientFX.getOrderInfo(order);
+                        List<Equipment> equipment = (List<Equipment>) objects.get(0);
+                        List<Component> components = (List<Component>) objects.get(1);
                         // Otwórz nowe okno "New Task"
                         openNewTaskWindow(order,equipment,components, ordersTable);
 
@@ -263,32 +286,43 @@ addPermissionsButton.setOnAction(actionEvent -> {
 
         // Tworzymy elementy interfejsu użytkownika
         Label nameLabel = new Label("Name:");
+        nameLabel.getStyleClass().add("textInfo");
         TextField nameTextField = new TextField();
 
         Label priorityLabel = new Label("Priority:");
+        priorityLabel.getStyleClass().add("textInfo");
         ComboBox<String> priorityComboBox = new ComboBox<>();
         priorityComboBox.getItems().addAll("High", "Normal", "Low");
 
         Label descriptionLabel = new Label("Description:");
+        descriptionLabel.getStyleClass().add("textInfo");
         TextArea descriptionTextArea = new TextArea();
 
         Label normLabel = new Label("Norm:");
+        normLabel.getStyleClass().add("textInfo");
         TextField normTextField = new TextField();
 
         Label componentLabel = new Label("Components:");
+        componentLabel.getStyleClass().add("textInfo");
         VBox componentsVBox = new VBox();
 
         List<CheckBox> componentCheckboxes = new ArrayList<>();
-        components.forEach(component -> componentCheckboxes.add(new CheckBox(component.getName())));
+        components.forEach(component -> {
+            CheckBox checkBox = new CheckBox(component.getName());
+            checkBox.getStyleClass().add("textInfo2");
+            componentCheckboxes.add(checkBox);
+        });
         componentsVBox.getChildren().addAll(componentCheckboxes);
 
         Label equipmentLabel = new Label("Equipment:");
+        equipmentLabel.getStyleClass().add("textInfo");
         ComboBox<String> equipmentComboBox = new ComboBox<>();
         equipmentList.forEach(equipment -> equipmentComboBox.getItems().add(equipment.getName()));
 
 
         // Dodajemy pole Spinner dla ilości (Quantity)
         Label quantityLabel = new Label("Quantity:");
+        quantityLabel.getStyleClass().add("textInfo");
         Spinner<Integer> quantitySpinner = new Spinner<>(0, calculateMaxQuantity(selectedOrder), 0, 1);
 
         // Tworzymy przyciski "Apply" i "Cancel"
@@ -324,7 +358,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
 
             assert selectedEquipment != null;
             Task task = new Task(1, nameTextField.getText(), priorityComboBox.getValue(), descriptionTextArea.getText(), Integer.parseInt(normTextField.getText()), selectedComponents, selectedEquipment, selectedEquipment.getZone(), quantitySpinner.getValue(),selectedOrder.getProduct().getId(), selectedOrder.getId());
-         tcpClientFX.addTask(task);
+            tcpClientFX.addTask(task);
             selectedOrder.getProduct().setQuantityInProduction(selectedOrder.getProduct().getQuantityInProduction()+quantitySpinner.getValue());
             selectedOrder.setStatus("progress");
             // Aktualizuj dane w tabeli
@@ -373,7 +407,8 @@ addPermissionsButton.setOnAction(actionEvent -> {
         gridPane.add(new HBox(10, applyButton, cancelButton), 1, 8);
 
         // Ustawiamy scenę
-        Scene scene = new Scene(gridPane, 400, 600); // Zwiększam wysokość okna
+        Scene scene = new Scene(gridPane, 800, 600); // Zwiększam wysokość okna
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         newTaskStage.setScene(scene);
 
         // Pokazujemy nowe okno
@@ -457,6 +492,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
 
         for (String info : taskInfo) {
             Label label = new Label(info);
+            label.getStyleClass().add("textInfo");
             layout.getChildren().add(label);
         }
 
@@ -464,7 +500,8 @@ addPermissionsButton.setOnAction(actionEvent -> {
         closeButton.setOnAction(e -> window.close());
         layout.getChildren().add(closeButton);
 
-        Scene scene = new Scene(layout, 300, 400);
+        Scene scene = new Scene(layout, 300, 500);
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         window.setScene(scene);
 
         window.showAndWait();
@@ -546,7 +583,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
     }
 
     private void openViewEmployeeWindow(Employee employee) {
-       List<List<String>> empInfo =  tcpClientFX.getEmployeeInfo(employee);
+        List<List<String>> empInfo =  tcpClientFX.getEmployeeInfo(employee);
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Task Details");
@@ -556,6 +593,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
 
         for (List<String> info : empInfo) {
             Label label = new Label(info.get(0)+" "+info.get(1)+" "+info.get(2)+" "+info.get(3)+" "+info.get(4));
+            label.getStyleClass().add("textInfo");
             layout.getChildren().add(label);
         }
 
@@ -563,7 +601,8 @@ addPermissionsButton.setOnAction(actionEvent -> {
         closeButton.setOnAction(e -> window.close());
         layout.getChildren().add(closeButton);
 
-        Scene scene = new Scene(layout, 300, 400);
+        Scene scene = new Scene(layout, 500, 300);
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         window.setScene(scene);
 
         window.showAndWait();
@@ -599,7 +638,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
                     viewButton.setOnAction(event -> {
                         Equipment equipment = getTableView().getItems().get(getIndex());
                         List<List<String>> equipmentUse = tcpClientFX.getUseEquipment(equipment.getId());
-                         openViewEquipmentWindow(equipment,equipmentUse);
+                        openViewEquipmentWindow(equipment,equipmentUse);
                     });
                 }
 
@@ -633,17 +672,21 @@ addPermissionsButton.setOnAction(actionEvent -> {
 
         // Tworzymy kontener VBox dla układu okna
         VBox vbox = new VBox(10);
+        vbox.getStyleClass().add("padd");
 
         // Dodajemy etykiety i pola tekstowe do VBox
         Label nameLabel = new Label("Name: " + equipment.getName());
+        nameLabel.getStyleClass().add("textInfo");
 
         // Lista rozwijana (ComboBox) dla statusu
         Label statusLable = new Label("Status: ");
+        statusLable.getStyleClass().add("textInfo");
         ComboBox<String> statusComboBox = new ComboBox<>();
         statusComboBox.getItems().addAll("available", "in use", "out of use");
         statusComboBox.setValue(equipment.getStatus()); // Ustawienie domyślnego statusu
 
         Label zoneLabel = new Label("Zone: " + equipment.getZone());
+        zoneLabel.getStyleClass().add("textInfo");
 
         // Dodajemy elementy do VBox
         vbox.getChildren().addAll(nameLabel, statusLable, statusComboBox, zoneLabel);
@@ -656,6 +699,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
 
             }
             Label label = new Label(stringJoiner.toString());
+            label.getStyleClass().add("textInfo");
             vbox.getChildren().add(label);
 
         }
@@ -668,7 +712,7 @@ addPermissionsButton.setOnAction(actionEvent -> {
         // Obsługa przycisku Apply
         applyButton.setOnAction(event -> {
             equipment.setStatus(statusComboBox.getValue());
-           tcpClientFX.updateEquipment(equipment);
+            tcpClientFX.updateEquipment(equipment);
 
             // Zamknij okno po zastosowaniu zmian
             viewEquipmentStage.close();
@@ -687,7 +731,8 @@ addPermissionsButton.setOnAction(actionEvent -> {
         vbox.getChildren().add(buttonBox);
 
         // Ustawiamy VBox jako scenę
-        Scene scene = new Scene(vbox, 400, 300);  // Zwiększyłem szerokość okna, aby pomieścić więcej informacji
+        Scene scene = new Scene(vbox, 500, 300);  // Zwiększyłem szerokość okna, aby pomieścić więcej informacji
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
         viewEquipmentStage.setScene(scene);
 
         // Pokazujemy nowe okno
